@@ -1,0 +1,68 @@
+# ------------------------------------------------------------------
+# WordPress .gitignore
+# ------------------------------------------------------------------
+
+# 1. Ignore the sensitive configuration file.
+# This file contains database passwords and should never be in a repo.
+# (A common practice is to create and track a 'wp-config-sample.php' instead)
+/wp-config.php
+
+# 2. Ignore WordPress Core.
+# These files are managed by WordPress itself and should not be tracked.
+/wp-admin/
+/wp-includes/
+/index.php
+/license.txt
+/readme.html
+/xmlrpc.php
+/wp-activate.php
+/wp-blog-header.php
+/wp-comments-post.php
+/wp-cron.php
+/wp-links-opml.php
+/wp-load.php
+/wp-login.php
+/wp-mail.php
+/wp-settings.php
+/wp-signup.php
+/wp-trackback.php
+
+# 3. Ignore User-Generated Content & Cache
+# The 'uploads' folder can become huge and doesn't belong in Git.
+# Other cache/transient directories should also be ignored.
+/wp-content/uploads/
+/wp-content/cache/
+/wp-content/upgrade/
+/wp-content/backups/
+/wp-content/backup-db/
+
+# 4. Ignore default themes and plugins.
+# You should only track the themes and plugins you are building or customizing.
+/wp-content/themes/twenty*/
+/wp-content/plugins/akismet/
+/wp-content/plugins/hello.php
+
+# 5. Ignore common build/dependency folders (for modern development)
+/node_modules/
+/vendor/
+
+# 6. Ignore system/editor junk files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# 7. Ignore Log Files
+*.log
+debug.log
+npm-debug.log
+yarn-error.log
+
+# ------------------------------------------------------------------
+# Your 'portal-files' folder is NOT listed above,
+# so it will be tracked by Git by default.
+# ------------------------------------------------------------------
