@@ -389,6 +389,81 @@ function nmda_get_reimbursement_stats( $business_id, $fiscal_year = null ) {
 }
 
 /**
+ * Get all reimbursements for a specific user
+ *
+ * @param int $user_id User ID.
+ * @param array $filters Optional filters (status, type, fiscal_year, business_id).
+ * @return array Array of reimbursement objects.
+ */
+function nmda_get_user_reimbursements( $user_id, $filters = array() ) {
+	global $wpdb;
+	$table = nmda_get_reimbursements_table();
+
+	$where = array( $wpdb->prepare( 'user_id = %d', $user_id ) );
+
+	if ( ! empty( $filters['status'] ) ) {
+		$where[] = $wpdb->prepare( 'status = %s', $filters['status'] );
+	}
+
+	if ( ! empty( $filters['type'] ) ) {
+		$where[] = $wpdb->prepare( 'type = %s', $filters['type'] );
+	}
+
+	if ( ! empty( $filters['fiscal_year'] ) ) {
+		$where[] = $wpdb->prepare( 'fiscal_year = %s', $filters['fiscal_year'] );
+	}
+
+	if ( ! empty( $filters['business_id'] ) ) {
+		$where[] = $wpdb->prepare( 'business_id = %d', $filters['business_id'] );
+	}
+
+	$where_clause = implode( ' AND ', $where );
+	$query        = "SELECT * FROM $table WHERE $where_clause ORDER BY created_at DESC";
+
+	return $wpdb->get_results( $query );
+}
+
+/**
+ * Get reimbursement statistics for a user
+ *
+ * @param int $user_id User ID.
+ * @param string|null $fiscal_year Fiscal year (optional).
+ * @return array Statistics array.
+ */
+function nmda_get_reimbursement_stats_for_user( $user_id, $fiscal_year = null ) {
+	global $wpdb;
+	$table = nmda_get_reimbursements_table();
+
+	$query = $wpdb->prepare(
+		"SELECT
+			COUNT(*) as total_count,
+			SUM(CASE WHEN status = 'submitted' THEN 1 ELSE 0 END) as pending_count,
+			SUM(CASE WHEN status = 'approved' THEN 1 ELSE 0 END) as approved_count,
+			SUM(CASE WHEN status = 'rejected' THEN 1 ELSE 0 END) as rejected_count,
+			SUM(CASE WHEN status = 'approved' THEN amount_approved ELSE 0 END) as approved_amount,
+			SUM(amount_requested) as requested_amount
+		FROM $table
+		WHERE user_id = %d",
+		$user_id
+	);
+
+	if ( $fiscal_year ) {
+		$query .= $wpdb->prepare( ' AND fiscal_year = %s', $fiscal_year );
+	}
+
+	$result = $wpdb->get_row( $query, ARRAY_A );
+
+	return $result ?? array(
+		'total_count'      => 0,
+		'pending_count'    => 0,
+		'approved_count'   => 0,
+		'rejected_count'   => 0,
+		'approved_amount'  => 0,
+		'requested_amount' => 0,
+	);
+}
+
+/**
  * Render Lead Generation reimbursement form
  *
  * @param array $approved_businesses Array of approved businesses.
@@ -556,9 +631,9 @@ function nmda_render_lead_reimbursement_form( $approved_businesses ) {
 				<i class="fa fa-times"></i> Cancel
 			</a>
 		</div>
-
-		<div id="form-messages" class="mt-3"></div>
 	</form>
+
+	<div id="form-messages" class="mt-3"></div>
 
 	<script>
 	jQuery(document).ready(function($) {
@@ -757,9 +832,9 @@ function nmda_render_advertising_reimbursement_form( $approved_businesses ) {
 				<i class="fa fa-times"></i> Cancel
 			</a>
 		</div>
-
-		<div id="form-messages" class="mt-3"></div>
 	</form>
+
+	<div id="form-messages" class="mt-3"></div>
 
 	<script>
 	jQuery(document).ready(function($) {
@@ -971,9 +1046,9 @@ function nmda_render_labels_reimbursement_form( $approved_businesses ) {
 				<i class="fa fa-times"></i> Cancel
 			</a>
 		</div>
-
-		<div id="form-messages" class="mt-3"></div>
 	</form>
+
+	<div id="form-messages" class="mt-3"></div>
 
 	<script>
 	jQuery(document).ready(function($) {

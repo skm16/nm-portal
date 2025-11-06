@@ -449,13 +449,13 @@ function nmda_ajax_get_reimbursement_details() {
 			</div>
 		<?php endif; ?>
 
-		<?php if ( $reimbursement['status'] === 'submitted' ) : ?>
+		<?php if ( $reimbursement->status === 'submitted' ) : ?>
 			<div class="detail-section">
 				<h3>Review Actions</h3>
 				<div class="review-actions">
 					<div class="approve-section">
 						<label for="approved-amount">Approved Amount:</label>
-						<input type="number" id="approved-amount" step="0.01" min="0" max="<?php echo $reimbursement['amount_requested']; ?>" value="<?php echo $reimbursement['amount_requested']; ?>" class="regular-text">
+						<input type="number" id="approved-amount" step="0.01" min="0" max="<?php echo $reimbursement->amount_requested; ?>" value="<?php echo $reimbursement->amount_requested; ?>" class="regular-text">
 						<button type="button" class="button button-primary nmda-approve-reimbursement" data-reimbursement-id="<?php echo $reimbursement_id; ?>">
 							<span class="dashicons dashicons-yes"></span> Approve Request
 						</button>
@@ -472,26 +472,26 @@ function nmda_ajax_get_reimbursement_details() {
 			</div>
 		<?php endif; ?>
 
-		<?php if ( $reimbursement['status'] === 'approved' ) : ?>
+		<?php if ( $reimbursement->status === 'approved' ) : ?>
 			<div class="detail-section">
 				<h3>Approval Information</h3>
 				<table class="form-table">
 					<tr>
 						<th>Approved Amount:</th>
-						<td><strong>$<?php echo number_format( $reimbursement['amount_approved'], 2 ); ?></strong></td>
+						<td><strong>$<?php echo number_format( $reimbursement->amount_approved, 2 ); ?></strong></td>
 					</tr>
 					<tr>
 						<th>Reviewed At:</th>
-						<td><?php echo date( 'F j, Y g:i A', strtotime( $reimbursement['reviewed_at'] ) ); ?></td>
+						<td><?php echo date( 'F j, Y g:i A', strtotime( $reimbursement->reviewed_at ) ); ?></td>
 					</tr>
 				</table>
 			</div>
 		<?php endif; ?>
 
-		<?php if ( $reimbursement['status'] === 'rejected' && ! empty( $reimbursement['admin_notes'] ) ) : ?>
+		<?php if ( $reimbursement->status === 'rejected' && ! empty( $reimbursement->admin_notes ) ) : ?>
 			<div class="detail-section">
 				<h3>Rejection Reason</h3>
-				<p><?php echo nl2br( esc_html( $reimbursement['admin_notes'] ) ); ?></p>
+				<p><?php echo nl2br( esc_html( $reimbursement->admin_notes ) ); ?></p>
 			</div>
 		<?php endif; ?>
 	</div>
@@ -520,7 +520,8 @@ function nmda_ajax_approve_reimbursement() {
 		wp_send_json_error( array( 'message' => 'Invalid parameters.' ) );
 	}
 
-	$result = nmda_approve_reimbursement( $reimbursement_id, $approved_amount );
+	$admin_id = get_current_user_id();
+	$result   = nmda_approve_reimbursement( $reimbursement_id, $approved_amount, $admin_id );
 
 	if ( is_wp_error( $result ) ) {
 		wp_send_json_error( array( 'message' => $result->get_error_message() ) );
@@ -547,7 +548,8 @@ function nmda_ajax_reject_reimbursement() {
 		wp_send_json_error( array( 'message' => 'Invalid reimbursement ID.' ) );
 	}
 
-	$result = nmda_reject_reimbursement( $reimbursement_id, $reason );
+	$admin_id = get_current_user_id();
+	$result   = nmda_reject_reimbursement( $reimbursement_id, $admin_id, $reason );
 
 	if ( is_wp_error( $result ) ) {
 		wp_send_json_error( array( 'message' => $result->get_error_message() ) );

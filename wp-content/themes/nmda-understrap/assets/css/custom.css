@@ -278,6 +278,25 @@ select.form-control {
     font-weight: 600;
 }
 
+
+.custom-logo-link img {
+    max-width:150px;
+    margin:.5rem 0;
+}
+
+.badge-light {
+    color:#333 !important;
+}
+
+#wrapper-footer {
+    background-color:#721c24;
+}
+
+#wrapper-footer * {
+    color:#fff;
+    margin-bottom:0;
+}
+
 /* ==========================================================================
    Responsive Adjustments
    ========================================================================== */

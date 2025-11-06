@@ -512,6 +512,71 @@
     color: #a94442;
 }
 
+/* Resource List */
+.resource-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.resource-list li {
+    padding: 10px 0;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.resource-list li:last-child {
+    border-bottom: none;
+}
+
+.resource-list li a {
+    color: #512c1d;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    transition: all 0.2s ease;
+}
+
+.resource-list li a:hover {
+    color: #8b0c12;
+    transform: translateX(5px);
+}
+
+.resource-list li a i {
+    margin-right: 10px;
+    font-size: 16px;
+    min-width: 20px;
+}
+
+.resource-list li a small {
+    margin-left: 5px;
+    font-size: 11px;
+}
+
+.resource-list .fa-external-link {
+    color: #8b0c12;
+}
+
+/* File Type Icon Colors */
+.resource-list .fa-file-pdf-o {
+    color: #d32f2f;
+}
+
+.resource-list .fa-file-word-o {
+    color: #2b579a;
+}
+
+.resource-list .fa-file-excel-o {
+    color: #217346;
+}
+
+.resource-list .fa-file-image-o {
+    color: #f57c00;
+}
+
+.resource-list .fa-file-archive-o {
+    color: #5c6bc0;
+}
+
 /* Responsive */
 @media (max-width: 768px) {
     .dashboard-header {

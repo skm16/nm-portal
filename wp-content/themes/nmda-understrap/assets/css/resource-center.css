@@ -1,0 +1,283 @@
+/**
+ * Resource Center Styles
+ */
+
+/* Resource Card */
+.resource-card {
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    background: #fff;
+    max-width: 100%;
+}
+
+/* Ensure Bootstrap columns work properly */
+.resource-card-wrapper {
+    margin-bottom: 20px;
+}
+
+/* Fix for Bootstrap grid in resource center */
+#content .row {
+    display: flex;
+    flex-wrap: wrap;
+    margin-right: -15px;
+    margin-left: -15px;
+}
+
+#content .col-md-6,
+#content .col-lg-4 {
+    position: relative;
+    width: 100%;
+    padding-right: 15px;
+    padding-left: 15px;
+}
+
+@media (min-width: 768px) {
+    #content .col-md-6 {
+        flex: 0 0 50%;
+        max-width: 50%;
+    }
+}
+
+@media (min-width: 992px) {
+    #content .col-lg-4 {
+        flex: 0 0 33.333333%;
+        max-width: 33.333333%;
+    }
+}
+
+.resource-card:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    transform: translateY(-4px);
+    border-color: #512c1d;
+}
+
+.resource-thumbnail {
+    width: 100%;
+    height: 180px;
+    overflow: hidden;
+    background: #f5f5f5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.resource-thumbnail img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.resource-content {
+    padding: 20px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.resource-title {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 12px;
+    color: #512c1d;
+    line-height: 1.4;
+}
+
+.resource-title .fa-external-link {
+    font-size: 14px;
+    color: #8b0c12;
+    margin-left: 5px;
+    vertical-align: super;
+}
+
+.resource-categories {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+}
+
+.resource-categories .badge-primary {
+    background-color: #512c1d;
+    font-size: 11px;
+    padding: 4px 8px;
+    font-weight: 500;
+}
+
+.resource-categories .badge-primary i {
+    margin-right: 4px;
+}
+
+.resource-description {
+    color: #666;
+    font-size: 14px;
+    line-height: 1.6;
+    margin-bottom: 15px;
+    flex-grow: 1;
+}
+
+.resource-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: auto;
+}
+
+.resource-meta .badge {
+    font-size: 11px;
+    padding: 5px 10px;
+    font-weight: 500;
+}
+
+.resource-card .btn {
+    border-radius: 5px;
+    font-weight: 600;
+    transition: all 0.2s ease;
+}
+
+.resource-card .btn-primary {
+    background-color: #512c1d;
+    border-color: #512c1d;
+}
+
+.resource-card .btn-primary:hover {
+    background-color: #8b0c12;
+    border-color: #8b0c12;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(139, 12, 18, 0.3);
+}
+
+/* Category Header */
+.card-header.bg-primary {
+    background-color: #512c1d !important;
+    border-bottom: 3px solid #8b0c12;
+}
+
+.card-header h3 i {
+    margin-right: 10px;
+}
+
+/* Search and Filter */
+.form-group label {
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 8px;
+}
+
+.form-group label i {
+    margin-right: 5px;
+    color: #512c1d;
+}
+
+/* Resource Grid Responsiveness */
+@media (max-width: 768px) {
+    .resource-card {
+        margin-bottom: 20px;
+    }
+
+    .resource-thumbnail {
+        height: 150px;
+    }
+
+    .resource-content {
+        padding: 15px;
+    }
+
+    .resource-title {
+        font-size: 16px;
+    }
+}
+
+/* Empty State */
+.alert-info {
+    border-left: 4px solid #512c1d;
+}
+
+/* Help Section */
+.card-body.bg-light {
+    background-color: #f8f9fa;
+    border-top: 3px solid #f5be29;
+}
+
+.card-body.bg-light h4 {
+    color: #512c1d;
+    margin-bottom: 10px;
+}
+
+.card-body.bg-light h4 i {
+    margin-right: 10px;
+    color: #8b0c12;
+}
+
+/* Loading State */
+.resource-card.loading {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+.resource-card.loading::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 30px;
+    height: 30px;
+    margin: -15px 0 0 -15px;
+    border: 3px solid #f3f3f3;
+    border-top: 3px solid #512c1d;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* File Type Icons */
+.fa-file-pdf-o {
+    color: #d32f2f;
+}
+
+.fa-file-word-o {
+    color: #2b579a;
+}
+
+.fa-file-excel-o {
+    color: #217346;
+}
+
+.fa-file-powerpoint-o {
+    color: #d24726;
+}
+
+.fa-file-image-o {
+    color: #f57c00;
+}
+
+.fa-file-archive-o {
+    color: #5c6bc0;
+}
+
+/* Badge Styling */
+.badge-secondary {
+    background-color: #6c757d;
+}
+
+.badge-info {
+    background-color: #17a2b8;
+}
+
+.badge-light {
+    background-color: #f8f9fa;
+    color: #495057;
+    border: 1px solid #dee2e6;
+}
+
+/* Download Counter */
+.resource-meta .badge-light i {
+    color: #512c1d;
+}

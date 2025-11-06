@@ -48,6 +48,13 @@ function nmda_enqueue_scripts() {
         wp_enqueue_style( 'nmda-dashboard-styles', NMDA_THEME_URI . '/assets/css/dashboard.css', array( 'nmda-custom-styles' ), NMDA_THEME_VERSION );
     }
 
+    // Resource Center styles
+    if ( is_page_template( 'page-resource-center.php' ) ) {
+        wp_enqueue_style( 'nmda-dashboard-styles', NMDA_THEME_URI . '/assets/css/dashboard.css', array( 'nmda-custom-styles' ), NMDA_THEME_VERSION );
+        wp_enqueue_style( 'nmda-resource-center-styles', NMDA_THEME_URI . '/assets/css/resource-center.css', array( 'nmda-dashboard-styles' ), NMDA_THEME_VERSION );
+        wp_enqueue_script( 'nmda-resource-center', NMDA_THEME_URI . '/assets/js/resource-center.js', array( 'jquery' ), NMDA_THEME_VERSION, true );
+    }
+
     // Reimbursement forms scripts and styles
     if ( is_page_template( array( 'page-reimbursement-lead.php', 'page-reimbursement-advertising.php', 'page-reimbursement-labels.php' ) ) ) {
         wp_enqueue_style( 'nmda-reimbursement-forms-styles', NMDA_THEME_URI . '/assets/css/reimbursement-forms.css', array( 'nmda-custom-styles' ), NMDA_THEME_VERSION );
@@ -70,6 +77,7 @@ require_once NMDA_THEME_DIR . '/inc/custom-post-types.php';
 require_once NMDA_THEME_DIR . '/inc/user-management.php';
 require_once NMDA_THEME_DIR . '/inc/business-management.php';
 require_once NMDA_THEME_DIR . '/inc/reimbursements.php';
+require_once NMDA_THEME_DIR . '/inc/resources.php';
 require_once NMDA_THEME_DIR . '/inc/api-integrations.php';
 require_once NMDA_THEME_DIR . '/inc/database-schema.php';
 require_once NMDA_THEME_DIR . '/inc/acf-field-groups.php';
@@ -79,13 +87,60 @@ require_once NMDA_THEME_DIR . '/inc/admin-approval.php';
 require_once NMDA_THEME_DIR . '/inc/admin-reimbursements.php';
 
 /**
+ * Add custom rewrite rules for reimbursement detail pages
+ */
+function nmda_add_reimbursement_rewrite_rules() {
+    add_rewrite_rule(
+        '^dashboard/reimbursements/([0-9]+)/?$',
+        'index.php?nmda_reimbursement_detail=1&reimbursement_id=$matches[1]',
+        'top'
+    );
+}
+add_action( 'init', 'nmda_add_reimbursement_rewrite_rules' );
+
+/**
+ * Add custom query vars
+ */
+function nmda_add_query_vars( $vars ) {
+    $vars[] = 'reimbursement_id';
+    $vars[] = 'nmda_reimbursement_detail';
+    return $vars;
+}
+add_filter( 'query_vars', 'nmda_add_query_vars', 10, 1 );
+
+/**
+ * Alternative method: Add to public query vars directly
+ */
+function nmda_add_public_query_vars() {
+    global $wp;
+    $wp->add_query_var('reimbursement_id');
+    $wp->add_query_var('nmda_reimbursement_detail');
+}
+add_action( 'init', 'nmda_add_public_query_vars', 10 );
+
+/**
+ * Handle custom reimbursement detail template
+ */
+function nmda_reimbursement_detail_template( $template ) {
+    if ( get_query_var( 'nmda_reimbursement_detail' ) ) {
+        $new_template = locate_template( array( 'page-reimbursement-detail.php' ) );
+        if ( ! empty( $new_template ) ) {
+            return $new_template;
+        }
+    }
+    return $template;
+}
+add_filter( 'template_include', 'nmda_reimbursement_detail_template' );
+
+/**
  * Theme activation hook - create custom database tables
  */
 function nmda_theme_activation() {
     // Create custom database tables
     nmda_create_custom_tables();
 
-    // Flush rewrite rules
+    // Flush rewrite rules to register custom URLs
+    nmda_add_reimbursement_rewrite_rules();
     flush_rewrite_rules();
 }
 add_action( 'after_switch_theme', 'nmda_theme_activation' );
