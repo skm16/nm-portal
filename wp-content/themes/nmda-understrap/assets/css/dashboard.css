@@ -140,7 +140,7 @@
 
 .business-profile-card .card-header {
     background: linear-gradient(135deg, #512c1d 0%, #8b0c12 100%);
-    color: #fff;
+    color: #333;
     border-radius: 8px 8px 0 0;
     padding: 15px 20px;
 }
@@ -248,7 +248,7 @@
 .card .card-header {
     background: #f8f9fa;
     border-bottom: 2px solid #e0e0e0;
-    padding: 15px 20px;
+    padding: 15px 20px !important;
     border-radius: 8px 8px 0 0;
 }
 
@@ -381,6 +381,66 @@
 .btn-outline-secondary:hover {
     background-color: #6c757d;
     color: #fff;
+}
+
+/* Business Accordion */
+.business-accordion-card {
+    border: none;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    margin-bottom: 15px;
+}
+
+.business-accordion-card .card-header {
+    background: #f8f9fa;
+    border: none;
+    border-radius: 8px 8px 0 0;
+    padding: 0;
+}
+
+.business-accordion-card .card-header button {
+    font-size: 20px;
+    font-weight: 700;
+    color: #512c1d;
+    text-decoration: none;
+    padding: 20px 25px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    line-height: 1.4;
+}
+
+.business-accordion-card .card-header button:hover {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    text-decoration: none;
+    color: #8b0c12;
+}
+
+.business-accordion-card .card-header button:focus {
+    outline: none;
+    box-shadow: none;
+}
+
+.business-accordion-card .card-header button i.fa-building {
+    margin-right: 10px;
+}
+
+.business-accordion-card .card-header button i.fa-chevron-down {
+    transition: transform 0.3s ease;
+}
+
+.business-accordion-card .card-header button.collapsed i.fa-chevron-down {
+    transform: rotate(-90deg);
+}
+
+.business-accordion-card .card-body {
+    padding: 25px;
+}
+
+.business-accordion-card .badge {
+    font-size: 11px;
+    padding: 4px 8px;
 }
 
 /* Alerts */

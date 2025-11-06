@@ -127,7 +127,7 @@ function nmda_get_user_businesses( $user_id, $status = 'active' ) {
 
     $query .= " ORDER BY accepted_date DESC";
 
-    return $wpdb->get_results( $query );
+    return $wpdb->get_results( $query, ARRAY_A );
 }
 
 /**
@@ -155,7 +155,7 @@ function nmda_get_business_users( $business_id, $status = 'active' ) {
 
     $query .= " ORDER BY accepted_date DESC";
 
-    return $wpdb->get_results( $query );
+    return $wpdb->get_results( $query, ARRAY_A );
 }
 
 /**
@@ -307,3 +307,11 @@ function nmda_add_custom_roles() {
     );
 }
 add_action( 'init', 'nmda_add_custom_roles' );
+
+/**
+ * Track user last login time
+ */
+function nmda_track_last_login( $user_login, $user ) {
+	update_user_meta( $user->ID, 'last_login', current_time( 'mysql' ) );
+}
+add_action( 'wp_login', 'nmda_track_last_login', 10, 2 );

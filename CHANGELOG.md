@@ -503,3 +503,51 @@ All notable changes to the NMDA Portal WordPress project will be documented in t
 - Only shows data for businesses user is associated with
 - Respects user role (owner/manager/viewer)
 - Secure data queries with wpdb prepare
+
+**Bug Fixes - Dashboard Display (Round 1)**
+- **Fixed dashboard not showing businesses** - Updated `nmda_get_user_businesses()` and `nmda_get_business_users()` functions in `/inc/user-management.php` to return associative arrays (ARRAY_A) instead of objects
+  - Dashboard template expects `$business['business_id']` notation (associative array)
+  - Functions were returning objects by default from `$wpdb->get_results()`
+  - Added `ARRAY_A` parameter to both functions (lines 130 and 158)
+  - Fixes issue where dashboard only showed welcome header but no business data
+  - Now properly displays approved businesses associated with logged-in user
+
+**Bug Fixes - Dashboard UX Improvements (Round 2)**
+- **Fixed "Last login: 56 years ago"** - Implemented proper last login tracking:
+  - Added `nmda_track_last_login()` function in `/inc/user-management.php` that updates `last_login` user meta on `wp_login` hook
+  - Dashboard now uses `last_login` user meta or falls back to `user_registered` date
+  - Provides accurate human-readable time since last login
+- **Fixed "Member since 56 years ago"** - Now uses approval date instead of post creation date:
+  - Changed from `get_the_time('U', $business_id)` to using `approval_date` ACF field
+  - Falls back to post date if approval date not set
+  - Shows accurate membership duration from when business was actually approved
+- **Optimized sidebar sections** - Moved Resources and Support cards outside business loop:
+  - Resources and Support are now shared across all businesses (displayed once in sidebar)
+  - Eliminates duplicate sections that were repeating for each business
+  - Recent Activity remains per-business inside accordion
+- **Added accordion interface for multiple businesses**:
+  - Businesses grouped in Bootstrap accordion with collapsible panels
+  - Each business shows in card header with name, role badge, and chevron icon
+  - First business expanded by default, others collapsed
+  - Smooth expand/collapse animations with rotating chevron
+  - Business stats, actions, profile, and activity contained within each accordion panel
+  - Separate sections for pending, rejected, and approved businesses
+  - New CSS classes in `/assets/css/dashboard.css`: `.business-accordion-card`, accordion button styles, chevron rotation transitions
+  - Clean visual hierarchy for users with multiple business associations
+
+**Bug Fixes - Dashboard Display (Round 3)**
+- **Improved accordion header readability** - Enhanced text styling in accordion card headers:
+  - Increased font size from 18px to 20px
+  - Increased font weight from 600 to 700
+  - Changed color to NMDA brown (#512c1d) for better contrast
+  - Added gradient hover effect
+  - Hover color changes to NMDA red (#8b0c12)
+  - Improved line-height and padding for better spacing
+- **Fixed ghost pending applications showing** - Added validation to prevent showing invalid/empty applications:
+  - Now checks if business post exists before categorizing
+  - Skips businesses with trashed posts
+  - Properly validates post_status and approval_status together
+  - Published posts (post_status='publish') are treated as approved
+  - Only shows pending if explicitly set to 'pending' or 'draft'
+  - Prevents showing empty application alerts with no business name or date
+  - Filters out invalid business relationships from database
