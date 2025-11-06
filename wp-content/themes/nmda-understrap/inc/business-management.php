@@ -441,3 +441,189 @@ function nmda_log_communication( $business_id, $user_id, $admin_id, $type, $mess
 
     return $result ? $wpdb->insert_id : false;
 }
+
+/**
+ * Check if a field requires approval
+ *
+ * @param string $field_name Field name to check.
+ * @return bool True if field requires approval.
+ */
+function nmda_field_requires_approval( $field_name ) {
+	global $wpdb;
+	$table = nmda_get_field_permissions_table();
+
+	$requires_approval = $wpdb->get_var( $wpdb->prepare(
+		"SELECT requires_approval FROM $table WHERE field_name = %s",
+		$field_name
+	) );
+
+	return (bool) $requires_approval;
+}
+
+/**
+ * Handle business profile update AJAX request
+ */
+function nmda_ajax_update_business_profile() {
+	// Verify nonce
+	$business_id = isset( $_POST['business_id'] ) ? intval( $_POST['business_id'] ) : 0;
+
+	if ( ! wp_verify_nonce( $_POST['profile_nonce'], 'nmda_update_profile_' . $business_id ) ) {
+		wp_send_json_error( array( 'message' => 'Security check failed.' ) );
+	}
+
+	// Check user is logged in
+	if ( ! is_user_logged_in() ) {
+		wp_send_json_error( array( 'message' => 'You must be logged in.' ) );
+	}
+
+	$user_id = get_current_user_id();
+
+	// Verify business exists
+	if ( ! $business_id || get_post_type( $business_id ) !== 'nmda_business' ) {
+		wp_send_json_error( array( 'message' => 'Invalid business ID.' ) );
+	}
+
+	// Check user has permission to edit
+	$user_role = nmda_get_user_business_role( $user_id, $business_id );
+	if ( ! in_array( $user_role, array( 'owner', 'manager' ) ) ) {
+		wp_send_json_error( array( 'message' => 'You don\'t have permission to edit this business.' ) );
+	}
+
+	$is_autosave = isset( $_POST['autosave'] ) && $_POST['autosave'] === '1';
+
+	// Process updates
+	$updated_fields = array();
+	$pending_fields = array();
+
+	// Business Name (post title)
+	if ( isset( $_POST['business_name'] ) ) {
+		$business_name = sanitize_text_field( $_POST['business_name'] );
+		if ( nmda_field_requires_approval( 'business_name' ) ) {
+			nmda_update_business_field( $business_id, 'business_name', $business_name, $user_id );
+			$pending_fields[] = 'Business Name';
+		} else {
+			wp_update_post( array(
+				'ID'         => $business_id,
+				'post_title' => $business_name,
+			) );
+			$updated_fields[] = 'Business Name';
+		}
+	}
+
+	// Business Description (post content)
+	if ( isset( $_POST['business_description'] ) ) {
+		wp_update_post( array(
+			'ID'           => $business_id,
+			'post_content' => wp_kses_post( $_POST['business_description'] ),
+		) );
+		$updated_fields[] = 'Business Description';
+	}
+
+	// ACF Fields
+	$acf_fields = array(
+		'dba_name',
+		'business_phone',
+		'business_email',
+		'website',
+		'business_hours',
+		'number_of_employees',
+		'facebook',
+		'instagram',
+		'twitter',
+		'pinterest',
+		'sales_additional_info',
+	);
+
+	foreach ( $acf_fields as $field ) {
+		if ( isset( $_POST[ $field ] ) ) {
+			$value = sanitize_text_field( $_POST[ $field ] );
+
+			if ( nmda_field_requires_approval( $field ) ) {
+				nmda_update_business_field( $business_id, $field, $value, $user_id );
+				$pending_fields[] = ucwords( str_replace( '_', ' ', $field ) );
+			} else {
+				update_field( $field, $value, $business_id );
+				$updated_fields[] = ucwords( str_replace( '_', ' ', $field ) );
+			}
+		}
+	}
+
+	// Sales types (array)
+	if ( isset( $_POST['sales_types'] ) && is_array( $_POST['sales_types'] ) ) {
+		$sales_types = array_map( 'sanitize_text_field', $_POST['sales_types'] );
+		update_field( 'sales_type', $sales_types, $business_id );
+		$updated_fields[] = 'Sales Types';
+	}
+
+	// Product types (taxonomy)
+	if ( isset( $_POST['product_types'] ) && is_array( $_POST['product_types'] ) ) {
+		$product_types = array_map( 'intval', $_POST['product_types'] );
+		wp_set_post_terms( $business_id, $product_types, 'product_type' );
+		$updated_fields[] = 'Product Types';
+	}
+
+	// Primary address
+	$address_fields = array(
+		'address_street'   => 'street_address',
+		'address_street_2' => 'street_address_2',
+		'address_city'     => 'city',
+		'address_state'    => 'state',
+		'address_zip'      => 'zip_code',
+		'address_county'   => 'county',
+	);
+
+	$address_data = array();
+	$has_address_data = false;
+
+	foreach ( $address_fields as $post_key => $db_key ) {
+		if ( isset( $_POST[ $post_key ] ) ) {
+			$address_data[ $db_key ] = sanitize_text_field( $_POST[ $post_key ] );
+			$has_address_data = true;
+		}
+	}
+
+	if ( $has_address_data ) {
+		// Get or create primary address
+		$primary_address = nmda_get_business_primary_address( $business_id );
+
+		if ( $primary_address && isset( $primary_address['id'] ) ) {
+			// Update existing address
+			$address_data['address_type'] = 'primary';
+			$address_data['is_primary'] = 1;
+			nmda_update_business_address( $primary_address['id'], $address_data );
+		} else {
+			// Create new primary address
+			$address_data['business_id'] = $business_id;
+			$address_data['address_type'] = 'primary';
+			$address_data['is_primary'] = 1;
+			nmda_add_business_address( $business_id, $address_data );
+		}
+		$updated_fields[] = 'Business Address';
+	}
+
+	// Log the update
+	nmda_log_field_change( $business_id, 'bulk_update', '', '', $user_id );
+
+	// Build response message
+	$message = '';
+	if ( $is_autosave ) {
+		$message = 'Changes saved automatically.';
+	} else {
+		if ( ! empty( $updated_fields ) ) {
+			$message .= 'Updated: ' . implode( ', ', $updated_fields ) . '. ';
+		}
+		if ( ! empty( $pending_fields ) ) {
+			$message .= 'Pending admin approval: ' . implode( ', ', $pending_fields ) . '. ';
+		}
+		if ( empty( $updated_fields ) && empty( $pending_fields ) ) {
+			$message = 'No changes detected.';
+		}
+	}
+
+	wp_send_json_success( array(
+		'message'        => trim( $message ),
+		'updated_fields' => $updated_fields,
+		'pending_fields' => $pending_fields,
+	) );
+}
+add_action( 'wp_ajax_nmda_update_business_profile', 'nmda_ajax_update_business_profile' );

@@ -279,9 +279,13 @@ select.form-control {
 }
 
 
+/* ==========================================================================
+   Misc Theme Fixes
+   ========================================================================== */
+
 .custom-logo-link img {
     max-width:150px;
-    margin:.5rem 0;
+    margin:.5rem 0 0 0;
 }
 
 .badge-light {
@@ -292,9 +296,41 @@ select.form-control {
     background-color:#721c24;
 }
 
+.row {
+    width:100%;
+}
+
 #wrapper-footer * {
     color:#fff;
     margin-bottom:0;
+}
+
+#main-menu {
+    display:flex;
+}
+
+#main-menu > li {
+    display:inline-flex;
+}
+
+#main-menu > li > a {
+    color:#333;
+}
+
+.btn-primary {
+    background-color:#F5BE29 !important;
+    color:#502C1D !important;
+    font-weight: 700 !important;
+}
+
+.btn-outline-primary {
+    border-color:#F5BE29 !important;
+    color:#502C1D !important;
+    font-weight: 700 !important;
+}
+
+.btn-outline-primary:hover {
+    background-color:#F5BE29 !important;
 }
 
 /* ==========================================================================

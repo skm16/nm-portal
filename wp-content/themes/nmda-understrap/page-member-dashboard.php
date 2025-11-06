@@ -159,7 +159,7 @@ if ( ! $last_login ) {
 
 													<!-- Quick Stats Cards -->
 													<div class="row mb-4 dashboard-stats">
-														<div class="col-md-3">
+														<div class="col-md-6 mb-4">
 															<div class="stat-card">
 																<div class="stat-icon">
 																	<i class="fa fa-check-circle"></i>
@@ -170,7 +170,7 @@ if ( ! $last_login ) {
 																</div>
 															</div>
 														</div>
-														<div class="col-md-3">
+														<div class="col-md-6 mb-4">
 															<div class="stat-card">
 																<div class="stat-icon">
 																	<i class="fa fa-shopping-bag"></i>
@@ -189,7 +189,7 @@ if ( ! $last_login ) {
 																</div>
 															</div>
 														</div>
-														<div class="col-md-3">
+														<div class="col-md-6">
 															<div class="stat-card">
 																<div class="stat-icon">
 																	<i class="fa fa-dollar"></i>
@@ -212,7 +212,7 @@ if ( ! $last_login ) {
 																</div>
 															</div>
 														</div>
-														<div class="col-md-3">
+														<div class="col-md-6">
 															<div class="stat-card">
 																<div class="stat-icon">
 																	<i class="fa fa-calendar"></i>
@@ -235,7 +235,7 @@ if ( ! $last_login ) {
 															<h4 class="card-title"><i class="fa fa-flash"></i> Quick Actions</h4>
 															<div class="row">
 																<div class="col-md-6">
-																	<a href="#" class="quick-action-btn">
+																	<a href="<?php echo home_url( '/edit-profile/?business_id=' . $business_id ); ?>" class="quick-action-btn">
 																		<i class="fa fa-edit"></i>
 																		<span>Edit Profile</span>
 																	</a>
@@ -332,7 +332,7 @@ if ( ! $last_login ) {
 															</div>
 
 															<div class="text-right mt-3">
-																<a href="#" class="btn btn-primary">
+																<a href="<?php echo home_url( '/edit-profile/?business_id=' . $business_id ); ?>" class="btn btn-primary">
 																	<i class="fa fa-edit"></i> Edit Profile
 																</a>
 															</div>

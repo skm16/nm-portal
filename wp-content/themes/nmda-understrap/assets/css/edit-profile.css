@@ -1,0 +1,346 @@
+/**
+ * Edit Profile Styles
+ */
+
+/* Profile Edit Form */
+#profile-edit-form {
+    background: transparent;
+}
+
+/* Tab Navigation */
+.nav-tabs {
+    border-bottom: 2px solid #512c1d;
+    margin-bottom: 0;
+}
+
+.nav-tabs .nav-link {
+    color: #666;
+    border: none;
+    border-bottom: 3px solid transparent;
+    padding: 12px 20px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.nav-tabs .nav-link:hover {
+    color: #512c1d;
+    border-bottom-color: #f5be29;
+}
+
+.nav-tabs .nav-link.active {
+    color: #512c1d;
+    background: transparent;
+    border-bottom-color: #8b0c12;
+}
+
+.nav-tabs .nav-link i {
+    margin-right: 8px;
+}
+
+/* Tab Content */
+.tab-content {
+    background: transparent;
+}
+
+.tab-content .card {
+    border-top: none;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
+
+/* Business Selector */
+#business-selector {
+    font-size: 16px;
+    font-weight: 600;
+    color: #512c1d;
+    border: 2px solid #512c1d;
+    padding: 10px 15px;
+}
+
+#business-selector:focus {
+    border-color: #8b0c12;
+    box-shadow: 0 0 0 0.2rem rgba(139, 12, 18, 0.25);
+}
+
+/* Form Fields */
+.form-group label {
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 8px;
+}
+
+.form-group label .text-danger {
+    color: #8b0c12 !important;
+}
+
+.form-control:focus {
+    border-color: #512c1d;
+    box-shadow: 0 0 0 0.2rem rgba(81, 44, 29, 0.25);
+}
+
+/* Field Permission Badges */
+.badge-warning {
+    background-color: #f5be29;
+    color: #330d0f;
+    font-size: 10px;
+    padding: 3px 8px;
+    font-weight: 600;
+    vertical-align: middle;
+    margin-left: 5px;
+}
+
+/* Pending Changes Alert */
+.alert-info {
+    background-color: #e8f4f8;
+    border-left: 4px solid #512c1d;
+}
+
+.alert-info h5 {
+    color: #512c1d;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+.alert-info h5 i {
+    margin-right: 8px;
+}
+
+.alert-info ul {
+    margin-left: 20px;
+}
+
+.alert-info ul li {
+    margin-bottom: 5px;
+}
+
+/* Custom Checkboxes */
+.custom-control-input:checked ~ .custom-control-label::before {
+    background-color: #512c1d;
+    border-color: #512c1d;
+}
+
+.custom-control-input:focus ~ .custom-control-label::before {
+    box-shadow: 0 0 0 0.2rem rgba(81, 44, 29, 0.25);
+}
+
+.custom-control-label {
+    font-weight: 500;
+    color: #333;
+    cursor: pointer;
+}
+
+/* Save Buttons */
+.btn-primary {
+    background-color: #512c1d;
+    border-color: #512c1d;
+    font-weight: 600;
+    padding: 12px 30px;
+    transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+    background-color: #8b0c12;
+    border-color: #8b0c12;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(139, 12, 18, 0.3);
+}
+
+.btn-primary i {
+    margin-right: 8px;
+}
+
+.btn-outline-secondary {
+    border-color: #6c757d;
+    color: #6c757d;
+    font-weight: 600;
+    padding: 12px 30px;
+}
+
+.btn-outline-secondary:hover {
+    background-color: #6c757d;
+    border-color: #6c757d;
+    color: #fff;
+}
+
+/* Loading State */
+.btn-primary.loading,
+.btn-outline-secondary.loading {
+    opacity: 0.6;
+    pointer-events: none;
+    position: relative;
+}
+
+.btn-primary.loading::after {
+    content: "";
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    top: 50%;
+    left: 50%;
+    margin-left: -8px;
+    margin-top: -8px;
+    border: 2px solid #ffffff;
+    border-radius: 50%;
+    border-top-color: transparent;
+    animation: spinner 0.6s linear infinite;
+}
+
+@keyframes spinner {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Success/Error Messages */
+.alert-success {
+    background-color: #d4edda;
+    border-left: 4px solid #28a745;
+    color: #155724;
+}
+
+.alert-danger {
+    background-color: #f8d7da;
+    border-left: 4px solid #8b0c12;
+    color: #721c24;
+}
+
+.alert-success i,
+.alert-danger i {
+    margin-right: 8px;
+}
+
+/* Auto-save Indicator */
+#autosave-indicator {
+    position: fixed;
+    top: 100px;
+    right: 20px;
+    background: #fff;
+    padding: 12px 20px;
+    border-radius: 5px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    font-weight: 600;
+    z-index: 1000;
+    opacity: 0;
+    transform: translateY(-20px);
+    transition: all 0.3s ease;
+}
+
+#autosave-indicator.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+#autosave-indicator.saving {
+    color: #512c1d;
+}
+
+#autosave-indicator.saved {
+    color: #28a745;
+}
+
+#autosave-indicator.error {
+    color: #8b0c12;
+}
+
+#autosave-indicator i {
+    margin-right: 8px;
+}
+
+/* Card Styling */
+.card-title {
+    color: #512c1d;
+    font-weight: 700;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #f5f5f5;
+}
+
+.card-title i {
+    margin-right: 10px;
+    color: #8b0c12;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .nav-tabs .nav-link {
+        padding: 10px 12px;
+        font-size: 14px;
+    }
+
+    .nav-tabs .nav-link i {
+        display: none;
+    }
+
+    .btn-primary,
+    .btn-outline-secondary {
+        padding: 10px 20px;
+        width: 100%;
+        margin-bottom: 10px;
+    }
+
+    #autosave-indicator {
+        top: auto;
+        bottom: 20px;
+        right: 20px;
+        left: 20px;
+        text-align: center;
+    }
+}
+
+/* Field Groups */
+.form-section {
+    margin-bottom: 30px;
+}
+
+.form-section h5 {
+    color: #512c1d;
+    font-weight: 700;
+    margin-bottom: 15px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+/* Help Text */
+.form-text {
+    font-size: 12px;
+    color: #6c757d;
+    margin-top: 5px;
+}
+
+/* Required Field Indicator */
+label .text-danger {
+    font-size: 14px;
+}
+
+/* Disabled Fields (Admin Only) */
+.form-control:disabled,
+.form-control[readonly] {
+    background-color: #f8f9fa;
+    border-color: #dee2e6;
+    cursor: not-allowed;
+}
+
+/* Product Type Checkboxes Grid */
+.product-type-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 10px;
+    margin-top: 15px;
+}
+
+/* Social Media Icons */
+label .fa-facebook-square {
+    color: #1877f2;
+}
+
+label .fa-instagram {
+    color: #e4405f;
+}
+
+label .fa-twitter-square {
+    color: #1da1f2;
+}
+
+label .fa-pinterest-square {
+    color: #bd081c;
+}

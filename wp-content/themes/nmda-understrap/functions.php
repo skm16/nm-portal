@@ -55,6 +55,13 @@ function nmda_enqueue_scripts() {
         wp_enqueue_script( 'nmda-resource-center', NMDA_THEME_URI . '/assets/js/resource-center.js', array( 'jquery' ), NMDA_THEME_VERSION, true );
     }
 
+    // Edit Profile styles
+    if ( is_page_template( 'page-edit-profile.php' ) ) {
+        wp_enqueue_style( 'nmda-dashboard-styles', NMDA_THEME_URI . '/assets/css/dashboard.css', array( 'nmda-custom-styles' ), NMDA_THEME_VERSION );
+        wp_enqueue_style( 'nmda-edit-profile-styles', NMDA_THEME_URI . '/assets/css/edit-profile.css', array( 'nmda-dashboard-styles' ), NMDA_THEME_VERSION );
+        wp_enqueue_script( 'nmda-edit-profile', NMDA_THEME_URI . '/assets/js/edit-profile.js', array( 'jquery' ), NMDA_THEME_VERSION, true );
+    }
+
     // Reimbursement forms scripts and styles
     if ( is_page_template( array( 'page-reimbursement-lead.php', 'page-reimbursement-advertising.php', 'page-reimbursement-labels.php' ) ) ) {
         wp_enqueue_style( 'nmda-reimbursement-forms-styles', NMDA_THEME_URI . '/assets/css/reimbursement-forms.css', array( 'nmda-custom-styles' ), NMDA_THEME_VERSION );
@@ -149,6 +156,9 @@ add_action( 'after_switch_theme', 'nmda_theme_activation' );
  * Add theme support features
  */
 function nmda_theme_setup() {
+
+    add_theme_support( 'title-tag' );
+
     // Add support for custom logo
     add_theme_support( 'custom-logo', array(
         'height'      => 100,
@@ -167,3 +177,26 @@ function nmda_theme_setup() {
     ) );
 }
 add_action( 'after_setup_theme', 'nmda_theme_setup' );
+
+
+/**
+ * Redirect logged-in users from the homepage to the /dashboard/ page.
+ *
+ * This function checks if a user is logged in and if they are currently
+ * viewing the front page. If both conditions are true, it redirects
+ * them to the site's /dashboard/ URL.
+ */
+function nmda_redirect_logged_in_users_from_home() {
+    
+    // Check if the user is logged in AND is on the front page
+    if ( is_user_logged_in() && is_front_page() ) {
+        
+        // Redirect to the /dashboard/ page
+        wp_redirect( site_url( '/dashboard/' ) );
+        
+        // Always exit after a wp_redirect() to prevent further script execution
+        exit;
+    }
+}
+// Add the function to the 'template_redirect' hook
+add_action( 'template_redirect', 'nmda_redirect_logged_in_users_from_home' );
