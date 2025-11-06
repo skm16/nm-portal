@@ -55,11 +55,18 @@ function nmda_enqueue_scripts() {
         wp_enqueue_script( 'nmda-resource-center', NMDA_THEME_URI . '/assets/js/resource-center.js', array( 'jquery' ), NMDA_THEME_VERSION, true );
     }
 
-    // Edit Profile styles
+    // Edit Profile styles and scripts
     if ( is_page_template( 'page-edit-profile.php' ) ) {
         wp_enqueue_style( 'nmda-dashboard-styles', NMDA_THEME_URI . '/assets/css/dashboard.css', array( 'nmda-custom-styles' ), NMDA_THEME_VERSION );
         wp_enqueue_style( 'nmda-edit-profile-styles', NMDA_THEME_URI . '/assets/css/edit-profile.css', array( 'nmda-dashboard-styles' ), NMDA_THEME_VERSION );
         wp_enqueue_script( 'nmda-edit-profile', NMDA_THEME_URI . '/assets/js/edit-profile.js', array( 'jquery' ), NMDA_THEME_VERSION, true );
+        
+        // FIX: Localize the edit-profile script with AJAX URL and dashboard URL
+        wp_localize_script( 'nmda-edit-profile', 'nmdaAjax', array(
+            'ajaxurl'      => admin_url( 'admin-ajax.php' ),
+            'dashboardUrl' => home_url( '/dashboard' ),
+            'nonce'        => wp_create_nonce( 'nmda-ajax-nonce' ),
+        ) );
     }
 
     // Reimbursement forms scripts and styles
@@ -180,23 +187,32 @@ add_action( 'after_setup_theme', 'nmda_theme_setup' );
 
 
 /**
- * Redirect logged-in users from the homepage to the /dashboard/ page.
+ * Changes the custom logo link URL for logged-in users.
  *
- * This function checks if a user is logged in and if they are currently
- * viewing the front page. If both conditions are true, it redirects
- * them to the site's /dashboard/ URL.
+ * @param string $html The HTML for the custom logo.
+ * @return string The modified HTML.
  */
-function nmda_redirect_logged_in_users_from_home() {
+function nmda_custom_logo_link_for_logged_in_users( $html ) {
     
-    // Check if the user is logged in AND is on the front page
-    if ( is_user_logged_in() && is_front_page() ) {
+    // Check if the user is logged in
+    if ( is_user_logged_in() ) {
         
-        // Redirect to the /dashboard/ page
-        wp_redirect( site_url( '/dashboard/' ) );
+        // Get the default home URL (what WordPress would normally use)
+        // We use esc_url() just as WordPress core does.
+        $default_url = esc_url( home_url( '/' ) );
         
-        // Always exit after a wp_redirect() to prevent further script execution
-        exit;
+        // Define your new dashboard URL
+        $dashboard_url = esc_url( home_url( '/dashboard/' ) );
+        
+        // Find the default URL in the href attribute and replace it
+        // This is safer than a simple str_replace on just the URL.
+        $find_string = 'href="' . $default_url . '"';
+        $replace_string = 'href="' . $dashboard_url . '"';
+        
+        $html = str_replace( $find_string, $replace_string, $html );
     }
+    
+    // Return the modified (or original) HTML
+    return $html;
 }
-// Add the function to the 'template_redirect' hook
-add_action( 'template_redirect', 'nmda_redirect_logged_in_users_from_home' );
+add_filter( 'get_custom_logo', 'nmda_custom_logo_link_for_logged_in_users' );

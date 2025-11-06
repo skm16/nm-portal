@@ -15,6 +15,7 @@ if ( ! is_user_logged_in() ) {
 	exit;
 }
 
+global $wpdb;
 $user_id = get_current_user_id();
 
 // Get all businesses for this user
@@ -65,19 +66,38 @@ if ( ! nmda_user_can_access_business( $user_id, $selected_business_id ) ) {
 $business = get_post( $selected_business_id );
 $user_role = nmda_get_user_business_role( $user_id, $selected_business_id );
 
+// DEBUG: Log permission check values
+error_log( '=== EDIT PROFILE PERMISSION CHECK ===' );
+error_log( 'User ID: ' . $user_id . ' (type: ' . gettype( $user_id ) . ')' );
+error_log( 'Business ID: ' . $selected_business_id );
+error_log( 'Business post_author: ' . $business->post_author . ' (type: ' . gettype( $business->post_author ) . ')' );
+error_log( 'User role from function: ' . var_export( $user_role, true ) );
+
 // Fallback: if no role found but user is post author, treat as owner
-if ( ! $user_role && $business->post_author == $user_id ) {
+if ( ! $user_role && (int) $business->post_author === (int) $user_id ) {
 	$user_role = 'owner';
+	error_log( 'FALLBACK TRIGGERED: Setting user_role to owner' );
 	// Create the relationship in the database
-	nmda_add_user_to_business( $user_id, $selected_business_id, 'owner', 'active' );
+	$relationship_id = nmda_add_user_to_business( $user_id, $selected_business_id, 'owner', null );
+	if ( $relationship_id ) {
+		error_log( 'SUCCESS: User-business relationship created with ID: ' . $relationship_id );
+	} else {
+		error_log( 'ERROR: Failed to create user-business relationship. User ID: ' . $user_id . ', Business ID: ' . $selected_business_id );
+		error_log( 'Database error (if any): ' . ( ! empty( $wpdb->last_error ) ? $wpdb->last_error : 'No error reported' ) );
+	}
 }
 
 // Check if user has edit permissions
 $can_edit = in_array( $user_role, array( 'owner', 'manager' ) ) || user_can( $user_id, 'administrator' );
+error_log( 'Final user_role: ' . var_export( $user_role, true ) );
+error_log( 'Can edit: ' . var_export( $can_edit, true ) );
+error_log( '======================================' );
 
 if ( ! $can_edit ) {
+	error_log( 'ERROR BLOCK EXECUTED - This should not happen if can_edit is true!' );
 	get_header();
 	?>
+	<!-- DEBUG: ERROR BLOCK IS BEING RENDERED - THIS SHOULD NOT APPEAR -->
 	<div class="wrapper" id="page-wrapper">
 		<div class="container" id="content">
 			<div class="row">

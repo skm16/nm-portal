@@ -13,6 +13,18 @@
     var formChanged = false;
     var autosaveTimeout = null;
 
+    // Check for success message in sessionStorage
+    var savedMessage = sessionStorage.getItem('nmda_profile_success');
+    if (savedMessage) {
+      try {
+        var messageData = JSON.parse(savedMessage);
+        showMessage(messageData.message, messageData.type, messageData.html);
+        sessionStorage.removeItem('nmda_profile_success');
+      } catch (e) {
+        console.error('Error parsing saved message:', e);
+      }
+    }
+
     // Initialize Bootstrap tabs manually
     if (typeof $.fn.tab !== 'undefined') {
       // Bootstrap 4 syntax
@@ -158,13 +170,18 @@
             formChanged = false;
 
             if (!isAutosave) {
-              showMessage(response.data.message, 'success');
+              // Store message in sessionStorage for display after reload
+              var messageToStore = {
+                message: response.data.message,
+                html: response.data.message_html || null,
+                type: 'success'
+              };
+              sessionStorage.setItem('nmda_profile_success', JSON.stringify(messageToStore));
+
               $saveBtn.removeClass('loading').prop('disabled', false);
 
-              // Reload page after 1 second to show updated data
-              setTimeout(function () {
-                window.location.reload();
-              }, 1500);
+              // Reload page to show updated data
+              window.location.reload();
             } else {
               showAutosaveIndicator('saved');
             }
@@ -172,7 +189,7 @@
             var errorMsg = response.data && response.data.message ? response.data.message : 'An error occurred while saving.';
 
             if (!isAutosave) {
-              showMessage(errorMsg, 'error');
+              showMessage(errorMsg, 'error', null);
               $saveBtn.removeClass('loading').prop('disabled', false);
             } else {
               showAutosaveIndicator('error');
@@ -183,7 +200,7 @@
           console.error('AJAX Error:', error);
 
           if (!isAutosave) {
-            showMessage('A network error occurred. Please try again.', 'error');
+            showMessage('A network error occurred. Please try again.', 'error', null);
             $saveBtn.removeClass('loading').prop('disabled', false);
           } else {
             showAutosaveIndicator('error');
@@ -214,15 +231,34 @@
 
     /**
      * Show message to user
+     * @param {string} message - Plain text message
+     * @param {string} type - 'success' or 'error'
+     * @param {string} html - Optional HTML formatted message
      */
-    function showMessage(message, type) {
+    function showMessage(message, type, html) {
       // Remove existing alerts
       $('.profile-alert').remove();
 
       var alertClass = type === 'success' ? 'alert-success' : 'alert-danger';
       var icon = type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle';
 
-      var $alert = $('<div class="alert ' + alertClass + ' profile-alert">' + '<i class="fa ' + icon + '"></i> ' + message + '</div>');
+      // Use HTML message if provided, otherwise use plain text
+      var messageContent = html || ('<i class="fa ' + icon + '"></i> ' + message);
+
+      // Create alert with close button
+      var $alert = $(
+        '<div class="alert ' + alertClass + ' profile-alert alert-dismissible fade show" role="alert">' +
+          '<div class="d-flex align-items-start">' +
+            '<div class="flex-grow-1">' +
+              '<i class="fa ' + icon + ' mr-2"></i>' +
+              '<span class="alert-message">' + messageContent + '</span>' +
+            '</div>' +
+            '<button type="button" class="close ml-3" data-dismiss="alert" aria-label="Close">' +
+              '<span aria-hidden="true">&times;</span>' +
+            '</button>' +
+          '</div>' +
+        '</div>'
+      );
 
       $form.prepend($alert);
 
@@ -234,14 +270,7 @@
         300
       );
 
-      // Auto-dismiss success messages
-      if (type === 'success') {
-        setTimeout(function () {
-          $alert.fadeOut(function () {
-            $(this).remove();
-          });
-        }, 5000);
-      }
+      // Don't auto-dismiss - let user close it manually
     }
 
     /**

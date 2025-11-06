@@ -283,6 +283,10 @@ select.form-control {
    Misc Theme Fixes
    ========================================================================== */
 
+body {
+    background-image:url('../images/site-bg-lg.jpg');
+}
+
 .custom-logo-link img {
     max-width:150px;
     margin:.5rem 0 0 0;
@@ -311,10 +315,20 @@ select.form-control {
 
 #main-menu > li {
     display:inline-flex;
+    margin:.5rem .5rem;
 }
 
 #main-menu > li > a {
-    color:#333;
+    color:#502C1D !important;
+    font-weight: 700;
+}
+
+#main-menu > li.current-menu-item > a {
+    background-color:#F5BE29 !important;
+    color:#502C1D !important;
+    font-weight: 700 !important;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
 }
 
 .btn-primary {

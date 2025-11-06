@@ -71,7 +71,24 @@ function nmda_user_can_access_business( $user_id, $business_id ) {
         $business_id
     ) );
 
-    return $result > 0;
+    // If relationship exists in database, return true
+    if ( $result > 0 ) {
+        return true;
+    }
+
+    // Fallback: Check if user is the post author (owner)
+    // Use strict type comparison to avoid type mismatch issues
+    $business = get_post( $business_id );
+    if ( $business && isset( $business->post_author ) && ! empty( $business->post_author ) ) {
+        // Ensure both values are integers before comparison
+        $post_author = absint( $business->post_author );
+        $user_id_int = absint( $user_id );
+        if ( $post_author > 0 && $user_id_int > 0 && $post_author === $user_id_int ) {
+            return true;
+        }
+    }
+
+    return false;
 }
 
 /**
@@ -99,7 +116,24 @@ function nmda_get_user_business_role( $user_id, $business_id ) {
         $business_id
     ) );
 
-    return $role;
+    // If role found in database, return it
+    if ( $role ) {
+        return $role;
+    }
+
+    // Fallback: Check if user is the post author (owner)
+    // Use strict type comparison to avoid type mismatch issues
+    $business = get_post( $business_id );
+    if ( $business && isset( $business->post_author ) && ! empty( $business->post_author ) ) {
+        // Ensure both values are integers before comparison
+        $post_author = absint( $business->post_author );
+        $user_id_int = absint( $user_id );
+        if ( $post_author > 0 && $user_id_int > 0 && $post_author === $user_id_int ) {
+            return 'owner';
+        }
+    }
+
+    return null;
 }
 
 /**
@@ -127,7 +161,34 @@ function nmda_get_user_businesses( $user_id, $status = 'active' ) {
 
     $query .= " ORDER BY accepted_date DESC";
 
-    return $wpdb->get_results( $query, ARRAY_A );
+    $businesses = $wpdb->get_results( $query, ARRAY_A );
+
+    // Also get businesses where user is the post author (owner)
+    $authored_businesses = get_posts( array(
+        'post_type'      => 'nmda_business',
+        'post_status'    => 'publish',
+        'author'         => $user_id,
+        'posts_per_page' => -1,
+        'fields'         => 'ids',
+    ) );
+
+    // Add authored businesses that aren't already in the list
+    if ( ! empty( $authored_businesses ) ) {
+        $existing_ids = array_column( $businesses, 'business_id' );
+
+        foreach ( $authored_businesses as $business_id ) {
+            if ( ! in_array( $business_id, $existing_ids ) ) {
+                $businesses[] = array(
+                    'business_id'   => $business_id,
+                    'role'          => 'owner',
+                    'status'        => 'active',
+                    'accepted_date' => get_post_field( 'post_date', $business_id ),
+                );
+            }
+        }
+    }
+
+    return $businesses;
 }
 
 /**
@@ -259,10 +320,22 @@ function nmda_is_approved_member( $user_id = null ) {
     $businesses = nmda_get_user_businesses( $user_id, 'active' );
 
     // Check if any associated business is published/approved
-    foreach ( $businesses as $business ) {
-        $post_status = get_post_status( $business->business_id );
-        if ( $post_status === 'publish' ) {
-            return true;
+    if ( ! empty( $businesses ) && is_array( $businesses ) ) {
+        foreach ( $businesses as $business ) {
+            // Handle both array and object formats
+            $business_id = null;
+            if ( is_array( $business ) && isset( $business['business_id'] ) ) {
+                $business_id = $business['business_id'];
+            } elseif ( is_object( $business ) && isset( $business->business_id ) ) {
+                $business_id = $business->business_id;
+            }
+
+            if ( $business_id ) {
+                $post_status = get_post_status( $business_id );
+                if ( $post_status === 'publish' ) {
+                    return true;
+                }
+            }
         }
     }
 

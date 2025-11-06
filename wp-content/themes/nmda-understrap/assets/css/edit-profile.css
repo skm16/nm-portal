@@ -192,6 +192,25 @@
 }
 
 /* Success/Error Messages */
+.profile-alert {
+    border-radius: 8px;
+    padding: 16px 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
 .alert-success {
     background-color: #d4edda;
     border-left: 4px solid #28a745;
@@ -204,9 +223,50 @@
     color: #721c24;
 }
 
-.alert-success i,
-.alert-danger i {
-    margin-right: 8px;
+.profile-alert .alert-message {
+    display: block;
+}
+
+.profile-alert .alert-message strong {
+    font-size: 1.05em;
+    display: block;
+    margin-bottom: 4px;
+}
+
+.profile-alert ul {
+    margin-top: 8px;
+    margin-bottom: 8px;
+    padding-left: 20px;
+    list-style-type: disc;
+}
+
+.profile-alert ul li {
+    padding: 2px 0;
+    line-height: 1.4;
+}
+
+.profile-alert .text-muted {
+    font-size: 0.9em;
+    opacity: 0.8;
+}
+
+.profile-alert .close {
+    padding: 0.5rem;
+    font-size: 1.5rem;
+    font-weight: 700;
+    line-height: 1;
+    opacity: 0.5;
+    cursor: pointer;
+}
+
+.profile-alert .close:hover {
+    opacity: 0.75;
+}
+
+.alert-success i.fa-check-circle,
+.alert-danger i.fa-exclamation-circle {
+    font-size: 1.2em;
+    vertical-align: middle;
 }
 
 /* Auto-save Indicator */

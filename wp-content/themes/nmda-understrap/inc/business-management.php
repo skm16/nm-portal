@@ -485,7 +485,8 @@ function nmda_ajax_update_business_profile() {
 
 	// Check user has permission to edit
 	$user_role = nmda_get_user_business_role( $user_id, $business_id );
-	if ( ! in_array( $user_role, array( 'owner', 'manager' ) ) ) {
+	$can_edit  = in_array( $user_role, array( 'owner', 'manager', 'administrator' ) ) || current_user_can( 'administrator' );
+	if ( ! $can_edit ) {
 		wp_send_json_error( array( 'message' => 'You don\'t have permission to edit this business.' ) );
 	}
 
@@ -495,28 +496,42 @@ function nmda_ajax_update_business_profile() {
 	$updated_fields = array();
 	$pending_fields = array();
 
+	// Get current business data for comparison
+	$current_business = get_post( $business_id );
+
 	// Business Name (post title)
 	if ( isset( $_POST['business_name'] ) ) {
 		$business_name = sanitize_text_field( $_POST['business_name'] );
-		if ( nmda_field_requires_approval( 'business_name' ) ) {
-			nmda_update_business_field( $business_id, 'business_name', $business_name, $user_id );
-			$pending_fields[] = 'Business Name';
-		} else {
-			wp_update_post( array(
-				'ID'         => $business_id,
-				'post_title' => $business_name,
-			) );
-			$updated_fields[] = 'Business Name';
+		$current_name  = $current_business->post_title;
+
+		// Only process if value changed
+		if ( $business_name !== $current_name ) {
+			if ( nmda_field_requires_approval( 'business_name' ) ) {
+				nmda_update_business_field( $business_id, 'business_name', $business_name, $user_id );
+				$pending_fields[] = 'Business Name';
+			} else {
+				wp_update_post( array(
+					'ID'         => $business_id,
+					'post_title' => $business_name,
+				) );
+				$updated_fields[] = 'Business Name';
+			}
 		}
 	}
 
 	// Business Description (post content)
 	if ( isset( $_POST['business_description'] ) ) {
-		wp_update_post( array(
-			'ID'           => $business_id,
-			'post_content' => wp_kses_post( $_POST['business_description'] ),
-		) );
-		$updated_fields[] = 'Business Description';
+		$business_description = wp_kses_post( $_POST['business_description'] );
+		$current_description  = $current_business->post_content;
+
+		// Only process if value changed
+		if ( $business_description !== $current_description ) {
+			wp_update_post( array(
+				'ID'           => $business_id,
+				'post_content' => $business_description,
+			) );
+			$updated_fields[] = 'Business Description';
+		}
 	}
 
 	// ACF Fields
@@ -536,68 +551,91 @@ function nmda_ajax_update_business_profile() {
 
 	foreach ( $acf_fields as $field ) {
 		if ( isset( $_POST[ $field ] ) ) {
-			$value = sanitize_text_field( $_POST[ $field ] );
+			$value         = sanitize_text_field( $_POST[ $field ] );
+			$current_value = get_field( $field, $business_id );
 
-			if ( nmda_field_requires_approval( $field ) ) {
-				nmda_update_business_field( $business_id, $field, $value, $user_id );
-				$pending_fields[] = ucwords( str_replace( '_', ' ', $field ) );
-			} else {
-				update_field( $field, $value, $business_id );
-				$updated_fields[] = ucwords( str_replace( '_', ' ', $field ) );
+			// Normalize empty values for comparison
+			$value         = ( $value === '' ) ? null : $value;
+			$current_value = ( $current_value === '' || $current_value === false ) ? null : $current_value;
+
+			// Only process if value changed
+			if ( $value !== $current_value ) {
+				if ( nmda_field_requires_approval( $field ) ) {
+					nmda_update_business_field( $business_id, $field, $value, $user_id );
+					$pending_fields[] = ucwords( str_replace( '_', ' ', $field ) );
+				} else {
+					update_field( $field, $value, $business_id );
+					$updated_fields[] = ucwords( str_replace( '_', ' ', $field ) );
+				}
 			}
 		}
 	}
 
 	// Sales types (array)
 	if ( isset( $_POST['sales_types'] ) && is_array( $_POST['sales_types'] ) ) {
-		$sales_types = array_map( 'sanitize_text_field', $_POST['sales_types'] );
-		update_field( 'sales_type', $sales_types, $business_id );
-		$updated_fields[] = 'Sales Types';
+		$sales_types         = array_map( 'sanitize_text_field', $_POST['sales_types'] );
+		$current_sales_types = get_field( 'sales_type', $business_id );
+
+		// Normalize for comparison
+		$current_sales_types = is_array( $current_sales_types ) ? $current_sales_types : array();
+		sort( $sales_types );
+		sort( $current_sales_types );
+
+		// Only update if changed
+		if ( $sales_types !== $current_sales_types ) {
+			update_field( 'sales_type', $sales_types, $business_id );
+			$updated_fields[] = 'Sales Types';
+		}
 	}
 
 	// Product types (taxonomy)
 	if ( isset( $_POST['product_types'] ) && is_array( $_POST['product_types'] ) ) {
-		$product_types = array_map( 'intval', $_POST['product_types'] );
-		wp_set_post_terms( $business_id, $product_types, 'product_type' );
-		$updated_fields[] = 'Product Types';
+		$product_types         = array_map( 'intval', $_POST['product_types'] );
+		$current_product_terms = wp_get_post_terms( $business_id, 'product_type', array( 'fields' => 'ids' ) );
+		$current_product_terms = is_array( $current_product_terms ) ? $current_product_terms : array();
+
+		// Normalize for comparison
+		sort( $product_types );
+		sort( $current_product_terms );
+
+		// Only update if changed
+		if ( $product_types !== $current_product_terms ) {
+			wp_set_post_terms( $business_id, $product_types, 'product_type' );
+			$updated_fields[] = 'Product Types';
+		}
 	}
 
-	// Primary address
-	$address_fields = array(
-		'address_street'   => 'street_address',
-		'address_street_2' => 'street_address_2',
-		'address_city'     => 'city',
-		'address_state'    => 'state',
-		'address_zip'      => 'zip_code',
-		'address_county'   => 'county',
+	// Primary address - stored in ACF fields
+	$address_acf_mapping = array(
+		'address_street'   => 'primary_address',
+		'address_street_2' => 'primary_address_2',
+		'address_city'     => 'primary_city',
+		'address_state'    => 'primary_state',
+		'address_zip'      => 'primary_zip',
+		'address_county'   => 'primary_county',
 	);
 
-	$address_data = array();
-	$has_address_data = false;
+	$address_changed = false;
 
-	foreach ( $address_fields as $post_key => $db_key ) {
+	foreach ( $address_acf_mapping as $post_key => $acf_key ) {
 		if ( isset( $_POST[ $post_key ] ) ) {
-			$address_data[ $db_key ] = sanitize_text_field( $_POST[ $post_key ] );
-			$has_address_data = true;
+			$new_value     = sanitize_text_field( $_POST[ $post_key ] );
+			$current_value = get_field( $acf_key, $business_id );
+
+			// Normalize empty values for comparison
+			$new_value     = ( $new_value === '' ) ? null : $new_value;
+			$current_value = ( $current_value === '' || $current_value === false ) ? null : $current_value;
+
+			// Check if value changed
+			if ( $new_value !== $current_value ) {
+				$address_changed = true;
+				// Update the ACF field
+				update_field( $acf_key, $_POST[ $post_key ], $business_id );
+			}
 		}
 	}
 
-	if ( $has_address_data ) {
-		// Get or create primary address
-		$primary_address = nmda_get_business_primary_address( $business_id );
-
-		if ( $primary_address && isset( $primary_address['id'] ) ) {
-			// Update existing address
-			$address_data['address_type'] = 'primary';
-			$address_data['is_primary'] = 1;
-			nmda_update_business_address( $primary_address['id'], $address_data );
-		} else {
-			// Create new primary address
-			$address_data['business_id'] = $business_id;
-			$address_data['address_type'] = 'primary';
-			$address_data['is_primary'] = 1;
-			nmda_add_business_address( $business_id, $address_data );
-		}
+	if ( $address_changed ) {
 		$updated_fields[] = 'Business Address';
 	}
 
@@ -606,24 +644,67 @@ function nmda_ajax_update_business_profile() {
 
 	// Build response message
 	$message = '';
+	$message_html = '';
+
 	if ( $is_autosave ) {
 		$message = 'Changes saved automatically.';
+		$message_html = '<strong>Changes saved automatically.</strong>';
 	} else {
-		if ( ! empty( $updated_fields ) ) {
-			$message .= 'Updated: ' . implode( ', ', $updated_fields ) . '. ';
-		}
-		if ( ! empty( $pending_fields ) ) {
-			$message .= 'Pending admin approval: ' . implode( ', ', $pending_fields ) . '. ';
-		}
-		if ( empty( $updated_fields ) && empty( $pending_fields ) ) {
+		if ( ! empty( $updated_fields ) || ! empty( $pending_fields ) ) {
+			$message_html = '<strong>Your business profile has been updated successfully!</strong>';
+			$message = 'Your business profile has been updated successfully!';
+
+			if ( ! empty( $updated_fields ) ) {
+				$count = count( $updated_fields );
+				$message_html .= '<div class="mt-2"><strong>' . $count . ' field' . ( $count > 1 ? 's' : '' ) . ' updated:</strong>';
+				$message_html .= '<ul class="mb-0 mt-1">';
+				foreach ( $updated_fields as $field ) {
+					$message_html .= '<li>' . esc_html( $field ) . '</li>';
+				}
+				$message_html .= '</ul></div>';
+			}
+
+			if ( ! empty( $pending_fields ) ) {
+				$count = count( $pending_fields );
+				$message_html .= '<div class="mt-2"><strong>' . $count . ' field' . ( $count > 1 ? 's' : '' ) . ' pending approval:</strong>';
+				$message_html .= '<ul class="mb-0 mt-1">';
+				foreach ( $pending_fields as $field ) {
+					$message_html .= '<li>' . esc_html( $field ) . '</li>';
+				}
+				$message_html .= '</ul>';
+				$message_html .= '<small class="text-muted d-block mt-1">These changes will be reviewed by an administrator.</small>';
+				$message_html .= '</div>';
+			}
+		} else {
 			$message = 'No changes detected.';
+			$message_html = '<strong>No changes were made to your profile.</strong>';
 		}
 	}
 
 	wp_send_json_success( array(
 		'message'        => trim( $message ),
+		'message_html'   => $message_html,
 		'updated_fields' => $updated_fields,
 		'pending_fields' => $pending_fields,
 	) );
 }
 add_action( 'wp_ajax_nmda_update_business_profile', 'nmda_ajax_update_business_profile' );
+
+/**
+ * Get business primary address
+ *
+ * @param int $business_id Business post ID.
+ * @return array Primary address data or empty array.
+ */
+function nmda_get_business_primary_address( $business_id ) {
+	// Get address fields from ACF using correct field names
+	// Return with keys that match the form field expectations
+	return array(
+		'street_address'   => get_field( 'primary_address', $business_id ) ?: '',
+		'street_address_2' => get_field( 'primary_address_2', $business_id ) ?: '',
+		'city'             => get_field( 'primary_city', $business_id ) ?: '',
+		'state'            => get_field( 'primary_state', $business_id ) ?: 'NM',
+		'zip_code'         => get_field( 'primary_zip', $business_id ) ?: '',
+		'county'           => get_field( 'primary_county', $business_id ) ?: '', // County field may not exist yet
+	);
+}
