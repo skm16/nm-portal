@@ -70,7 +70,8 @@ function nmda_enqueue_scripts() {
     }
 
     // Reimbursement forms scripts and styles
-    if ( is_page_template( array( 'page-reimbursement-lead.php', 'page-reimbursement-advertising.php', 'page-reimbursement-labels.php' ) ) ) {
+    if ( is_page_template( array( 'page-reimbursement-lead.php', 'page-reimbursement-advertising.php', 'page-reimbursement-labels.php', 'page-my-reimbursements.php' ) ) ) {
+        wp_enqueue_style( 'nmda-dashboard-styles', NMDA_THEME_URI . '/assets/css/dashboard.css', array( 'nmda-custom-styles' ), NMDA_THEME_VERSION );
         wp_enqueue_style( 'nmda-reimbursement-forms-styles', NMDA_THEME_URI . '/assets/css/reimbursement-forms.css', array( 'nmda-custom-styles' ), NMDA_THEME_VERSION );
         wp_enqueue_script( 'nmda-reimbursement-forms', NMDA_THEME_URI . '/assets/js/reimbursement-forms.js', array( 'jquery' ), NMDA_THEME_VERSION, true );
 
