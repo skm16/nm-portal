@@ -291,3 +291,215 @@ All notable changes to the NMDA Portal WordPress project will be documented in t
 - **Removed auto-redirect after submission** - Eliminated 3-second setTimeout redirect, keeping success message and manual dashboard link per user preference
 - Application summary displays personal info, business info, classifications, and selected products with visual formatting
 - Summary updates dynamically when user navigates to Step 5
+
+---
+
+#### Added - Phase 2: Admin Approval Interface ✓
+
+**Admin Dashboard** (`/inc/admin-approval.php`)
+- Custom admin menu page "Applications" with dashicons-yes-alt icon
+- Submenu pages for Pending, Approved, and Rejected applications
+- Dedicated admin assets (admin-approval.css and admin-approval.js)
+- Full AJAX-powered interface with no page reloads
+
+**Applications List View**
+- Tabbed interface with status filters (All, Pending, Approved, Rejected)
+- Real-time application counts in each tab
+- Sortable table with columns:
+  - Business Name
+  - Applicant (name and email)
+  - Classification (Logo Program type)
+  - Products count
+  - Submission time (relative, e.g., "5 hours ago")
+  - Status badge with color coding
+  - Quick actions
+- Checkbox column for bulk selection
+- "Select All" functionality
+
+**Application Detail Modal**
+- Triggered by "View Details" button
+- Full-screen modal overlay with close button
+- Comprehensive application review sections:
+  - Personal Contact Information (private - name, phone, email, mailing address)
+  - Business Information (public - legal name, DBA, phone, email, website, physical address, address type, business profile, hours)
+  - Logo Program Classification (classifications, associate types, number of employees)
+  - Products list (all selected products with checkmarks)
+  - Admin Notes (editable textarea with save button)
+- Status bar showing current approval status and submission date
+- Action buttons based on current status:
+  - Pending: "Approve Application" and "Reject Application"
+  - Approved: "Revoke Approval"
+  - Rejected: "Approve Application"
+
+**Approval/Rejection Workflow**
+- **Approve Action**:
+  - Updates `approval_status` ACF field to 'approved'
+  - Records `approval_date` timestamp
+  - Records `approved_by` user ID
+  - Changes post status from 'pending' to 'publish'
+  - Sends approval email to applicant
+  - Shows success notification
+  - Refreshes page to update status
+- **Reject Action**:
+  - Updates `approval_status` ACF field to 'rejected'
+  - Records rejection timestamp and admin
+  - Keeps post status as 'pending'
+  - Sends rejection email with admin notes
+  - Shows success notification
+  - Refreshes page to update status
+
+**Email Notifications**
+- **Approval Email**:
+  - Congratulations message
+  - Instructions to access member dashboard
+  - Dashboard login link
+- **Rejection Email**:
+  - Professional notification
+  - Includes admin notes/feedback if provided
+  - Contact information for questions
+
+**Admin Notes System**
+- Editable textarea for each application
+- "Save Notes" button with AJAX save
+- Notes included in rejection emails
+- Persistent storage in ACF field
+
+**Bulk Actions**
+- Dropdown selector with "Approve" and "Reject" options
+- "Apply" button with confirmation dialog
+- Processes selected applications in batch
+- Shows count of processed applications
+- Success notification after completion
+- Automatic page refresh
+
+**Security & Permissions**
+- All AJAX actions require `manage_options` capability (admin only)
+- Nonce verification on all requests
+- Permission checks before any data modification
+- Sanitized input for admin notes
+
+**User Experience**
+- Color-coded status badges (orange/pending, green/approved, red/rejected)
+- Loading states for all AJAX actions
+- Confirmation dialogs for destructive actions
+- Success/error notifications
+- Button text updates during processing ("Approving...", "Rejecting...", "Saving...")
+- Smooth modal animations
+- Responsive design for mobile devices
+- Accessible keyboard navigation
+
+**AJAX Actions Registered**
+- `nmda_get_application_details` - Load full application data
+- `nmda_approve_application` - Approve single application
+- `nmda_reject_application` - Reject single application
+- `nmda_save_admin_notes` - Save admin notes
+
+---
+
+#### Added - Phase 2: Member Dashboard ✓
+
+**Dashboard Page Template** (`page-member-dashboard.php`)
+- Template Name: "Member Dashboard" for easy page assignment
+- Login requirement with automatic redirect to login page
+- Multi-business support for users associated with multiple businesses
+- Role-aware interface (owner, manager, viewer)
+
+**Dashboard States**
+- **No Application State**: Welcome screen with "Apply Now" CTA button
+- **Pending Approval State**: Status notification with application ID and submission date
+- **Rejected State**: Alert with admin feedback/notes and contact information
+- **Active Member State**: Full dashboard with all features
+
+**Quick Stats Overview Cards**
+- **Membership Status**: Visual confirmation of active membership
+- **Products Listed**: Count of product types associated with business
+- **Reimbursements This Year**: Count for current fiscal year
+- **Member Since**: Human-readable time since approval (e.g., "6 months")
+- Color-coded icons with gradient background
+- Hover effects with elevation
+- Fully responsive grid layout
+
+**Quick Actions Menu**
+- Three prominent action buttons:
+  - Edit Business Profile (with edit icon)
+  - Submit Reimbursement (with dollar icon)
+  - Download Resources (with download icon)
+- Large, clickable cards with icons
+- Hover animations with lift effect
+- Links ready for future form integration
+
+**Business Profile Overview Card**
+- **Header Section**:
+  - Business logo (featured image) if available
+  - Business legal name
+  - DBA if specified
+  - Classification badges (Grown/Taste/Associate)
+- **Contact Information**:
+  - Business phone with phone icon
+  - Business email with envelope icon
+  - Website link with globe icon (opens in new tab)
+- **Location**:
+  - Full primary address display
+  - City, State, ZIP
+- **About Section**:
+  - Business profile description
+  - Preserves line breaks
+- **Products Section**:
+  - All selected products displayed as badges
+  - Responsive tag layout
+- **Action Buttons**:
+  - "Edit Profile" button (primary)
+  - "View Public Profile" button (opens in new tab)
+
+**Sidebar Widgets**
+
+*Recent Activity Card:*
+- Lists last 5 reimbursement submissions
+- Shows reimbursement type (Lead/Advertising/Labels)
+- Status badges with color coding
+- Relative timestamps (e.g., "2 days ago")
+- "No recent activity" message if empty
+
+*Resources Card:*
+- Lists last 5 published resources
+- File icon with clickable links
+- "View All Resources" button
+- "No resources available" message if empty
+
+*Support/Help Card:*
+- Contact information for NMDA staff
+- Email and phone display
+- "Send Message" button for future communication module
+
+**Dashboard Styles** (`/assets/css/dashboard.css`)
+- NMDA brand colors (brown #512c1d, red #8b0c12)
+- Gradient header background
+- Card-based layout with consistent shadows
+- Status badge color system (pending/submitted/approved/rejected)
+- Icon integration with Font Awesome
+- Smooth transitions and hover effects
+- Professional typography hierarchy
+- Fully responsive breakpoints for mobile/tablet
+
+**Data Integration**
+- Pulls data from ACF fields (approval_status, business_phone, business_email, etc.)
+- Queries custom reimbursements table for activity
+- Uses taxonomy terms for product display
+- Leverages user-business relationship from Phase 1 custom tables
+- Real-time counts from database
+
+**User Experience Features**
+- Branded color scheme with gradient effects
+- Intuitive card-based information architecture
+- Clear visual hierarchy
+- Icon-driven navigation
+- Status-based conditional content
+- Loading states preparation
+- Mobile-first responsive design
+- Accessible navigation and focus states
+
+**Security & Permissions**
+- Requires user authentication
+- Only shows data for businesses user is associated with
+- Respects user role (owner/manager/viewer)
+- Secure data queries with wpdb prepare
