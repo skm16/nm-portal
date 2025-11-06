@@ -1,0 +1,40 @@
+/*
+Theme Name:         NMDA Understrap Child
+Theme URI:          https://newmexico.gov/agriculture
+Description:        Custom child theme for New Mexico Department of Agriculture Portal based on Understrap
+Author:             NMDA Development Team
+Author URI:         https://newmexico.gov/agriculture
+Template:           understrap
+Version:            1.0.0
+License:            GNU General Public License v2 or later
+License URI:        http://www.gnu.org/licenses/gpl-2.0.html
+Text Domain:        nmda-understrap
+*/
+
+/* ==========================================================================
+   NMDA Brand Colors
+   ========================================================================== */
+:root {
+    --nmda-brown-dark: #512c1d;
+    --nmda-red: #8b0c12;
+    --nmda-brown-darker: #330d0f;
+    --nmda-gold: #f5be29;
+
+    /* Semantic color assignments */
+    --nmda-primary: var(--nmda-brown-dark);
+    --nmda-secondary: var(--nmda-red);
+    --nmda-accent: var(--nmda-gold);
+    --nmda-text-dark: var(--nmda-brown-darker);
+}
+
+/* ==========================================================================
+   Base Styles
+   ========================================================================== */
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    color: var(--nmda-text-dark);
+}
+
+/* ==========================================================================
+   Custom Styles - Add your custom CSS below
+   ========================================================================== */
