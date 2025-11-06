@@ -119,14 +119,15 @@ function acf_handle_json_block_registration( $settings, $metadata ) {
 
 	// Map custom ACF properties from the ACF key, with localization.
 	$property_mappings = array(
-		'renderCallback' => 'render_callback',
-		'renderTemplate' => 'render_template',
-		'mode'           => 'mode',
-		'blockVersion'   => 'acf_block_version',
-		'postTypes'      => 'post_types',
-		'validate'       => 'validate',
-		'validateOnLoad' => 'validate_on_load',
-		'usePostMeta'    => 'use_post_meta',
+		'renderCallback'      => 'render_callback',
+		'renderTemplate'      => 'render_template',
+		'mode'                => 'mode',
+		'blockVersion'        => 'acf_block_version',
+		'postTypes'           => 'post_types',
+		'validate'            => 'validate',
+		'validateOnLoad'      => 'validate_on_load',
+		'usePostMeta'         => 'use_post_meta',
+		'hideFieldsInSidebar' => 'hide_fields_in_sidebar',
 	);
 	$textdomain        = ! empty( $metadata['textdomain'] ) ? $metadata['textdomain'] : 'acf';
 	$i18n_schema       = get_block_metadata_i18n_schema();
@@ -601,7 +602,10 @@ function acf_render_block_callback( $attributes, $content = '', $wp_block = null
  * @return  string   The block HTML.
  */
 function acf_rendered_block( $attributes, $content = '', $is_preview = false, $post_id = 0, $wp_block = null, $context = false, $is_ajax_render = false ) {
-	if ( isset( $wp_block->block_type->acf_block_version ) && $wp_block->block_type->acf_block_version >= 3 ) {
+	$registry      = WP_Block_Type_Registry::get_instance();
+	$wp_block_type = $registry->get_registered( $attributes['name'] );
+
+	if ( isset( $wp_block_type->acf_block_version ) && $wp_block_type->acf_block_version >= 3 ) {
 		$mode = 'preview';
 		$form = false;
 	} else {
@@ -854,12 +858,15 @@ function acf_enqueue_block_assets() {
 	// Localize text.
 	acf_localize_text(
 		array(
-			'Switch to Edit'           => __( 'Switch to Edit', 'acf' ),
-			'Switch to Preview'        => __( 'Switch to Preview', 'acf' ),
-			'Change content alignment' => __( 'Change content alignment', 'acf' ),
-			'Error previewing block'   => __( 'An error occurred when loading the preview for this block.', 'acf' ),
-			'Error loading block form' => __( 'An error occurred when loading the block in edit mode.', 'acf' ),
-			'Edit Block'               => __( 'Edit Block', 'acf' ),
+			'Switch to Edit'            => __( 'Switch to Edit', 'acf' ),
+			'Switch to Preview'         => __( 'Switch to Preview', 'acf' ),
+			'Change content alignment'  => __( 'Change content alignment', 'acf' ),
+			'Error previewing block'    => __( 'An error occurred when loading the preview for this block.', 'acf' ),
+			'Error loading block form'  => __( 'An error occurred when loading the block in edit mode.', 'acf' ),
+			'Edit Block'                => __( 'Edit Block', 'acf' ),
+			'Open Expanded Editor'      => __( 'Open Expanded Editor', 'acf' ),
+			'Error previewing block v3' => __( 'The preview for this block couldn’t be loaded. Review its content or settings for issues.', 'acf' ),
+			'ACF Block'                 => __( 'ACF Block', 'acf' ),
 
 			/* translators: %s: Block type title */
 			'%s settings'              => __( '%s settings', 'acf' ),
@@ -1083,15 +1090,8 @@ function acf_ajax_fetch_block() {
 		$content    = '';
 		$is_preview = true;
 
-		$registry      = WP_Block_Type_Registry::get_instance();
-		$wp_block_type = $registry->get_registered( $block['name'] );
-
-		// We need to match what gets automatically passed to acf_rendered_block by WP core.
-		$wp_block             = new stdClass();
-		$wp_block->block_type = $wp_block_type;
-
 		// Render and store HTML.
-		$response['preview'] = acf_rendered_block( $block, $content, $is_preview, $post_id, $wp_block, $context, true );
+		$response['preview'] = acf_rendered_block( $block, $content, $is_preview, $post_id, null, $context, true );
 	}
 
 	// Send response.

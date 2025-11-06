@@ -55,6 +55,9 @@ require_once NMDA_THEME_DIR . '/inc/business-management.php';
 require_once NMDA_THEME_DIR . '/inc/reimbursements.php';
 require_once NMDA_THEME_DIR . '/inc/api-integrations.php';
 require_once NMDA_THEME_DIR . '/inc/database-schema.php';
+require_once NMDA_THEME_DIR . '/inc/acf-field-groups.php';
+require_once NMDA_THEME_DIR . '/inc/product-taxonomy.php';
+require_once NMDA_THEME_DIR . '/inc/application-forms.php';
 
 /**
  * Theme activation hook - create custom database tables

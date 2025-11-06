@@ -384,12 +384,65 @@
   }
 
   /**
+   * Handle business application form submission with redirect
+   */
+  function handleBusinessApplicationForm() {
+    $('#nmda-business-application').on('submit', function (e) {
+      e.preventDefault();
+
+      const $form = $(this);
+      const $submitBtn = $form.find('.nmda-btn-submit');
+      const formData = new FormData(this);
+
+      // Disable submit button
+      $submitBtn.prop('disabled', true).html('<i class="fa fa-spinner fa-spin"></i> Submitting...');
+
+      $.ajax({
+        url: nmdaAjax.ajaxurl,
+        type: 'POST',
+        data: formData,
+        processData: false,
+        contentType: false,
+        success: function (response) {
+          if (response.success) {
+            // Show success message
+            $form.html(
+              '<div class="alert alert-success">' +
+              '<h4><i class="fa fa-check-circle"></i> Application Submitted Successfully!</h4>' +
+              '<p>' + (response.data.message || 'Your business application has been submitted.') + '</p>' +
+              '<p>Application ID: #' + response.data.business_id + '</p>' +
+              '<p>You will receive a confirmation email shortly. We will review your application and notify you once it has been processed.</p>' +
+              '<a href="' + (response.data.redirect || '/dashboard') + '" class="btn btn-primary">Go to Dashboard</a>' +
+              '</div>'
+            );
+
+            // Scroll to top
+            $('html, body').animate({ scrollTop: 0 }, 500);
+          } else {
+            alert('Error: ' + (response.data.message || 'Unknown error. Please try again.'));
+            $submitBtn.prop('disabled', false).html('<i class="fa fa-check"></i> Submit Application');
+          }
+        },
+        error: function () {
+          alert('An error occurred while submitting your application. Please try again.');
+          $submitBtn.prop('disabled', false).html('<i class="fa fa-check"></i> Submit Application');
+        },
+      });
+    });
+  }
+
+  /**
    * Initialize on document ready
    */
   $(document).ready(function () {
     // Initialize multi-step forms
     if ($('.nmda-reimbursement-form').length) {
       new NMDAMultiStepForm('.nmda-reimbursement-form');
+    }
+
+    // Handle business application form specially
+    if ($('#nmda-business-application').length) {
+      handleBusinessApplicationForm();
     }
 
     // Initialize document upload
@@ -404,9 +457,9 @@
     initNotifications();
     updateNotificationBadge();
 
-    // Handle AJAX forms
-    if ($('.nmda-ajax-form').length) {
-      handleAjaxForm('.nmda-ajax-form');
+    // Handle other AJAX forms (not business application)
+    if ($('.nmda-ajax-form').not('#nmda-business-application').length) {
+      handleAjaxForm('.nmda-ajax-form:not(#nmda-business-application)');
     }
   });
 })(jQuery);

@@ -2,9 +2,9 @@
 Contributors: deliciousbrains, wpengine, elliotcondon, mattshaw, lgladdy, antpb, johnstonphilip, dalewilliams, polevaultweb
 Tags: acf, fields, custom fields, meta, repeater
 Requires at least: 6.2
-Tested up to: 6.8.2
+Tested up to: 6.8.3
 Requires PHP: 7.4
-Stable tag: 6.6.0
+Stable tag: 6.6.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -94,6 +94,30 @@ From your WordPress dashboard
 
 == Changelog ==
 
+= 6.6.2 =
+*Release Date 29th October 2025*
+
+* Enhancement - Added a new `convert_field_name_to_lowercase` JS filter to allow uppercase letters in ACF field names
+* Enhancement - The form for V3 Blocks can now be optionally hidden from the sidebar via a new `hideFieldsInSidebar` setting in block.json
+* Enhancement - V3 Blocks now display an "Open Expanded Editor" button in the sidebar for easier access to the full edit form
+* Fix - The buttons to reorder ACF metaboxes are no longer hidden for metaboxes in the block editor sidebar
+* Fix - V3 Blocks now display a fallback message when the block preview can't be rendered due to invalid HTML being used in field values
+* Fix - V3 Blocks no longer show a loading spinner when preloaded
+* Fix - V3 Blocks now save default field values even if the block wasn't interacted with before saving
+* Fix - Pressing CMD/CTRL + Z no longer causes the fields to disappear in V3 Blocks
+* Fix - The form for V3 Blocks now opens on the left side in RTL languages
+
+= 6.6.1 =
+*Release Date 16th October 2025*
+
+* Fix - The Color Picker palette now displays correctly with a larger number of custom palette colors
+* Fix - The WYSIWYG field no longer displays an extra textarea in ACF Blocks
+* Fix - The type signature of the ACF Blocks render function now matches prior to 6.6, resolving potential type hinting errors
+* Fix - V3 Blocks now correctly update the block preview when changing text controls
+* Fix - V3 Blocks now work correctly in the Widget block editor
+* Fix - V3 Blocks no longer render an extra hidden div into the block editor
+* Fix - Fields on V3 blocks now consistently render properly when switching between “Post” and “Block” view in the sidebar
+
 = 6.6.0 =
 *Release Date 7th October 2025*
 
@@ -115,6 +139,7 @@ From your WordPress dashboard
 * Fix - New field names are lowercase only
 * Fix - Icon Picker now enforces required validation
 * Fix - Calls to jQuery’s deprecated focus function have been updated to use the trigger function
+* Fix - Layouts inside cloned Flexible Content fields can now be disabled and renamed
 * i18n - Updated PRO Japanese translations (props danielkun)
 
 = 6.5.1 =
