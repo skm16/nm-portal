@@ -131,6 +131,46 @@
     text-align: center;
 }
 
+/* Reimbursement Links in Sidebar */
+.reimbursement-links {
+    margin-top: 15px;
+}
+
+.reimbursement-links .btn {
+    text-align: left;
+    position: relative;
+    padding: 12px 15px;
+    transition: all 0.3s ease;
+    border-width: 2px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.reimbursement-links .btn i {
+    margin-right: 10px;
+    font-size: 18px;
+    vertical-align: middle;
+}
+
+.reimbursement-links .btn small {
+    font-size: 11px;
+    margin-top: 4px;
+    font-weight: 400;
+    display: block;
+}
+
+.reimbursement-links .btn:hover {
+    background-color: #512c1d;
+    border-color: #512c1d;
+    color: #fff;
+    transform: translateX(4px);
+}
+
+.reimbursement-links .btn:hover small {
+    color: rgba(255, 255, 255, 0.8);
+}
+
 /* Business Profile Card */
 .business-profile-card {
     border: none;

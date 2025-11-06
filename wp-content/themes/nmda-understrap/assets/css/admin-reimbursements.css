@@ -1,0 +1,251 @@
+/**
+ * NMDA Admin Reimbursements Interface Styles
+ */
+
+/* Page Header */
+.nmda-reimbursements-page h1 {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.nmda-reimbursements-page h1 .dashicons {
+    font-size: 32px;
+    width: 32px;
+    height: 32px;
+}
+
+/* Filters */
+.nmda-reimbursements-page .tablenav select {
+    margin-right: 10px;
+}
+
+/* Reimbursements Table */
+.reimbursements-table td,
+.reimbursements-table th {
+    vertical-align: middle;
+}
+
+.reimbursements-table .na {
+    color: #999;
+}
+
+/* Status Badges */
+.status-badge {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 3px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.status-badge.status-submitted {
+    background-color: #f0ad4e;
+    color: #fff;
+}
+
+.status-badge.status-approved {
+    background-color: #5cb85c;
+    color: #fff;
+}
+
+.status-badge.status-rejected {
+    background-color: #d9534f;
+    color: #fff;
+}
+
+/* Modal */
+.nmda-modal {
+    display: none;
+    position: fixed;
+    z-index: 100000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.6);
+}
+
+.nmda-modal-content {
+    background-color: #fff;
+    margin: 3% auto;
+    padding: 30px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 900px;
+    max-height: 85vh;
+    overflow-y: auto;
+    position: relative;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.nmda-modal-close {
+    color: #aaa;
+    float: right;
+    font-size: 32px;
+    font-weight: bold;
+    line-height: 1;
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+.nmda-modal-close:hover,
+.nmda-modal-close:focus {
+    color: #000;
+}
+
+/* Detail Content */
+.reimbursement-detail-content h2 {
+    margin-top: 0;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #0073aa;
+    color: #0073aa;
+}
+
+.detail-section {
+    margin-top: 25px;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 6px;
+    border: 1px solid #e5e5e5;
+}
+
+.detail-section h3 {
+    margin-top: 0;
+    margin-bottom: 15px;
+    color: #333;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.detail-section .form-table {
+    background-color: #fff;
+    border-radius: 4px;
+}
+
+.detail-section .form-table th {
+    width: 200px;
+    font-weight: 600;
+    color: #555;
+}
+
+.detail-section .form-table td {
+    color: #333;
+}
+
+/* Document List */
+.document-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.document-list li {
+    margin-bottom: 10px;
+}
+
+.document-list a {
+    display: inline-flex;
+    align-items: center;
+    padding: 8px 12px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    text-decoration: none;
+    color: #0073aa;
+    transition: all 0.2s ease;
+}
+
+.document-list a:hover {
+    background-color: #0073aa;
+    color: #fff;
+    border-color: #0073aa;
+}
+
+.document-list .dashicons {
+    margin-right: 8px;
+}
+
+/* Review Actions */
+.review-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.approve-section,
+.reject-section {
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 6px;
+    border: 1px solid #ddd;
+}
+
+.approve-section {
+    border-left: 4px solid #5cb85c;
+}
+
+.reject-section {
+    border-left: 4px solid #d9534f;
+}
+
+.approve-section label,
+.reject-section label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: #333;
+}
+
+.approve-section input,
+.reject-section textarea {
+    width: 100%;
+    margin-bottom: 12px;
+}
+
+.approve-section button,
+.reject-section button {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.approve-section button .dashicons,
+.reject-section button .dashicons {
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+}
+
+/* Loading State */
+.button .dashicons {
+    vertical-align: middle;
+}
+
+/* Notices in modal */
+.reimbursement-detail-content .notice {
+    margin: 20px 0;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .nmda-modal-content {
+        width: 95%;
+        margin: 5% auto;
+        padding: 20px;
+    }
+
+    .review-actions {
+        grid-template-columns: 1fr;
+    }
+
+    .detail-section .form-table th {
+        width: 150px;
+    }
+}

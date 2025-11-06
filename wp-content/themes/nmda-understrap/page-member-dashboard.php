@@ -233,19 +233,13 @@ if ( ! $last_login ) {
 												<div class="card-body">
 													<h4 class="card-title"><i class="fa fa-flash"></i> Quick Actions</h4>
 													<div class="row">
-														<div class="col-md-4">
+														<div class="col-md-6">
 															<a href="#" class="quick-action-btn">
 																<i class="fa fa-edit"></i>
 																<span>Edit Profile</span>
 															</a>
 														</div>
-														<div class="col-md-4">
-															<a href="#" class="quick-action-btn">
-																<i class="fa fa-dollar"></i>
-																<span>Submit Reimbursement</span>
-															</a>
-														</div>
-														<div class="col-md-4">
+														<div class="col-md-6">
 															<a href="<?php echo get_permalink( $business_id ); ?>" class="quick-action-btn" target="_blank">
 																<i class="fa fa-external-link"></i>
 																<span>View Public Profile</span>
@@ -390,8 +384,32 @@ if ( ! $last_login ) {
 
 					<!-- Sidebar (shared across all businesses) -->
 					<div class="col-md-4">
-						<!-- Resources -->
+						<!-- Submit Reimbursement -->
 						<div class="card">
+							<div class="card-header">
+								<h3><i class="fa fa-dollar"></i> Submit Reimbursement</h3>
+							</div>
+							<div class="card-body">
+								<p>Request cost-share reimbursements for your marketing activities.</p>
+								<div class="reimbursement-links">
+									<a href="<?php echo home_url( '/reimbursement-lead' ); ?>" class="btn btn-outline-primary btn-block mb-2">
+										<i class="fa fa-users"></i> Lead Generation
+										<small class="d-block text-muted">Max $5,000/year</small>
+									</a>
+									<a href="<?php echo home_url( '/reimbursement-advertising' ); ?>" class="btn btn-outline-primary btn-block mb-2">
+										<i class="fa fa-bullhorn"></i> Advertising
+										<small class="d-block text-muted">Max $10,000/year</small>
+									</a>
+									<a href="<?php echo home_url( '/reimbursement-labels' ); ?>" class="btn btn-outline-primary btn-block">
+										<i class="fa fa-tag"></i> Product Labels
+										<small class="d-block text-muted">Max $3,000/year</small>
+									</a>
+								</div>
+							</div>
+						</div>
+
+						<!-- Resources -->
+						<div class="card mt-3">
 							<div class="card-header">
 								<h3><i class="fa fa-download"></i> Resources</h3>
 							</div>

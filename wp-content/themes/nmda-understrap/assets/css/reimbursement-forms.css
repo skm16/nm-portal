@@ -1,0 +1,269 @@
+/**
+ * NMDA Reimbursement Forms Styles
+ */
+
+/* Reimbursement Header */
+.reimbursement-header {
+    background: linear-gradient(135deg, #512c1d 0%, #8b0c12 100%);
+    color: #fff;
+    padding: 30px;
+    margin-bottom: 30px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.reimbursement-header h1 {
+    color: #fff;
+    margin-bottom: 10px;
+    font-size: 32px;
+    font-weight: 700;
+}
+
+.reimbursement-header .lead {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 16px;
+    margin-bottom: 0;
+}
+
+.reimbursement-header i {
+    margin-right: 10px;
+}
+
+/* Reimbursement Form Cards */
+.nmda-reimbursement-form .card {
+    border: none;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.nmda-reimbursement-form .card-body {
+    padding: 25px;
+}
+
+.nmda-reimbursement-form .card-body h3 {
+    font-size: 22px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.nmda-reimbursement-form .card-body h3 i {
+    margin-right: 10px;
+    color: #512c1d;
+}
+
+/* Form Groups */
+.nmda-reimbursement-form .form-group {
+    margin-bottom: 20px;
+}
+
+.nmda-reimbursement-form label {
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 8px;
+}
+
+.nmda-reimbursement-form label .text-danger {
+    color: #d9534f;
+    margin-left: 3px;
+}
+
+.nmda-reimbursement-form .form-control,
+.nmda-reimbursement-form .form-control-file {
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 10px 12px;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.nmda-reimbursement-form .form-control:focus {
+    border-color: #512c1d;
+    box-shadow: 0 0 0 0.2rem rgba(81, 44, 29, 0.15);
+}
+
+.nmda-reimbursement-form .form-text {
+    font-size: 13px;
+    color: #666;
+    margin-top: 5px;
+}
+
+/* Input Groups */
+.nmda-reimbursement-form .input-group-text {
+    background-color: #f8f9fa;
+    border: 1px solid #ddd;
+    color: #333;
+    font-weight: 600;
+}
+
+.nmda-reimbursement-form input[readonly] {
+    background-color: #f8f9fa;
+    cursor: not-allowed;
+}
+
+/* Form Actions */
+.nmda-reimbursement-form .form-actions {
+    display: flex;
+    gap: 15px;
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 2px solid #e0e0e0;
+}
+
+.nmda-reimbursement-form .form-actions .btn {
+    padding: 12px 30px;
+    font-size: 16px;
+    font-weight: 600;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+}
+
+.nmda-reimbursement-form .form-actions .btn i {
+    margin-right: 8px;
+}
+
+.nmda-reimbursement-form .form-actions .btn-primary {
+    background-color: #512c1d;
+    border-color: #512c1d;
+}
+
+.nmda-reimbursement-form .form-actions .btn-primary:hover {
+    background-color: #3d1f15;
+    border-color: #3d1f15;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(81, 44, 29, 0.3);
+}
+
+.nmda-reimbursement-form .form-actions .btn-secondary {
+    background-color: #6c757d;
+    border-color: #6c757d;
+}
+
+.nmda-reimbursement-form .form-actions .btn-secondary:hover {
+    background-color: #5a6268;
+    border-color: #5a6268;
+}
+
+.nmda-reimbursement-form .form-actions .btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* Messages */
+#form-messages {
+    margin-top: 20px;
+}
+
+#form-messages .alert {
+    border-radius: 8px;
+    padding: 20px;
+    border: none;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+#form-messages .alert i {
+    margin-right: 10px;
+}
+
+#form-messages .alert-success {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+#form-messages .alert-danger {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+/* File Upload Styling */
+.nmda-reimbursement-form .form-control-file {
+    padding: 10px;
+    border: 2px dashed #ddd;
+    background-color: #f8f9fa;
+    cursor: pointer;
+}
+
+.nmda-reimbursement-form .form-control-file:hover {
+    border-color: #512c1d;
+    background-color: #fff;
+}
+
+/* Horizontal Rules */
+.nmda-reimbursement-form hr {
+    border-top: 2px solid #e0e0e0;
+    margin: 25px 0;
+}
+
+/* No Approved Business Alert */
+.alert-warning {
+    background-color: #fcf8e3;
+    color: #8a6d3b;
+    border-radius: 8px;
+    padding: 20px;
+    border: none;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.alert-warning h4 {
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.alert-warning i {
+    margin-right: 10px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .reimbursement-header {
+        text-align: center;
+        padding: 20px;
+    }
+
+    .reimbursement-header h1 {
+        font-size: 24px;
+    }
+
+    .reimbursement-header .lead {
+        font-size: 14px;
+    }
+
+    .nmda-reimbursement-form .card-body {
+        padding: 20px;
+    }
+
+    .nmda-reimbursement-form .form-actions {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .nmda-reimbursement-form .form-actions .btn {
+        width: 100%;
+    }
+
+    .nmda-reimbursement-form .card-body h3 {
+        font-size: 18px;
+    }
+}
+
+/* Loading State */
+.btn .fa-spinner {
+    margin-right: 8px;
+}
+
+/* Success State - Fade in animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+#form-messages .alert {
+    animation: fadeIn 0.3s ease-in-out;
+}

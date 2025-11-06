@@ -47,6 +47,18 @@ function nmda_enqueue_scripts() {
     if ( is_page_template( 'page-member-dashboard.php' ) ) {
         wp_enqueue_style( 'nmda-dashboard-styles', NMDA_THEME_URI . '/assets/css/dashboard.css', array( 'nmda-custom-styles' ), NMDA_THEME_VERSION );
     }
+
+    // Reimbursement forms scripts and styles
+    if ( is_page_template( array( 'page-reimbursement-lead.php', 'page-reimbursement-advertising.php', 'page-reimbursement-labels.php' ) ) ) {
+        wp_enqueue_style( 'nmda-reimbursement-forms-styles', NMDA_THEME_URI . '/assets/css/reimbursement-forms.css', array( 'nmda-custom-styles' ), NMDA_THEME_VERSION );
+        wp_enqueue_script( 'nmda-reimbursement-forms', NMDA_THEME_URI . '/assets/js/reimbursement-forms.js', array( 'jquery' ), NMDA_THEME_VERSION, true );
+
+        // Localize script with AJAX URL and dashboard URL
+        wp_localize_script( 'nmda-reimbursement-forms', 'nmdaData', array(
+            'ajaxurl'      => admin_url( 'admin-ajax.php' ),
+            'dashboardUrl' => home_url( '/dashboard' ),
+        ) );
+    }
 }
 add_action( 'wp_enqueue_scripts', 'nmda_enqueue_scripts' );
 
@@ -64,6 +76,7 @@ require_once NMDA_THEME_DIR . '/inc/acf-field-groups.php';
 require_once NMDA_THEME_DIR . '/inc/product-taxonomy.php';
 require_once NMDA_THEME_DIR . '/inc/application-forms.php';
 require_once NMDA_THEME_DIR . '/inc/admin-approval.php';
+require_once NMDA_THEME_DIR . '/inc/admin-reimbursements.php';
 
 /**
  * Theme activation hook - create custom database tables
