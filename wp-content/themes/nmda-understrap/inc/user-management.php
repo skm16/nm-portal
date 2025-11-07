@@ -388,3 +388,130 @@ function nmda_track_last_login( $user_login, $user ) {
 	update_user_meta( $user->ID, 'last_login', current_time( 'mysql' ) );
 }
 add_action( 'wp_login', 'nmda_track_last_login', 10, 2 );
+
+/**
+ * Admin: Add custom columns to user list
+ */
+add_filter( 'manage_users_columns', 'nmda_user_admin_columns' );
+function nmda_user_admin_columns( $columns ) {
+	// Insert after email
+	$new_columns = array();
+	foreach ( $columns as $key => $value ) {
+		$new_columns[ $key ] = $value;
+		if ( $key === 'email' ) {
+			$new_columns['related_businesses'] = __( 'Related Businesses', 'nmda-understrap' );
+		}
+	}
+	return $new_columns;
+}
+
+/**
+ * Admin: Populate custom columns for users
+ */
+add_filter( 'manage_users_custom_column', 'nmda_user_admin_column_content', 10, 3 );
+function nmda_user_admin_column_content( $value, $column_name, $user_id ) {
+	if ( $column_name === 'related_businesses' ) {
+		global $wpdb;
+		$table = nmda_get_user_business_table();
+
+		$businesses = $wpdb->get_results( $wpdb->prepare(
+			"SELECT p.ID, p.post_title, ub.role
+			FROM $table ub
+			INNER JOIN {$wpdb->posts} p ON ub.business_id = p.ID
+			WHERE ub.user_id = %d AND ub.status = 'active' AND p.post_status = 'publish'
+			ORDER BY ub.role DESC, p.post_title ASC",
+			$user_id
+		) );
+
+		if ( empty( $businesses ) ) {
+			return '<span style="color: #999;">No businesses</span>';
+		} else {
+			$output = '<ul style="margin: 0;">';
+			foreach ( $businesses as $business ) {
+				$role_badge = '';
+				if ( $business->role === 'owner' ) {
+					$role_badge = '<span style="background: #2271b1; color: white; padding: 2px 6px; border-radius: 3px; font-size: 11px; margin-left: 4px;">Owner</span>';
+				} elseif ( $business->role === 'manager' ) {
+					$role_badge = '<span style="background: #72aee6; color: white; padding: 2px 6px; border-radius: 3px; font-size: 11px; margin-left: 4px;">Manager</span>';
+				}
+
+				$edit_url = get_edit_post_link( $business->ID );
+				$output .= '<li style="margin-bottom: 4px;">';
+				$output .= '<a href="' . esc_url( $edit_url ) . '">' . esc_html( $business->post_title ) . '</a>';
+				$output .= $role_badge;
+				$output .= '</li>';
+			}
+			$output .= '</ul>';
+			return $output;
+		}
+	}
+	return $value;
+}
+
+/**
+ * Admin: Add filter for users with no businesses
+ */
+add_action( 'restrict_manage_users', 'nmda_user_admin_filters' );
+function nmda_user_admin_filters( $which ) {
+	if ( $which !== 'top' ) {
+		return;
+	}
+
+	$selected = isset( $_GET['nmda_business_filter'] ) ? $_GET['nmda_business_filter'] : '';
+	?>
+	<select name="nmda_business_filter" style="float: none;">
+		<option value="">All Users</option>
+		<option value="no_businesses" <?php selected( $selected, 'no_businesses' ); ?>>No Businesses</option>
+		<option value="has_businesses" <?php selected( $selected, 'has_businesses' ); ?>>Has Businesses</option>
+		<option value="business_owners" <?php selected( $selected, 'business_owners' ); ?>>Business Owners Only</option>
+	</select>
+	<?php
+}
+
+/**
+ * Admin: Apply filter for users with no businesses
+ */
+add_filter( 'pre_get_users', 'nmda_user_admin_filter_query' );
+function nmda_user_admin_filter_query( $query ) {
+	global $pagenow, $wpdb;
+
+	if ( $pagenow === 'users.php' && isset( $_GET['nmda_business_filter'] ) ) {
+		$filter = $_GET['nmda_business_filter'];
+		$table = nmda_get_user_business_table();
+
+		if ( $filter === 'no_businesses' ) {
+			// Get users with no businesses
+			$user_ids_with_businesses = $wpdb->get_col(
+				"SELECT DISTINCT user_id FROM $table WHERE status = 'active'"
+			);
+
+			if ( ! empty( $user_ids_with_businesses ) ) {
+				$query->set( 'exclude', $user_ids_with_businesses );
+			}
+		} elseif ( $filter === 'has_businesses' ) {
+			// Get users with businesses
+			$user_ids_with_businesses = $wpdb->get_col(
+				"SELECT DISTINCT user_id FROM $table WHERE status = 'active'"
+			);
+
+			if ( ! empty( $user_ids_with_businesses ) ) {
+				$query->set( 'include', $user_ids_with_businesses );
+			} else {
+				// No users have businesses, return empty result
+				$query->set( 'include', array( 0 ) );
+			}
+		} elseif ( $filter === 'business_owners' ) {
+			// Get only business owners
+			$owner_ids = $wpdb->get_col(
+				"SELECT DISTINCT user_id FROM $table WHERE status = 'active' AND role = 'owner'"
+			);
+
+			if ( ! empty( $owner_ids ) ) {
+				$query->set( 'include', $owner_ids );
+			} else {
+				// No owners, return empty result
+				$query->set( 'include', array( 0 ) );
+			}
+		}
+	}
+}

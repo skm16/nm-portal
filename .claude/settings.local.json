@@ -7,7 +7,16 @@
       "Bash(node -c:*)",
       "Bash(wp theme:*)",
       "Bash(php -l:*)",
-      "Bash(mysql:*)"
+      "Bash(mysql:*)",
+      "Bash(wp nmda migrate:*)",
+      "Bash(php wp-cli.phar nmda migrate:*)",
+      "Bash(php test-parser.php:*)",
+      "Bash(where:*)",
+      "Bash(C:wp-cliwp.bat nmda migrate users --dry-run --debug)",
+      "Bash(\"C:\\wp-cli\\wp.bat\" nmda migrate users --dry-run --debug)",
+      "Bash(\"C:\\wp-cli\\wp.bat\" nmda migrate users --dry-run)",
+      "Bash(\"C:\\wp-cli\\wp.bat\" db query \"SELECT entity_type, COUNT(*) as count FROM wp_nmda_id_mapping GROUP BY entity_type;\" --skip-column-names)",
+      "Bash(\"C:\\wp-cli\\wp.bat\" nmda migrate relationships --execute)"
     ],
     "deny": [],
     "ask": []

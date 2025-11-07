@@ -708,3 +708,116 @@ function nmda_get_business_primary_address( $business_id ) {
 		'county'           => get_field( 'primary_county', $business_id ) ?: '', // County field may not exist yet
 	);
 }
+
+/**
+ * Admin: Add custom columns to business list
+ */
+add_filter( 'manage_nmda_business_posts_columns', 'nmda_business_admin_columns' );
+function nmda_business_admin_columns( $columns ) {
+	// Insert after title
+	$new_columns = array();
+	foreach ( $columns as $key => $value ) {
+		$new_columns[ $key ] = $value;
+		if ( $key === 'title' ) {
+			$new_columns['related_users'] = __( 'Related Users', 'nmda-understrap' );
+		}
+	}
+	return $new_columns;
+}
+
+/**
+ * Admin: Populate custom columns
+ */
+add_action( 'manage_nmda_business_posts_custom_column', 'nmda_business_admin_column_content', 10, 2 );
+function nmda_business_admin_column_content( $column, $post_id ) {
+	if ( $column === 'related_users' ) {
+		global $wpdb;
+		$table = nmda_get_user_business_table();
+
+		$users = $wpdb->get_results( $wpdb->prepare(
+			"SELECT u.ID, u.display_name, u.user_email, ub.role
+			FROM $table ub
+			INNER JOIN {$wpdb->users} u ON ub.user_id = u.ID
+			WHERE ub.business_id = %d AND ub.status = 'active'
+			ORDER BY ub.role DESC, u.display_name ASC",
+			$post_id
+		) );
+
+		if ( empty( $users ) ) {
+			echo '<span style="color: #999;">No users</span>';
+		} else {
+			echo '<ul style="margin: 0;">';
+			foreach ( $users as $user ) {
+				$role_badge = '';
+				if ( $user->role === 'owner' ) {
+					$role_badge = '<span style="background: #2271b1; color: white; padding: 2px 6px; border-radius: 3px; font-size: 11px; margin-left: 4px;">Owner</span>';
+				} elseif ( $user->role === 'manager' ) {
+					$role_badge = '<span style="background: #72aee6; color: white; padding: 2px 6px; border-radius: 3px; font-size: 11px; margin-left: 4px;">Manager</span>';
+				}
+
+				$edit_url = get_edit_user_link( $user->ID );
+				echo '<li style="margin-bottom: 4px;">';
+				echo '<a href="' . esc_url( $edit_url ) . '">' . esc_html( $user->display_name ) . '</a>';
+				echo ' <span style="color: #666;">(' . esc_html( $user->user_email ) . ')</span>';
+				echo $role_badge;
+				echo '</li>';
+			}
+			echo '</ul>';
+		}
+	}
+}
+
+/**
+ * Admin: Add filter for businesses with no users
+ */
+add_action( 'restrict_manage_posts', 'nmda_business_admin_filters' );
+function nmda_business_admin_filters() {
+	global $typenow;
+
+	if ( $typenow === 'nmda_business' ) {
+		$selected = isset( $_GET['nmda_user_filter'] ) ? $_GET['nmda_user_filter'] : '';
+		?>
+		<select name="nmda_user_filter">
+			<option value="">All Businesses</option>
+			<option value="no_users" <?php selected( $selected, 'no_users' ); ?>>No Users</option>
+			<option value="has_users" <?php selected( $selected, 'has_users' ); ?>>Has Users</option>
+		</select>
+		<?php
+	}
+}
+
+/**
+ * Admin: Apply filter for businesses with no users
+ */
+add_filter( 'parse_query', 'nmda_business_admin_filter_query' );
+function nmda_business_admin_filter_query( $query ) {
+	global $pagenow, $typenow, $wpdb;
+
+	if ( $pagenow === 'edit.php' && $typenow === 'nmda_business' && isset( $_GET['nmda_user_filter'] ) ) {
+		$filter = $_GET['nmda_user_filter'];
+		$table = nmda_get_user_business_table();
+
+		if ( $filter === 'no_users' ) {
+			// Get businesses with no users
+			$business_ids_with_users = $wpdb->get_col(
+				"SELECT DISTINCT business_id FROM $table WHERE status = 'active'"
+			);
+
+			if ( ! empty( $business_ids_with_users ) ) {
+				$query->set( 'post__not_in', $business_ids_with_users );
+			}
+		} elseif ( $filter === 'has_users' ) {
+			// Get businesses with users
+			$business_ids_with_users = $wpdb->get_col(
+				"SELECT DISTINCT business_id FROM $table WHERE status = 'active'"
+			);
+
+			if ( ! empty( $business_ids_with_users ) ) {
+				$query->set( 'post__in', $business_ids_with_users );
+			} else {
+				// No businesses have users, return empty result
+				$query->set( 'post__in', array( 0 ) );
+			}
+		}
+	}
+}

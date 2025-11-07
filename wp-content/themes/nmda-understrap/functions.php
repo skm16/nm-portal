@@ -34,6 +34,9 @@ add_action( 'wp_enqueue_scripts', 'nmda_enqueue_styles' );
  * Enqueue child theme scripts
  */
 function nmda_enqueue_scripts() {
+
+    wp_enqueue_style( 'nmda-dashboard-styles', NMDA_THEME_URI . '/assets/css/dashboard.css', array( 'nmda-custom-styles' ), NMDA_THEME_VERSION );
+
     // Custom JavaScript
     wp_enqueue_script( 'nmda-custom-js', NMDA_THEME_URI . '/assets/js/custom.js', array( 'jquery' ), NMDA_THEME_VERSION, true );
 
@@ -43,21 +46,15 @@ function nmda_enqueue_scripts() {
         'nonce'   => wp_create_nonce( 'nmda-ajax-nonce' ),
     ) );
 
-    // Dashboard styles
-    if ( is_page_template( 'page-member-dashboard.php' ) ) {
-        wp_enqueue_style( 'nmda-dashboard-styles', NMDA_THEME_URI . '/assets/css/dashboard.css', array( 'nmda-custom-styles' ), NMDA_THEME_VERSION );
-    }
-
     // Resource Center styles
     if ( is_page_template( 'page-resource-center.php' ) ) {
-        wp_enqueue_style( 'nmda-dashboard-styles', NMDA_THEME_URI . '/assets/css/dashboard.css', array( 'nmda-custom-styles' ), NMDA_THEME_VERSION );
+        //wp_enqueue_style( 'nmda-dashboard-styles', NMDA_THEME_URI . '/assets/css/dashboard.css', array( 'nmda-custom-styles' ), NMDA_THEME_VERSION );
         wp_enqueue_style( 'nmda-resource-center-styles', NMDA_THEME_URI . '/assets/css/resource-center.css', array( 'nmda-dashboard-styles' ), NMDA_THEME_VERSION );
         wp_enqueue_script( 'nmda-resource-center', NMDA_THEME_URI . '/assets/js/resource-center.js', array( 'jquery' ), NMDA_THEME_VERSION, true );
     }
 
     // Edit Profile styles and scripts
     if ( is_page_template( 'page-edit-profile.php' ) ) {
-        wp_enqueue_style( 'nmda-dashboard-styles', NMDA_THEME_URI . '/assets/css/dashboard.css', array( 'nmda-custom-styles' ), NMDA_THEME_VERSION );
         wp_enqueue_style( 'nmda-edit-profile-styles', NMDA_THEME_URI . '/assets/css/edit-profile.css', array( 'nmda-dashboard-styles' ), NMDA_THEME_VERSION );
         wp_enqueue_script( 'nmda-edit-profile', NMDA_THEME_URI . '/assets/js/edit-profile.js', array( 'jquery' ), NMDA_THEME_VERSION, true );
         
@@ -71,7 +68,7 @@ function nmda_enqueue_scripts() {
 
     // Reimbursement forms scripts and styles
     if ( is_page_template( array( 'page-reimbursement-lead.php', 'page-reimbursement-advertising.php', 'page-reimbursement-labels.php', 'page-my-reimbursements.php' ) ) ) {
-        wp_enqueue_style( 'nmda-dashboard-styles', NMDA_THEME_URI . '/assets/css/dashboard.css', array( 'nmda-custom-styles' ), NMDA_THEME_VERSION );
+        //wp_enqueue_style( 'nmda-dashboard-styles', NMDA_THEME_URI . '/assets/css/dashboard.css', array( 'nmda-custom-styles' ), NMDA_THEME_VERSION );
         wp_enqueue_style( 'nmda-reimbursement-forms-styles', NMDA_THEME_URI . '/assets/css/reimbursement-forms.css', array( 'nmda-custom-styles' ), NMDA_THEME_VERSION );
         wp_enqueue_script( 'nmda-reimbursement-forms', NMDA_THEME_URI . '/assets/js/reimbursement-forms.js', array( 'jquery' ), NMDA_THEME_VERSION, true );
 
@@ -100,6 +97,7 @@ require_once NMDA_THEME_DIR . '/inc/product-taxonomy.php';
 require_once NMDA_THEME_DIR . '/inc/application-forms.php';
 require_once NMDA_THEME_DIR . '/inc/admin-approval.php';
 require_once NMDA_THEME_DIR . '/inc/admin-reimbursements.php';
+require_once NMDA_THEME_DIR . '/inc/data-migration.php';
 
 /**
  * Add custom rewrite rules for reimbursement detail pages
