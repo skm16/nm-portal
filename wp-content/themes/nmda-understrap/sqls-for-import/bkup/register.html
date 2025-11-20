@@ -1,0 +1,1078 @@
+<!DOCTYPE html>
+    <html>
+    <head>
+        <meta charset="utf-8" />
+        <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+
+        <title>NMDA</title>
+        <link href="/css/kendo/kendo.common.min.css" rel="stylesheet" />
+        <link href="/css/kendo/kendo.default.min.css" rel="stylesheet" />
+        <link rel="stylesheet" href="/css/StyleSheet.css" />
+        <link rel="preconnect" href="https://fonts.gstatic.com">
+        <link href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,400;0,500;0,700;1,500;1,700&display=swap" rel="stylesheet">
+
+        <script type="text/javascript" src="/js/jquery-1.12.0.min.js"></script>
+        <script src="/js/kendo.all.min.js"></script>
+        <script src="https://cdn.rtsclients.com/utils/js/validate.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/async/2.6.2/async.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/luxon/3.3.0/luxon.min.js" integrity="sha512-KKbQg5o92MwtJKR9sfm/HkREzfyzNMiKPIQ7i7SZOxwEdiNCm4Svayn2DBq7MKEdrqPJUOSIpy1v6PpFlCQ0YA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js" integrity="sha512-pHVGpX7F/27yZ0ISY+VVjyULApbDlD0/X0rgGbTqCE7WFW5MezNTWG/dnhtbBuICzsd0WQPgpE4REBLv+UqChw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <script src="js/rm_sdk_0.1.0.js"></script>
+
+        <script src="js/utils.js"></script>
+        <script src="js/common.js"></script>
+        <script src="js/register.js"></script>
+    </head>
+    <body>
+
+        <header id="main-header"></header>
+
+        <div class="mainContent">
+
+            <div class="page-title">
+                <div class="contain1000">
+                    <h1>Membership Application</h1>
+                </div>
+            </div>
+
+            <div class="contain1000">
+                <section>
+                    <div>Find the Logo Program Guidelines and Logo Usage Guidelines <a href="/files/Program and Logo Usage Guidelines.pdf" target="_blank">here</a></div>
+                </section>
+
+                <div id="formCompany">
+                    <section>
+                        <div class="sectionTitle">Section 1: Personal Contact Info</div>
+                        <div class="sectionBlurb">Information provided in this section will <strong>NOT</strong> be posted on the Logo Program website.</div>
+                        <div class="sectionContent">
+                            <div class="sectionContentTitle">Responsible Officer, Partner, Manager or Owner Name</div>
+                            <div class="formContainer">
+                                <div class="width50">
+                                    <div class="formContainer">
+                                        <label>First Name</label>
+                                        <input type="text" id="txtOwnerFirstName" required />
+                                    </div>
+                                </div>
+                                <div class="width50">
+                                    <div class="formContainer">
+                                        <label>Last Name</label>
+                                        <input type="text" id="txtOwnerLastName" required />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="formContainer">
+                                <input type="checkbox" id="cbPrimaryContact" value="1" style="margin-right: 5px;" /><label>Is this person the primary contact for Logo Program matters?</label>
+                            </div>
+                            <div class="sectionContentTitle">Person to contact for Logo Program related matters</div>
+                            <div class="formContainer">
+                                <div class="width50">
+                                    <div class="formContainer">
+                                        <label>First Name</label>
+                                        <input type="text" id="txtContactFirstName" required />
+                                    </div>
+                                </div>
+                                <div class="width50">
+                                    <div class="formContainer">
+                                        <label>Last Name</label>
+                                        <input type="text" id="txtContactLastName" required />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="formContainer">
+                                <label>Best Contact Phone Number</label>
+                                <input type="tel" id="txtContactPhone" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" placeholder="___-___-____" required /><small>Format: 555-555-5555</small>
+                            </div>
+                            <div class="formContainer">
+                                <label>Mailing Address</label>
+                                <input type="text" id="txtContactAddress" required />
+                            </div>
+                            <div class="formContainer">
+                                <label>Mailing Address Line 2</label>
+                                <input type="text" id="txtContactAddress2" />
+                            </div>
+                            <div class="formContainer">
+                                <label>City</label>
+                                <input type="text" id="txtContactCity" required />
+                            </div>
+                            <div class="formContainer">
+                                <div class="width50">
+                                    <div class="formContainer">
+                                        <label>State</label>
+                                        <input type="text" id="txtContactState" required />
+                                    </div>
+                                </div>
+                                <div class="width50">
+                                    <div class="formContainer">
+                                        <label>Zip</label>
+                                        <input type="text" id="txtContactZip" required />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="formContainer">
+                                <label>Personal Email Address<br />(Note: this is the address that will be used for correspondence from NMDA)</label>
+                                <input type="email" id="txtContactEmail" required />
+                            </div>
+                        </div>
+                    </section>
+
+                    <section>
+                        <div class="sectionTitle">Section 2: Business Contact Info</div>
+                        <div class="sectionBlurb">Information provided in this section <strong>WILL</strong> be posted on the Logo Program website.</div>
+                        <div class="sectionContent">
+                            <div class="formContainer">
+                                <label>Licensee (Business Legal Name)</label>
+                                <input type="text" id="txtBusinessName" required />
+                            </div>
+                            <div class="formContainer">
+                                <label>DBA (if applicable)</label>
+                                <input type="text" id="txtDBA" />
+                            </div>
+                            <div class="sectionContentTitle">Registered Business Address</div>
+                            <div class="formContainer">
+                                <label>Business Physical Address for operations in New Mexico<br>(Note: : If open to the public, this is the primary address that will be displayed on the NM Ag Community page)</label>
+                                <input type="text" id="txtBusinessAddress" required />
+                            </div>
+                            <div class="formContainer">
+                                <label>Business Physical Address Line 2</label>
+                                <input type="text" id="txtBusinessAddress2" />
+                            </div>
+                            <div class="formContainer">
+                                <label>City</label>
+                                <input type="text" id="txtBusinessCity" required />
+                            </div>
+                            <div class="formContainer">
+                                <div class="width50">
+                                    <div class="formContainer">
+                                        <label>State</label>
+                                        <input type="text" id="txtBusinessState" required />
+                                    </div>
+                                </div>
+                                <div class="width50">
+                                    <div class="formContainer">
+                                        <label>Zip</label>
+                                        <input type="text" id="txtBusinessZip" required />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="formContainer">
+                                <label>Address Type</label>
+                                <select id="ddlBusinessAddressType" required>
+                                    <option>Open to the public during regular business hours</option>
+                                    <option>Open to the public with a reservation</option>
+                                    <option>Not open to the public (doesn’t appear on the website)</option>
+                                    <option>Other</option>
+                                </select>
+                            </div>
+                            <div class="formContainer">
+                                <label>Business Phone</label>
+                                <input type="tel" id="txtBusinessPhone" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" placeholder="___-___-____" required />
+                            </div>
+                            <div class="formContainer">
+                                <label>Business’s Email Address</label>
+                                <input type="email" id="txtBusinessEmail" required />
+                            </div>
+                            <div class="formContainer">
+                                <label>Website (if applicable)</label>
+                                <input type="text" id="txtBusinessWebsite" />
+                            </div>
+                            <div class="formContainer">
+                                <label>Social Media: (please select each one that applies and include handles)</label>
+                            </div>
+                            <div class="formContainer">
+                                <div class="width25">
+                                    <div class=" formContainer checkbox-container">
+                                        <input type="checkbox" id="cbFacebook" value="1" /><label>Facebook</label>
+                                    </div>
+                                </div>
+                                <div class="width70">
+                                    <div class="formContainer">
+                                        <input type="text" id="txtFacebook" placeholder="ex. @nmtastethetradition" />
+                                    </div>
+                                </div>
+
+                                <div class="width25">
+                                    <div class=" formContainer checkbox-container">
+                                        <input type="checkbox" id="cbInstagram" value="1" /><label>Instagram</label>
+                                    </div>
+                                </div>
+                                <div class="width70">
+                                    <div class="formContainer">
+                                        <input type="text" id="txtInstagram" placeholder="ex. @nmtastethetradition" />
+                                    </div>
+                                </div>
+
+                                <div class="width25">
+                                    <div class=" formContainer checkbox-container">
+                                        <input type="checkbox" id="cbTwitter" value="1" /><label>Twitter</label>
+                                    </div>
+                                </div>
+                                <div class="width70">
+                                    <div class="formContainer">
+                                        <input type="text" id="txtTwitter" placeholder="ex. @TasteNewMexico" />
+                                    </div>
+                                </div>
+
+                                <div class="width25 formContainer checkbox-container">
+                                    <div class="formContainer">
+                                        <input type="checkbox" id="cbPinterest" value="1" /><label>Pinterest</label>
+                                    </div>
+                                </div>
+                                <div class="width70">
+                                    <div class="formContainer">
+                                        <input type="text" id="txtPinterest" placeholder="ex. @nmtastethetradition" />
+                                    </div>
+                                </div>
+
+                                <div class="width25 formContainer checkbox-container">
+                                    <div class="formContainer">
+                                        <input type="checkbox" id="cbSocialOther" value="1" /><label>Other</label>
+                                    </div>
+                                </div>
+                                <div class="width70">
+                                    <div class="formContainer">
+                                        <input type="text" id="txtSocialOther" placeholder="ex. @nmtastethetradition" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="clearBoth" style="margin-top: 1em;">
+                        <div class="sectionTitle">Section 3: Additional Business Information</div>
+                        <div class="sectionContent">
+                            <div class="sectionBlurb"><strong>For public display</strong></div>
+                            <div class="formContainer" style="display: none;">
+                                <label>Business Logo<br />*upload your logo to appear on your profile</label>
+                                <input type="file" id="fileLogo" />
+                            </div>
+                            <div class="formContainer">
+                                <label>Profile<br />*provide a brief description of your business</label>
+                                <textarea id="txtProfile" rows="5" cols="20"></textarea>
+                            </div>
+                            <div class="formContainer" style="display: none;">
+                                <label>Where can your products be found?</label>
+                                <input type="text" id="txtProductsFound" />
+                            </div>
+                            <div class="formContainer">
+                                <label>Business Hours<br />*If your business is by appointment only, please note that and include appointment contact info</label>
+                                <textarea id="txtBusinessHours" rows="5" cols="20" placeholder="ex:&#10;Monday-Friday: 8:00 AM - 5:00 PM&#10;Saturday: 9:00 AM - 4:00 PM&#10;Sunday: Closed"></textarea>
+                            </div>
+                            <div class="sectionContentTitle">Additional Addresses</div>
+                            <div><label>*Add additional location addresses for your business</label></div>
+                            <table id="tableAddress">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Type</th>
+                                        <th>Address</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                            <div class="formContainer">
+                                <label>Address Name</label>
+                                <input type="text" id="txtAdditionalAddressName" />
+                            </div>
+                            <div class="formContainer">
+                                <label>Address</label>
+                                <input type="text" id="txtAdditionalAddress" />
+                            </div>
+                            <div class="formContainer">
+                                <label>Address Line 2</label>
+                                <input type="text" id="txtAdditionalAddress2" />
+                            </div>
+                            <div class="formContainer">
+                                <label>City</label>
+                                <input type="text" id="txtAdditionalCity" />
+                            </div>
+                            <div class="formContainer">
+                                <div class="width50">
+                                    <div class="formContainer">
+                                        <label>State</label>
+                                        <input type="text" id="txtAdditionalState" />
+                                    </div>
+                                </div>
+                                <div class="width50">
+                                    <div class="formContainer">
+                                        <label>Zip</label>
+                                        <input type="text" id="txtAdditionalZip" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="formContainer">
+                                <label>Address Type</label>
+                                <select id="ddlAdditionalAddressType">
+                                    <option>Open to the public during regular business hours</option>
+                                    <option>Open to the public with a reservation</option>
+                                    <option>Not open to the public (doesn’t appear on the website)</option>
+                                    <option>Other</option>
+                                </select>
+                            </div>
+                            <div id="addressReservationContainer">
+                                <label>Enter Reservation Instructions</label>
+                                <textarea id="txtAdditionalReservation" rows="5" cols="20" placeholder="ex: Call 575-646-4929 or email tastethetradition@nmda.nmsu.edu"></textarea>
+                            </div>
+                            <div id="addressOtherContainer">
+                                <label>Enter Other Instructions</label>
+                                <textarea id="txtAdditionalOther" rows="5" cols="20"></textarea>
+                            </div>
+                            <div>
+                                <button id="btnAddAddress" class="button">Add Additional Address</button>
+                            </div>
+                            <hr />
+                            <div class="sectionBlurb"><strong>For NMDA’s records</strong></div>
+                            <div class="formContainer">
+                                <label>Additional Info About This Location<br />*let us know what services are available at this specific location</label>
+                                <textarea id="txtAdditionalInfo" rows="5" cols="20"></textarea>
+                            </div>
+                            <div class="formContainer">
+                                <label>Number of Employees</label>
+                                <input type="text" id="txtNumEmployees" />
+                            </div>
+                            <div class="formContainer">
+                                <label>Type of Sales<br />Please select all that apply</label>
+                                <div class="formContainer checkbox-container">
+                                    <input type="checkbox" id="cbSalesTypeLocal" value="1" /><label>Local</label>
+                                </div>
+                                <div class="formContainer checkbox-container">
+                                    <input type="checkbox" id="cbSalesTypeRegional" value="1" /><label>Regional</label>
+                                </div>
+                                <div class="formContainer checkbox-container">
+                                    <input type="checkbox" id="cbSalesTypeInState" value="1" /><label>In-State</label>
+                                </div>
+                                <div class="formContainer checkbox-container">
+                                    <input type="checkbox" id="cbSalesTypeNational" value="1" /><label>National</label>
+                                </div>
+                                <div class="formContainer checkbox-container">
+                                    <input type="checkbox" id="cbSalesTypeInternational" value="1" /><label>International</label>
+                                </div>
+                            </div>
+                            <div class="formContainer">
+                                <label>Current Exports<br />Please select all that apply</label>
+                                <div class="formContainer checkbox-container">
+                                    <input type="checkbox" id="cbCurrentExportsAfrica" value="1" /><label>Africa</label>
+                                </div>
+                                <div class="formContainer checkbox-container">
+                                    <input type="checkbox" id="cbCurrentExportsAsia" value="1" /><label>Asia</label>
+                                </div>
+                                <div class="formContainer checkbox-container">
+                                    <input type="checkbox" id="cbCurrentExportsCaribbean" value="1" /><label>Caribbean</label>
+                                </div>
+                                <div class="formContainer checkbox-container">
+                                    <input type="checkbox" id="cbCurrentExportsCentralAmerica" value="1" /><label>Central America</label>
+                                </div>
+                                <div class="formContainer checkbox-container">
+                                    <input type="checkbox" id="cbCurrentExportsEurope" value="1" /><label>Europe</label>
+                                </div>
+                                <div class="formContainer checkbox-container">
+                                    <input type="checkbox" id="cbCurrentExportsMiddleEast" value="1" /><label>Middle East</label>
+                                </div>
+                                <div class="formContainer checkbox-container">
+                                    <input type="checkbox" id="cbCurrentExportsNorthAmerica" value="1" /><label>North America</label>
+                                </div>
+                                <div class="formContainer checkbox-container">
+                                    <input type="checkbox" id="cbCurrentExportsPacificRim" value="1" /><label>Pacific Rim</label>
+                                </div>
+                                <div class="formContainer checkbox-container">
+                                    <input type="checkbox" id="cbCurrentExportsSouthAmerica" value="1" /><label>South America</label>
+                                </div>
+                                <div class="formContainer checkbox-container">
+                                    <input type="checkbox" id="cbCurrentExportsWorldwide" value="1" /><label>Worldwide</label>
+                                </div>
+                            </div>
+
+                            <div class="formContainer">
+                                <label>Export Interests<br />Please select all that apply</label>
+                                <div class="formContainer checkbox-container">
+                                    <input type="checkbox" id="cbInterestExportsAfrica" value="1" /><label>Africa</label>
+                                </div>
+                                <div class="formContainer checkbox-container">
+                                    <input type="checkbox" id="cbInterestExportsAsia" value="1" /><label>Asia</label>
+                                </div>
+                                <div class="formContainer checkbox-container">
+                                    <input type="checkbox" id="cbInterestExportsCaribbean" value="1" /><label>Caribbean</label>
+                                </div>
+                                <div class="formContainer checkbox-container">
+                                    <input type="checkbox" id="cbInterestExportsCentralAmerica" value="1" /><label>Central America</label>
+                                </div>
+                                <div class="formContainer checkbox-container">
+                                    <input type="checkbox" id="cbInterestExportsEurope" value="1" /><label>Europe</label>
+                                </div>
+                                <div class="formContainer checkbox-container">
+                                    <input type="checkbox" id="cbInterestExportsMiddleEast" value="1" /><label>Middle East</label>
+                                </div>
+                                <div class="formContainer checkbox-container">
+                                    <input type="checkbox" id="cbInterestExportsNorthAmerica" value="1" /><label>North America</label>
+                                </div>
+                                <div class="formContainer checkbox-container">
+                                    <input type="checkbox" id="cbInterestExportsPacificRim" value="1" /><label>Pacific Rim</label>
+                                </div>
+                                <div class="formContainer checkbox-container">
+                                    <input type="checkbox" id="cbInterestExportsSouthAmerica" value="1" /><label>South America</label>
+                                </div>
+                                <div class="formContainer checkbox-container">
+                                    <input type="checkbox" id="cbInterestExportsWorldwide" value="1" /><label>Worldwide</label>
+                                </div>
+                            </div>
+
+                            <div class="formContainer">
+                                <label>International Trade<br />Are you interested in learning more about international trade?</label>
+                                <div class="formContainer checkbox-container">
+                                    <input type="checkbox" id="cbInterestInternationalTradeYes" value="1" /><label>Yes</label>
+                                </div>
+                                <div class="formContainer checkbox-container">
+                                    <input type="checkbox" id="cbInterestInternationalTradeNo" value="0" /><label>No</label>
+                                </div>
+                            </div>
+
+                            <div class="sectionTitle">Retail and Purchase Location Information</div>
+                            <div class="sectionBlurb">List other retailers or places where your products can be purchased for non-local customers</div>
+                            <div class="formContainer">
+                                <textarea id="txtRetailPurchaseLocation" rows="5" cols="20"></textarea>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section>
+                        <div class="sectionTitle">Section 4: Logo Classification: (select all that apply)</div>
+                        <div class="sectionContent">
+
+                            <div class="formContainer checkbox-container">
+                                <input type="checkbox" id="cbClassGrown" value="1" />
+                                <div class="checkbox-info">
+                                    <div class="sectionContentTitle">NEW MEXICO – Grown with Tradition®</div>
+                                    <div class="sectionBlurb">This classification is used by farmers and ranchers who grow, raise and/or handle produce, nuts, livestock & poultry, meat products, horticultural products, as well as other crops</div>
+                                </div>
+                            </div>
+
+                            <div class="formContainer checkbox-container">
+                                <input type="checkbox" id="cbClassTaste" value="1" />
+                                <div class="checkbox-info">
+                                    <div class="sectionContentTitle">NEW MEXICO – Taste the Tradition®</div>
+                                    <div class="sectionBlurb">This classification is used by manufactures of food and beverage products which are 51% processed, manufactured or made in the State of New Mexico. This includes sauces, seasonings, dried foods, animal products, beverages (alcoholic and non-alcoholic), baked goods, sweets and other foods</div>
+                                </div>
+                            </div>
+
+                            <div class="formContainer checkbox-container">
+                                <input type="checkbox" id="cbClassAssociate" value="1" />
+                                <div class="checkbox-info">
+                                    <div class="sectionContentTitle">NEW MEXICO – Grown with Tradition®/Taste the Tradition® Associate Member</div>
+                                    <div class="sectionBlurb">This classification is used by those whom support New Mexico agriculture and Logo Program members. These include retailers, farmers markets, CSAs and roadside stands who sell three or more Taste/Grown with Tradition products, restaurants who serve dishes that incorporate one or more New Mexico food ingredient, agritourism operations, artisan and crafted products, pet food manufacturers and organizations and associations that support New Mexico agriculture. Note: Any nonfood items must be made in the state for the benefit of New Mexico agriculture and at least 51 % agriculture origin by weight, and that agriculture base must have been grown in New Mexico, unless approved by the Logo Program administrator</div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </section>
+
+                    <section id="sectionTasteGrown" class="clearBoth" style="margin-top: 1em;">
+                        <div class="sectionTitle">Please indicate if your product(s) is(are) or contain(s) any of the following:</div>
+                        <div class="sectionContent">
+                            <div class="formContainer checkbox-container">
+                                <input type="checkbox" id="cbContainsGreenChile" value="1" /><label>Green Chile</label>
+                            </div>
+                            <div class="formContainer checkbox-container">
+                                <input type="checkbox" id="cbContainsRedChile" value="1" /><label>Red Chile</label>
+                            </div>
+                            <div class="formContainer checkbox-container">
+                                <input type="checkbox" id="cbContainsBellPepper" value="1" /><label>Bell Pepper (red, yellow, orange, green)</label>
+                            </div>
+                            <div class="formContainer checkbox-container">
+                                <input type="checkbox" id="cbContains" value="1" /><label>Jalapeno</label>
+                            </div>
+                            <div class="formContainer checkbox-container">
+                                <input type="checkbox" id="cbContainsChiledeArbol" value="1" /><label>Chile de Arbol</label>
+                            </div>
+                            <div class="formContainer checkbox-container">
+                                <input type="checkbox" id="cbContainsCayenne" value="1" /><label>Cayenne</label>
+                            </div>
+                            <div class="formContainer checkbox-container">
+                                <input type="checkbox" id="cbContainsPaprika" value="1" /><label>Paprika</label>
+                            </div>
+                            <div class="formContainer checkbox-container">
+                                <input type="checkbox" id="cbContainsChimayo" value="1" /><label>Chimayo</label>
+                            </div>
+                            <div class="formContainer checkbox-container">
+                                <input type="checkbox" id="cbContainsAncho" value="1" /><label>Ancho</label>
+                            </div>
+                            <div class="formContainer checkbox-container">
+                                <input type="checkbox" id="cbContainsPoblano" value="1" /><label>Poblano</label>
+                            </div>
+                            <div class="formContainer checkbox-container">
+                                <input type="checkbox" id="cbContainsPasillaChile" value="1" /><label>Pasilla Chile</label>
+                            </div>
+                            <div class="formContainer checkbox-container">
+                                <input type="checkbox" id="cbContainsNA" value="1" /><label>Not Applicable</label>
+                            </div>
+                        </div>
+
+                        <div class="sectionTitle">Please indicate if your operation(s) is(are) or include(s) any of the following:</div>
+
+                        <div class="sectionContent">
+                            <div class="formContainer checkbox-container">
+                                <input type="checkbox" id="cbTasteGrownApiary" value="1" /><label>Apiary</label>
+                            </div>
+                            <div class="formContainer checkbox-container">
+                                <input type="checkbox" id="cbTasteGrownDairy" value="1" /><label>Dairy</label>
+                            </div>
+                            <div class="formContainer checkbox-container">
+                                <input type="checkbox" id="cbTasteGrownNursery" value="1" /><label>Nursery</label>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section id="sectionGrown" class="clearBoth" style="margin-top: 1em;">
+                        <hr />
+                        <div class="sectionContentTitle">Logo Classification: NEW MEXICO – Grown with Tradition®</div>
+                        <hr />
+                        <div class="sectionTitle">Grown with Tradition® Products</div>
+                        <div class="sectionBlurb">My products include (select all that apply)</div>
+
+                        <div class="sectionContent">
+                            <div class="sectionTitle">Produce</div>
+                            <div class="formContainer checkbox-container">
+                                <input type="checkbox" id="cbGrownApples" class="cb-parent" value="1" /><label>Apples</label>
+                                <div class="cb-child-container" style="margin-left: 1.5em;"><input type="checkbox" id="cbGrownApplesOrganic" class="cb-child" value="1" /><label>Organic</label></div>
+                            </div>
+                            <div class="formContainer checkbox-container">
+                                <input type="checkbox" id="cbGrownCabbages" class="cb-parent" value="1" /><label>Cabbages</label>
+                                <div class="cb-child-container" style="margin-left: 1.5em;"><input type="checkbox" id="cbGrownCabbagesOrganic" class="cb-child" value="1" /><label>Organic</label></div>
+                            </div>
+                            <div class="formContainer checkbox-container">
+                                <input type="checkbox" id="cbGrownChiles" class="cb-parent" value="1" /><label>Chiles or Peppers</label>
+                                <div class="cb-child-container" style="margin-left: 1.5em;"><input type="checkbox" id="cbGrownChilesOrganic" class="cb-child" value="1" /><label>Organic</label></div>
+                            </div>
+                            <div class="formContainer checkbox-container">
+                                <input type="checkbox" id="cbGrownLettuces" class="cb-parent" value="1" /><label>Lettuces</label>
+                                <div class="cb-child-container" style="margin-left: 1.5em;"><input type="checkbox" id="cbGrownLettucesOrganic" class="cb-child" value="1" /><label>Organic</label></div>
+                            </div>
+                            <div class="formContainer checkbox-container">
+                                <input type="checkbox" id="cbGrownOnions" class="cb-parent" value="1" /><label>Onions</label>
+                                <div class="cb-child-container" style="margin-left: 1.5em;"><input type="checkbox" id="cbGrownOnionsOrganic" class="cb-child" value="1" /><label>Organic</label></div>
+                            </div>
+                            <div class="formContainer checkbox-container">
+                                <input type="checkbox" id="cbGrownPotatoes" class="cb-parent" value="1" /><label>Potatoes</label>
+                                <div class="cb-child-container" style="margin-left: 1.5em;"><input type="checkbox" id="cbGrownPotatoesOrganic" class="cb-child" value="1" /><label>Organic</label></div>
+                            </div>
+                            <div class="formContainer checkbox-container">
+                                <input type="checkbox" id="cbGrownPumpkins" class="cb-parent" value="1" /><label>Pumpkins</label>
+                                <div class="cb-child-container" style="margin-left: 1.5em;"><input type="checkbox" id="cbGrownPumpkinsOrganic" class="cb-child" value="1" /><label>Organic</label></div>
+                            </div>
+                            <div class="formContainer checkbox-container">
+                                <input type="checkbox" id="cbGrownWatermelons" class="cb-parent" value="1" /><label>Watermelons</label>
+                                <div class="cb-child-container" style="margin-left: 1.5em;"><input type="checkbox" id="cbGrownWatermelonsOrganic" class="cb-child" value="1" /><label>Organic</label></div>
+                            </div>
+                            <div class="formContainer checkbox-container">
+                                <input type="checkbox" id="cbGrownPeanuts" class="cb-parent" value="1" /><label>Peanuts</label>
+                                <div class="cb-child-container" style="margin-left: 1.5em;"><input type="checkbox" id="cbGrownPeanutsOrganic" class="cb-child" value="1" /><label>Organic</label></div>
+                            </div>
+                            <div class="formContainer checkbox-container">
+                                <input type="checkbox" id="cbGrownLegumes" class="cb-parent" value="1" /><label>Other Legumes and Beans (e.g. soy, lentils, mesquite & peas)</label>
+                                <div class="cb-child-container" style="margin-left: 1.5em;"><input type="checkbox" id="cbGrownLegumesOrganic" class="cb-child" value="1" /><label>Organic</label></div>
+                            </div>
+                            <div class="formContainer checkbox-container">
+                                <input type="checkbox" id="cbGrownOtherProduce" class="cb-parent" value="1" /><label>Other</label>
+                                <div class="cb-child-container" style="margin-left: 1.5em;">
+                                    <input type="checkbox" id="cbGrownOtherProduceOrganic" class="cb-child" value="1" /><label>Organic</label>
+                                    <input type="text" id="txtGrownOtherProduceText" placeholder="If 'Other', please describe" />
+                                </div>
+                            </div>
+
+                            <div class="sectionTitle">Nuts</div>
+                            <div class="formContainer checkbox-container">
+                                <input type="checkbox" id="cbGrownPecans" class="cb-parent" value="1" /><label>Pecans</label>
+                                <div class="cb-child-container" style="margin-left: 1.5em;"><input type="checkbox" id="cbGrownPecansOrganic" class="cb-child" value="1" /><label>Organic</label></div>
+                            </div>
+                            <div class="formContainer checkbox-container">
+                                <input type="checkbox" id="cbGrownPistachios" class="cb-parent" value="1" /><label>Pistachios</label>
+                                <div class="cb-child-container" style="margin-left: 1.5em;"><input type="checkbox" id="cbGrownPistachiosOrganic" class="cb-child" value="1" /><label>Organic</label></div>
+                            </div>
+                            <div class="formContainer checkbox-container">
+                                <input type="checkbox" id="cbGrownPinon" class="cb-parent" value="1" /><label>Pinon (Pine Nuts)</label>
+                                <div class="cb-child-container" style="margin-left: 1.5em;"><input type="checkbox" id="cbGrownPinonOrganic" class="cb-child" value="1" /><label>Organic</label></div>
+                            </div>
+                            <div class="formContainer checkbox-container">
+                                <input type="checkbox" id="cbGrownOtherNuts" class="cb-parent" value="1" /><label>Other</label>
+                                <div class="cb-child-container" style="margin-left: 1.5em;">
+                                    <input type="checkbox" id="cbGrownOtherNutsOrganic" class="cb-child" value="1" /><label>Organic</label>
+                                    <input type="text" id="txtGrownOtherNutsText" placeholder="If 'Other', please describe" />
+                                </div>
+                            </div>
+
+                            <div class="sectionTitle">Livestock and Poultry</div>
+                            <div class="formContainer checkbox-container">
+                                <input type="checkbox" id="cbGrownCattle" class="cb-parent" value="1" /><label>Cattle</label>
+                                <div class="cb-child-container" style="margin-left: 1.5em;">
+                                    <input type="checkbox" id="cbGrownCattleOrganic" class="cb-child" value="1" /><label>Organic</label>
+                                    <input type="checkbox" id="cbGrownCattleBeef" class="cb-child" value="1" /><label>Beef</label>
+                                    <input type="checkbox" id="cbGrownCattleDairy" class="cb-child" value="1" /><label>Dairy</label>
+                                </div>
+                            </div>
+                            <div class="formContainer checkbox-container">
+                                <input type="checkbox" id="cbGrownPigs" class="cb-parent" value="1" /><label>Pigs</label>
+                                <div class="cb-child-container" style="margin-left: 1.5em;"><input type="checkbox" id="cbGrownPigsOrganic" class="cb-child" value="1" /><label>Organic</label></div>
+                            </div>
+                            <div class="formContainer checkbox-container">
+                                <input type="checkbox" id="cbGrownSheep" class="cb-parent" value="1" /><label>Sheep/Lambs</label>
+                                <div class="cb-child-container" style="margin-left: 1.5em;">
+                                    <input type="checkbox" id="cbGrownSheepConventional" class="cb-child" value="1" /><label>Conventional</label>
+                                    <input type="checkbox" id="cbGrownSheepOrganic" class="cb-child" value="1" /><label>Organic</label>
+                                    <input type="checkbox" id="cbGrownSheepMeat" class="cb-child" value="1" /><label>Meat</label>
+                                    <input type="checkbox" id="cbGrownSheepDairy" class="cb-child" value="1" /><label>Dairy</label>
+                                    <input type="checkbox" id="cbGrownSheepFiber" class="cb-child" value="1" /><label>Fiber</label>
+                                </div>
+                            </div>
+                            <div class="formContainer checkbox-container">
+                                <input type="checkbox" id="cbGrownGoats" class="cb-parent" value="1" /><label>Goats</label>
+                                <div class="cb-child-container" style="margin-left: 1.5em;">
+                                    <input type="checkbox" id="cbGrownGoatsConventional" class="cb-child" value="1" /><label>Conventional</label>
+                                    <input type="checkbox" id="cbGrownGoatsOrganic" class="cb-child" value="1" /><label>Organic</label>
+                                    <input type="checkbox" id="cbGrownGoatsMeat" class="cb-child" value="1" /><label>Meat</label>
+                                    <input type="checkbox" id="cbGrownGoatsDairy" class="cb-child" value="1" /><label>Dairy</label>
+                                    <input type="checkbox" id="cbGrownGoatsFiber" class="cb-child" value="1" /><label>Fiber</label>
+                                </div>
+                            </div>
+                            <div class="formContainer checkbox-container">
+                                <input type="checkbox" id="cbGrownChickens" class="cb-parent" value="1" /><label>Chickens</label>
+                                <div class="cb-child-container" style="margin-left: 1.5em;">
+                                    <input type="checkbox" id="cbGrownChickensOrganic" class="cb-child" value="1" /><label>Organic</label>
+                                    <input type="checkbox" id="cbGrownChickensFreeRange" class="cb-child" value="1" /><label>Free Range</label>
+                                    <input type="checkbox" id="cbGrownChickensMeat" class="cb-child" value="1" /><label>Meat</label>
+                                    <input type="checkbox" id="cbGrownChickensLayer" class="cb-child" value="1" /><label>Layer</label>
+                                </div>
+                            </div>
+                            <div class="formContainer checkbox-container">
+                                <input type="checkbox" id="cbGrownGame" class="cb-parent" value="1" /><label>Game Birds</label>
+                                <div class="cb-child-container" style="margin-left: 1.5em;">
+                                    <input type="checkbox" id="cbGrownGameOrganic" class="cb-child" value="1" /><label>Organic</label>
+                                    <input type="checkbox" id="cbGrownGameFreeRange" class="cb-child" value="1" /><label>Free Range</label>
+                                </div>
+                            </div>
+                            <div class="formContainer checkbox-container">
+                                <input type="checkbox" id="cbGrownBees" class="cb-parent" value="1" /><label>Bees</label>
+                                <div class="cb-child-container" style="margin-left: 1.5em;"><input type="checkbox" id="cbGrownBeesOrganic" class="cb-child" value="1" /><label>Organic</label></div>
+                            </div>
+                            <div class="formContainer checkbox-container">
+                                <input type="checkbox" id="cbGrownOtherLivestock" class="cb-parent" value="1" /><label>Other</label>
+                                <div class="cb-child-container" style="margin-left: 1.5em;">
+                                    <input type="checkbox" id="cbGrownOtherLivestockOrganic" class="cb-child" value="1" /><label>Organic</label>
+                                    <input type="text" id="txtGrownOtherLivestockText" placeholder="If 'Other', please describe" />
+                                </div>
+                            </div>
+
+                            <div class="sectionTitle">Meat Products</div>
+                            <div class="formContainer checkbox-container">
+                                <input type="checkbox" id="cbGrownBeef" class="cb-parent" value="1" /><label>Beef</label>
+                                <div class="cb-child-container" style="margin-left: 1.5em;">
+                                    <input type="checkbox" id="cbGrownBeefOrganic" class="cb-child" value="1" /><label>Organic</label>
+                                    <input type="checkbox" id="cbGrownBeefGrassFed" class="cb-child" value="1" /><label>Grass Fed</label>
+                                </div>
+                            </div>
+                            <div class="formContainer checkbox-container">
+                                <input type="checkbox" id="cbGrownPork" class="cb-parent" value="1" /><label>Pork</label>
+                                <div class="cb-child-container" style="margin-left: 1.5em;"><input type="checkbox" id="cbGrownPorkOrganic" class="cb-child" value="1" /><label>Organic</label></div>
+                            </div>
+                            <div class="formContainer checkbox-container">
+                                <input type="checkbox" id="cbGrownLamb" class="cb-parent" value="1" /><label>Lamb</label>
+                                <div class="cb-child-container" style="margin-left: 1.5em;"><input type="checkbox" id="cbGrownLambOrganic" class="cb-child" value="1" /><label>Organic</label></div>
+                            </div>
+                            <div class="formContainer checkbox-container">
+                                <input type="checkbox" id="cbGrownPoultry" class="cb-parent" value="1" /><label>Poultry</label>
+                                <div class="cb-child-container" style="margin-left: 1.5em;">
+                                    <input type="checkbox" id="cbGrownPoultryOrganic" class="cb-child" value="1" /><label>Organic</label>
+                                    <input type="checkbox" id="cbGrownPoultryFreeRange" class="cb-child" value="1" /><label>Free Range</label>
+                                </div>
+                            </div>
+                            <div class="formContainer checkbox-container">
+                                <input type="checkbox" id="cbGrownOtherMeat" class="cb-parent" value="1" /><label>Other</label>
+                                <div class="cb-child-container" style="margin-left: 1.5em;">
+                                    <input type="checkbox" id="cbGrownOtherMeatOrganic" class="cb-child" value="1" /><label>Organic</label>
+                                    <input type="text" id="txtGrownOtherMeatText" placeholder="If 'Other', please describe" />
+                                </div>
+                            </div>
+
+                            <div class="sectionTitle">Horticulture</div>
+                            <div class="formContainer checkbox-container">
+                                <input type="checkbox" id="cbGrownNursery" value="1" /><label>Nursery/ies</label>
+                            </div>
+                            <div class="formContainer checkbox-container">
+                                <input type="checkbox" id="cbGrownGreenhouse" value="1" /><label>Greenhouse(s)</label>
+                            </div>
+                            <div class="formContainer checkbox-container">
+                                <input type="checkbox" id="GrownOtherHorticulture" class="cb-parent" value="1" /><label>Other Horticultural Operation</label>
+                                <div class="cb-child-container" style="margin-left: 1.5em;">
+                                    <input type="text" id="cbGrownOtherHorticultureText" placeholder="If 'Other', please describe" />
+                                </div>
+                            </div>
+
+                            <div class="sectionTitle">Other Crops</div>
+                            <div class="formContainer checkbox-container">
+                                <input type="checkbox" id="cbGrownGrains" class="cb-parent" value="1" /><label>Grains</label>
+                                <div class="cb-child-container" style="margin-left: 1.5em;"><input type="checkbox" id="cbGrownGrainsOrganic" class="cb-child" value="1" /><label>Organic</label></div>
+                            </div>
+                            <div class="formContainer checkbox-container">
+                                <input type="checkbox" id="cbGrownFiber" class="cb-parent" value="1" /><label>Fiber</label>
+                                <div class="cb-child-container" style="margin-left: 1.5em;"><input type="checkbox" id="cbGrownFiberOrganic" class="cb-child" value="1" /><label>Organic</label></div>
+                            </div>
+                            <div class="formContainer checkbox-container">
+                                <input type="checkbox" id="cbGrownLavender" class="cb-parent" value="1" /><label>Lavender</label>
+                                <div class="cb-child-container" style="margin-left: 1.5em;"><input type="checkbox" id="cbGrownLavenderOrganic" class="cb-child" value="1" /><label>Organic</label></div>
+                            </div>
+                            <div class="formContainer checkbox-container">
+                                <input type="checkbox" id="cbGrownHemp" class="cb-parent" value="1" /><label>Hemp</label>
+                                <div class="cb-child-container" style="margin-left: 1.5em;"><input type="checkbox" id="cbGrownHempOrganic" class="cb-child" value="1" /><label>Organic</label></div>
+                            </div>
+                            <div class="formContainer checkbox-container">
+                                <input type="checkbox" id="cbGrownMushrooms" class="cb-parent" value="1" /><label>Mushrooms</label>
+                                <div class="cb-child-container" style="margin-left: 1.5em;"><input type="checkbox" id="cbGrownMushroomsOrganic" class="cb-child" value="1" /><label>Organic</label></div>
+                            </div>
+                            <div class="formContainer checkbox-container">
+                                <input type="checkbox" id="cbGrownFeed" class="cb-parent" value="1" /><label>Feed, Forage, Animal Nutrition</label>
+                                <div class="cb-child-container" style="margin-left: 1.5em;"><input type="checkbox" id="cbGrownFeedOrganic" class="cb-child" value="1" /><label>Organic</label></div>
+                            </div>
+                            <div class="formContainer checkbox-container">
+                                <input type="checkbox" id="cbGrownSeeds" class="cb-parent" value="1" /><label>Seeds</label>
+                                <div class="cb-child-container" style="margin-left: 1.5em;"><input type="checkbox" id="cbGrownSeedsOrganic" class="cb-child" value="1" /><label>Organic</label></div>
+                            </div>
+                            <div class="formContainer checkbox-container">
+                                <input type="checkbox" id="cbGrownOtherCrops" class="cb-parent" value="1" /><label>Any other crop not mentioned above</label>
+                                <div class="cb-child-container" style="margin-left: 1.5em;">
+                                    <input type="checkbox" id="cbGrownOtherCropsOrganic" class="cb-child" value="1" /><label>Organic</label>
+                                    <input type="text" id="txtGrownOtherCropsText" placeholder="If 'Other', please describe" />
+                                </div>
+                            </div>
+
+                            <div class="sectionTitle">My activities for the product(s) indicated above include (select all that apply): </div>
+                            <div class="formContainer checkbox-container">
+                                <div class="formContainer checkbox-container">
+                                    <input type="checkbox" id="cbGrownActivityGrowing" value="1" /><label>Growing/Raising for Wholesale</label>
+                                </div>
+                                <div class="formContainer checkbox-container">
+                                    <input type="checkbox" id="cbGrownActivityPacking" value="1" /><label>Packing/Shipping</label>
+                                </div>
+                                <div class="formContainer checkbox-container">
+                                    <input type="checkbox" id="cbGrownActivityProcessing" value="1" /><label>Processing/Manufacturing</label>
+                                </div>
+                                <div class="formContainer checkbox-container">
+                                    <input type="checkbox" id="cbGrownActivityCoPacking" value="1" /><label>Co-Packing</label>
+                                </div>
+                                <div class="formContainer checkbox-container">
+                                    <input type="checkbox" id="cbGrownActivityDistributing" value="1" /><label>Distributing</label>
+                                </div>
+                                <div class="formContainer checkbox-container">
+                                    <input type="checkbox" id="cbGrownActivityInPerson" value="1" /><label>In-person Retailing/Farm Stand/CSA or Other Direct-to-Consumer Sales</label>
+                                </div>
+                                <div class="formContainer checkbox-container">
+                                    <input type="checkbox" id="cbGrownActivityOnline" value="1" /><label>Online Retailing (No Third-Parties)</label>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section id="sectionTaste" class="clearBoth" style="margin-top: 1em;">
+                        <hr />
+                        <div class="sectionContentTitle">Logo Classification: NEW MEXICO – Taste the Tradition®</div>
+                        <hr />
+                        <div class="sectionTitle">Taste the Tradition® Products</div>
+                        <div class="sectionBlurb">My products include (select all that apply)</div>
+
+                        <div class="sectionContent">
+                            <div class="sectionTitle">Sauces and Seasonings</div>
+                            <div class="formContainer checkbox-container">
+                                <div class="formContainer checkbox-container">
+                                    <input type="checkbox" id="cbTasteSalsas" value="1" /><label>Salsas</label>
+                                </div>
+                                <div class="formContainer checkbox-container">
+                                    <input type="checkbox" id="cbTasteProcessedChiles" value="1" /><label>Processed Chiles</label>
+                                </div>
+                                <div class="formContainer checkbox-container">
+                                    <input type="checkbox" id="cbTasteHotSauces" value="1" /><label>Hot Sauces</label>
+                                </div>
+                                <div class="formContainer checkbox-container">
+                                    <input type="checkbox" id="cbTasteCondiments" value="1" /><label>Condiments</label>
+                                </div>
+                                <div class="formContainer checkbox-container">
+                                    <input type="checkbox" id="cbTasteSpices" value="1" /><label>Spices & Rubs</label>
+                                </div>
+                                <div class="formContainer checkbox-container">
+                                    <input type="checkbox" id="cbTasteBBQSauces" value="1" /><label>BBQ Sauces</label>
+                                </div>
+                                <div class="formContainer checkbox-container">
+                                    <input type="checkbox" id="cbTasteMarinades" value="1" /><label>Marinades & Dressings</label>
+                                </div>
+                                <div class="formContainer checkbox-container">
+                                    <input type="checkbox" id="cbTasteOtherSauces" class="cb-parent" value="1" /><label>Other</label>
+                                    <div class="cb-child-container" style="margin-left: 1.5em;">
+                                        <input type="text" id="txtTasteOtherSaucesText" placeholder="If 'Other', please describe" />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="sectionTitle">Dried foods</div>
+                            <div class="formContainer checkbox-container">
+                                <div class="formContainer checkbox-container">
+                                    <input type="checkbox" id="cbTasteDriedMixes" value="1" /><label>Dried Mixes</label>
+                                </div>
+                                <div class="formContainer checkbox-container">
+                                    <input type="checkbox" id="cbTasteDriedFruits" value="1" /><label>Dried Fruits</label>
+                                </div>
+                                <div class="formContainer checkbox-container">
+                                    <input type="checkbox" id="cbTasteBlueCorn" value="1" /><label>Blue Corn & Blue Corn Products</label>
+                                </div>
+                                <div class="formContainer checkbox-container">
+                                    <input type="checkbox" id="cbTasteOtherDried" class="cb-parent" value="1" /><label>Other</label>
+                                    <div class="cb-child-container" style="margin-left: 1.5em;">
+                                        <input type="text" id="txtTasteOtherDriedText" placeholder="If 'Other', please describe" />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="sectionTitle">Animal Products</div>
+                            <div class="formContainer">
+                                <div class="formContainer checkbox-container">
+                                    <input type="checkbox" id="cbTasteMeat" value="1" /><label>Meat Products</label>
+                                </div>
+                                <div class="formContainer checkbox-container">
+                                    <input type="checkbox" id="cbTasteDairy" value="1" /><label>Dairy Products</label>
+                                </div>
+                                <div class="formContainer checkbox-container">
+                                    <input type="checkbox" id="cbTasteEggs" value="1" /><label>Eggs</label>
+                                </div>
+                                <div class="formContainer checkbox-container">
+                                    <input type="checkbox" id="cbTasteHoney" value="1" /><label>Honey</label>
+                                </div>
+                                <div class="formContainer checkbox-container">
+                                    <input type="checkbox" id="cbTasteOtherAnimal" class="cb-parent" value="1" /><label>Other</label>
+                                    <div class="cb-child-container" style="margin-left: 1.5em;">
+                                        <input type="text" id="txtTasteOtherAnimalText" placeholder="If 'Other', please describe" />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="sectionTitle">Beverages</div>
+                            <div class="formContainer">
+                                <div class="formContainer checkbox-container">
+                                    <input type="checkbox" id="cbTasteWines" value="1" /><label>Wines</label>
+                                </div>
+                                <div class="formContainer checkbox-container">
+                                    <input type="checkbox" id="cbTasteBeers" value="1" /><label>Beers</label>
+                                </div>
+                                <div class="formContainer checkbox-container">
+                                    <input type="checkbox" id="cbTasteSpirits" value="1" /><label>Spirits</label>
+                                </div>
+                                <div class="formContainer checkbox-container">
+                                    <input type="checkbox" id="cbTasteCiders" value="1" /><label>Ciders</label>
+                                </div>
+                                <div class="formContainer checkbox-container">
+                                    <input type="checkbox" id="cbTasteSodas" value="1" /><label>Sodas</label>
+                                </div>
+                                <div class="formContainer checkbox-container">
+                                    <input type="checkbox" id="cbTasteCoffees" value="1" /><label>Coffees</label>
+                                </div>
+                                <div class="formContainer checkbox-container">
+                                    <input type="checkbox" id="cbTasteKombuchas" value="1" /><label>Kombuchas</label>
+                                </div>
+                                <div class="formContainer checkbox-container">
+                                    <input type="checkbox" id="cbTasteOtherBeverages" class="cb-parent" value="1" /><label>Other</label>
+                                    <div class="cb-child-container" style="margin-left: 1.5em;">
+                                        <input type="text" id="txtTasteOtherBeveragesText" placeholder="If 'Other', please describe" />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="sectionTitle">Baked Goods/Sweets</div>
+                            <div class="formContainer">
+                                <div class="formContainer checkbox-container">
+                                    <input type="checkbox" id="cbTasteBreads" value="1" /><label>Breads & Pastries</label>
+                                </div>
+                                <div class="formContainer checkbox-container">
+                                    <input type="checkbox" id="cbTasteBakedGoods" value="1" /><label>Baked Goods</label>
+                                </div>
+                                <div class="formContainer checkbox-container">
+                                    <input type="checkbox" id="cbTasteConfectionaries" value="1" /><label>Confectionaries</label>
+                                </div>
+                                <div class="formContainer checkbox-container">
+                                    <input type="checkbox" id="cbTasteJams" value="1" /><label>Jams, Jellies, and Preserves</label>
+                                </div>
+                                <div class="formContainer checkbox-container">
+                                    <input type="checkbox" id="cbTasteSyrups" value="1" /><label>Syrups</label>
+                                </div>
+                                <div class="formContainer checkbox-container">
+                                    <input type="checkbox" id="cbTasteOtherSweets" class="cb-parent" value="1" /><label>Other</label>
+                                    <div class="cb-child-container" style="margin-left: 1.5em;">
+                                        <input type="text" id="txtTasteOtherSweetsText" placeholder="If 'Other', please describe" />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="sectionTitle">Other Taste the Tradition® Eligible Foods</div>
+                            <div class="formContainer">
+                                <div class="formContainer checkbox-container">
+                                    <input type="checkbox" id="cbTasteNewMexicanFood" value="1" /><label>New Mexican Food Entrees</label>
+                                </div>
+                                <div class="formContainer checkbox-container">
+                                    <input type="checkbox" id="cbTasteSnackFoods" value="1" /><label>Snack Foods</label>
+                                </div>
+                                <div class="formContainer checkbox-container">
+                                    <input type="checkbox" id="cbTasteCannedGoods" value="1" /><label>Canned Goods</label>
+                                </div>
+                                <div class="formContainer checkbox-container">
+                                    <input type="checkbox" id="cbTasteFrozenGoods" value="1" /><label>Frozen Goods</label>
+                                </div>
+                                <div class="formContainer checkbox-container">
+                                    <input type="checkbox" id="cbTasteOtherFoods" class="cb-parent" value="1" /><label>Other</label>
+                                    <div class="cb-child-container" style="margin-left: 1.5em;">
+                                        <input type="text" id="txtTasteOtherFoodsText" placeholder="If 'Other', please describe" />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="sectionTitle">My activities for the product(s) indicated above include (select all that apply): </div>
+                            <div class="formContainer">
+                                <div class="formContainer checkbox-container">
+                                    <input type="checkbox" id="cbTasteActivityManufacturing" value="1" /><label>Manufacturing for Sale by Other Retailers</label>
+                                </div>
+                                <div class="formContainer checkbox-container">
+                                    <input type="checkbox" id="cbTasteActivityRetailing" value="1" /><label>Retailing/Direct-to-Consumer Sales</label>
+                                </div>
+                                <div class="formContainer checkbox-container">
+                                    <input type="checkbox" id="cbTasteActivityOnline" value="1" /><label>Online Retailing (No Third-Parties)</label>
+                                </div>
+                                <div class="formContainer checkbox-container">
+                                    <input type="checkbox" id="cbTasteActivityRestaurant" value="1" /><label>Tasting Room/Restaurant</label>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section id="sectionAssociate" class="clearBoth" style="margin-top: 1em;">
+                        <hr />
+                        <div class="sectionContentTitle">Logo Classification: NEW MEXICO – Grown with Tradition®/Taste the Tradition® Associate Member</div>
+                        <hr />
+                        <div class="sectionTitle">If You Selected NEW MEXICO – Grown with Tradition®/Taste the Tradition® Associate Member</div>
+                        <div class="sectionBlurb">Please select one or more of the following:</div>
+
+                        <div class="sectionContent">
+                            <div class="formContainer checkbox-container">
+                                <input type="checkbox" id="cbAssociateInPerson" value="1" /><label>In-Person Retailer, Farmers Market, CSA or Roadside Stand</label>
+                            </div>
+                            <div class="formContainer checkbox-container">
+                                <input type="checkbox" id="cbAssociateOnline" value="1" /><label>Online Retailer</label>
+                            </div>
+                            <div class="formContainer checkbox-container">
+                                <input type="checkbox" id="cbAssociateRestaurant" value="1" /><label>Restaurant</label>
+                            </div>
+                            <div class="formContainer checkbox-container">
+                                <input type="checkbox" id="cbAssociateTourism" value="1" /><label>Agri-Tourism Operations</label>
+                            </div>
+                            <div class="formContainer checkbox-container">
+                                <input type="checkbox" id="cbAssociateArtisan" value="1" /><label>Makers of Artisan or Crafted Products</label>
+                            </div>
+                            <div class="formContainer checkbox-container">
+                                <input type="checkbox" id="cbAssociatePet" value="1" /><label>Pet Food and/or Pet Item Manufacturers</label>
+                            </div>
+                            <div class="formContainer checkbox-container">
+                                <input type="checkbox" id="cbAssociateEducational" value="1" /><label>Educational or Research Institute</label>
+                            </div>
+                            <div class="formContainer checkbox-container">
+                                <input type="checkbox" id="cbAssociateNonProfit" value="1" /><label>Other Non-Profit, Non-Governmental or Governmental Associations or Organizations</label>
+                            </div>
+                            <div class="formContainer checkbox-container">
+                                <input type="checkbox" id="cbAssociateOther" class="cb-parent" value="1" /><label>Other (please specify)</label>
+                                <div class="cb-child-container" style="margin-left: 1.5em;">
+                                    <input type="text" id="txtAssociateOther" placeholder="If 'Other', please describe" />
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="clearBoth" style="margin-top: 1em;">
+
+                        <div class="sectionTitle" style="margin-top: 1em;">Section 5: Applicant Acknowledgements and Agreements</div>
+                        <div class="sectionBlurb">By checking the following boxes, I agree to the following terms and acknowledge the following statements are true.</div>
+
+                        <div class="sectionContentTitle" style="margin-top: 1em;">License</div>
+
+                        <div class="formContainer checkbox-container">
+                            <input type="checkbox" id="cbAgreeFairUse" name="cbAgreeFairUse" value="1" required />
+                            <div class="checkbox-info">You grant the New Mexico Department of Agriculture, the Taste the Tradition/Grown with Tradition program a royalty-free license to publish information, materials, photographs of program members (collectively, Material) or any combination thereof on its website, social media platforms, in advertisements and in promotional or other materials. The Material may also include information found on my business or company’s website, information submitted by my business or company to Taste the Tradition/Grown with Tradition, and/or any other information found from other sources related to my business or company or product</div>
+                        </div>
+
+                        <div class="sectionContentTitle">Use Permit</div>
+
+                        <div class="formContainer checkbox-container">
+                            <input type="checkbox" id="cbAgreeUsePermit" name="cbAgreeUsePermit" value="1" required />
+                            <div class="checkbox-info">I release the NMDA, Taste the Tradition/Grown with Tradition logo program, from liability for the use of the Material in connection with Taste the Tradition/Grown with Tradition.</div>
+                        </div>
+
+                        <div class="sectionContentTitle">Comply</div>
+
+                        <div class="formContainer checkbox-container">
+                            <input type="checkbox" id="cbAgreeComply" name="cbAgreeComply" value="1" required />
+                            <div class="checkbox-info">As a Logo Program member, I will comply with all city, county, state and federal laws, ordinances and regulations.</div>
+                        </div>
+
+                        <div class="sectionContentTitle">Answered Truthfully</div>
+
+                        <div class="formContainer checkbox-container">
+                            <input type="checkbox" id="cbAgreeAnsweredTruthfully" name="cbAgreeAnsweredTruthfully" value="1" required />
+                            <div class="checkbox-info">I have carefully read the application and have answered all questions truthfully, fully and completely. </div>
+                        </div>
+
+                        <div class="sectionContentTitle">Non-Disparagement Clause</div>
+
+                        <div class="formContainer checkbox-container">
+                            <input type="checkbox" id="cbAgreeNonDisparagement" name="cbAgreeNonDisparagement" value="1" required />
+                            <div class="checkbox-info">As a Logo Program member, I agree that my company and its representatives will not disparage the mission of the Logo Program.</div>
+                        </div>
+
+                        <div class="sectionContentTitle">Fits Qualifications</div>
+
+                        <div class="formContainer checkbox-container">
+                            <input type="checkbox" id="cbAgreeFitsQualifications" name="cbAgreeFitsQualifications" value="1" required />
+                            <div class="checkbox-info">I attest that my product(s) fit(s) the qualifications of the program for which I am applying.</div>
+                        </div>
+
+                        <div class="sectionContentTitle">Misrepresentation Responsibility</div>
+
+                        <div class="formContainer checkbox-container">
+                            <input type="checkbox" id="cbAgreeMisrepresentation" name="cbAgreeMisrepresentation" value="1" required />
+                            <div class="checkbox-info">I acknowledge that any misrepresentation of products or operations in order to falsely obtain membership in the Logo Program is solely my responsibility. Furthermore, all resulting liability from any such misrepresentations is solely my responsibility.</div>
+                        </div>
+
+                        <div class="sectionContentTitle">Random Checks</div>
+
+                        <div class="formContainer checkbox-container">
+                            <input type="checkbox" id="cbAgreeRandomChecks" name="cbAgreeRandomChecks" value="1" required />
+                            <div class="checkbox-info">I agree to allow the Logo Program administrator and the administrator’s designees to conduct random checks, during normal business hours, of my business to view my operations, products, and documentation to ensure program guidelines are being followed.</div>
+                        </div>
+
+                        <div class="formContainer">
+                            <div class="width50">
+                                <div class="formContainer">
+                                    <label>Signature</label>
+                                    <input type="text" id="txtSignature" required />
+                                </div>
+                            </div>
+                            <div class="width50">
+                                <div class="formContainer">
+                                    <label>Date</label>
+                                    <input type="date" id="txtSignatureDate" required />
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <div class="formContainer" style="margin-top: 1em;">
+                        <input type="button" id="btnSubmit" value="Submit" />
+                        <input type="hidden" id="hidBusinessId" />
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </body>
+</html>
