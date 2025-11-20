@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>NMDA</title>
+    <link href="css/kendo/kendo.common.min.css" rel="stylesheet" />
+    <link href="css/kendo/kendo.default.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="css/StyleSheet.css" />
+    <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+
+    <script type="text/javascript" src="js/jquery-1.12.0.min.js"></script>
+    <script src="js/kendo.all.min.js"></script>
+    <script src="https://cdn.rtsclients.com/utils/js/validate.js"></script>
+    <script src="https://polyfill.io/v3/polyfill.min.js?flags=gated&callback=initialize&features=es2015%2Ces2016%2Ces2017"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/luxon/3.3.0/luxon.min.js" integrity="sha512-KKbQg5o92MwtJKR9sfm/HkREzfyzNMiKPIQ7i7SZOxwEdiNCm4Svayn2DBq7MKEdrqPJUOSIpy1v6PpFlCQ0YA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <script src="js/utils.js"></script>
+    <script src="js/common.js"></script>
+    <script src="js/default.js"></script>
+</head>
+<body>
+    <div class="content-container">
+        <div>
+            <div class="clearBoth">
+                <div class="width25" style="display: none;">
+                    <div class="formContainer">
+                        <label>Filter by Product Category</label>
+                        <select class="search" id="category">
+                            <option value="">Select a Category</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="width33">
+                    <div class="formContainer">
+                        <label>Filter by Group Type</label>
+                        <select class="search" id="groupType">
+                            <option value="">Select a Group Type</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="width33">
+                    <div class="formContainer">
+                        <label>Search</label>
+                        <input type="text" class="search" id="search" />
+                    </div>
+                </div>
+            </div>
+            <div>
+                <script type="text/x-kendo-template" id="template">
+                    <div class="company-block company">
+                        <div class="company-name">#:CompanyName#</div>
+                        <div class="company-contact">Contact: #:FirstName# #:LastName#</div>
+                        <div class="company-phone">#:Phone#</div>
+                        # if (Email != 'null' && Email != '' && Email != null) { #
+                        <div class="company-email"><a href="mailto: #:Email#" target="_blank">#:Email#</a></div>
+                        # } #
+                        # if (Website != 'null' && Website != '' && Website != null) { #
+                        <div class="company-website"><a href="http://#:Website#" target="_blank">#:Website#</a></div>
+                        # } #
+                        <div class="company-address1">#:Address1#</div>
+                        # if (Address2 != 'null' && Address2 != '' && Address2 != null) { #
+                        <div class="company-address2">#:Address2#</div>
+                        # } #
+                        <div class="company-address">#:City#, #:State# #:Zip#</div>
+                        <div class="product-type">Product Types: #:ProductType#</div>
+                    </div>
+                </script>
+
+                <div id="lvCompanies"></div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

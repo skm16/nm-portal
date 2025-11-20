@@ -1,0 +1,14 @@
+{
+  "version": "1.0",
+  "defaultProvider": "cdnjs",
+  "libraries": [
+    {
+      "library": "luxon@1.25.0",
+      "destination": "js/luxon/"
+    },
+    {
+      "library": "luxon@3.3.0",
+      "destination": "js/luxon/"
+    }
+  ]
+}
