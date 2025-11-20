@@ -16,7 +16,18 @@
       "Bash(\"C:\\wp-cli\\wp.bat\" nmda migrate users --dry-run --debug)",
       "Bash(\"C:\\wp-cli\\wp.bat\" nmda migrate users --dry-run)",
       "Bash(\"C:\\wp-cli\\wp.bat\" db query \"SELECT entity_type, COUNT(*) as count FROM wp_nmda_id_mapping GROUP BY entity_type;\" --skip-column-names)",
-      "Bash(\"C:\\wp-cli\\wp.bat\" nmda migrate relationships --execute)"
+      "Bash(\"C:\\wp-cli\\wp.bat\" nmda migrate relationships --execute)",
+      "Bash(\"C:\\wp-cli\\wp.bat\" db query \"SHOW CREATE TABLE wp_nmda_user_business;\" --skip-column-names)",
+      "Bash(\"C:\\wp-cli\\wp.bat\" db query \"SHOW CREATE TABLE wp_nmda_business_addresses;\" --skip-column-names)",
+      "Bash(\"C:\\wp-cli\\wp.bat\" db query \"SHOW CREATE TABLE wp_nmda_reimbursements;\" --skip-column-names)",
+      "Bash(\"C:\\wp-cli\\wp.bat\" db query \"SHOW CREATE TABLE wp_nmda_id_mapping;\" --skip-column-names)",
+      "Bash(\"C:\\wp-cli\\wp.bat\" nmda import businesses --dry-run)",
+      "Bash(php:*)",
+      "Bash(del test-regex-debug.php test-full-parse.php)",
+      "Bash(tr:*)",
+      "Bash(wp post list:*)",
+      "Bash(\"C:\\wp-cli\\wp.bat\" post meta list 2 --keys=related_company,owner_wp_user,external_business_id)",
+      "Bash(\"C:\\wp-cli\\wp.bat\" eval-file diagnose-relationships.php)"
     ],
     "deny": [],
     "ask": []

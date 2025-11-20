@@ -85,7 +85,7 @@ add_action( 'wp_enqueue_scripts', 'nmda_enqueue_scripts' );
  * Load core modules
  */
 require_once NMDA_THEME_DIR . '/inc/setup.php';
-require_once NMDA_THEME_DIR . '/inc/custom-post-types.php';
+//require_once NMDA_THEME_DIR . '/inc/custom-post-types.php';
 require_once NMDA_THEME_DIR . '/inc/user-management.php';
 require_once NMDA_THEME_DIR . '/inc/business-management.php';
 require_once NMDA_THEME_DIR . '/inc/reimbursements.php';
@@ -93,7 +93,7 @@ require_once NMDA_THEME_DIR . '/inc/resources.php';
 require_once NMDA_THEME_DIR . '/inc/api-integrations.php';
 require_once NMDA_THEME_DIR . '/inc/database-schema.php';
 require_once NMDA_THEME_DIR . '/inc/acf-field-groups.php';
-require_once NMDA_THEME_DIR . '/inc/product-taxonomy.php';
+//require_once NMDA_THEME_DIR . '/inc/product-taxonomy.php';
 require_once NMDA_THEME_DIR . '/inc/application-forms.php';
 require_once NMDA_THEME_DIR . '/inc/admin-approval.php';
 require_once NMDA_THEME_DIR . '/inc/admin-reimbursements.php';
