@@ -312,6 +312,13 @@ if (defined('WP_CLI') && WP_CLI) {
 
             require_once ABSPATH . 'wp-admin/includes/upgrade.php';
             dbDelta($sql);
+
+            // Harden against existing tables that may be missing the legacy_business_id column
+            $columns = $wpdb->get_col("SHOW COLUMNS FROM {$table}", 0);
+            if (!in_array('legacy_business_id', $columns, true)) {
+                $wpdb->query("ALTER TABLE {$table} ADD COLUMN legacy_business_id varchar(191) NOT NULL AFTER business_id");
+                $wpdb->query("ALTER TABLE {$table} ADD KEY legacy_business_id (legacy_business_id)");
+            }
         }
 
         /**
@@ -704,6 +711,13 @@ if (defined('WP_CLI') && WP_CLI) {
 
         public function import_addresses($args, $assoc_args) {
             global $wpdb;
+            if (!($wpdb instanceof wpdb)) {
+                $wpdb = $GLOBALS['wpdb'] ?? null;
+            }
+
+            if (!($wpdb instanceof wpdb)) {
+                WP_CLI::error('Global $wpdb is not initialized. Ensure WordPress is loaded before running this command.');
+            }
             $this->dry_run = ! isset($assoc_args['execute']);
             $this->ensure_idmap_table();
 
@@ -727,6 +741,10 @@ if (defined('WP_CLI') && WP_CLI) {
 
             // Track primary address selection per legacy business
             $primary_assigned = array();
+
+            // Collect addresses per business so we can mirror them into ACF fields
+            $addresses_by_business = array();
+            $primary_fields        = array();
 
             // Discover available columns so we can safely map optional legacy fields
             $columns         = $wpdb->get_col("SHOW COLUMNS FROM {$table}", 0);
@@ -767,7 +785,6 @@ if (defined('WP_CLI') && WP_CLI) {
                 }
 
                 if (!$parent_post_id) { $missing_parent++; continue; }
-                if ($this->dry_run) { $inserted++; continue; }
 
                 // Heuristics for marking a primary address per business
                 $is_primary   = 0;
@@ -789,6 +806,42 @@ if (defined('WP_CLI') && WP_CLI) {
 
                     $primary_assigned[$legacy_bid] = true;
                 }
+
+                // Build ACF-friendly payloads
+                if (!$this->dry_run) {
+                    $acf_location = array(
+                        'location_name' => $row['AddressName']   ?? '',
+                        'address'       => $row['Address']       ?? '',
+                        'address_2'     => $row['Address2']      ?? '',
+                        'city'          => $row['City']          ?? '',
+                        'state'         => $row['State']         ?? '',
+                        'zip'           => $row['Zip']           ?? '',
+                        'location_type' => $this->map_location_type($address_type, $category),
+                        'phone'         => $row['Phone']         ?? '',
+                        'email'         => strtolower(trim($row['Email'] ?? '')),
+                        'county'        => $row['County']        ?? '',
+                        'country'       => $row['Country']       ?? 'USA',
+                    );
+
+                    $addresses_by_business[$parent_post_id][] = $acf_location;
+
+                    // Capture primary address fields for the business
+                    if ($is_primary && !isset($primary_fields[$parent_post_id])) {
+                        $primary_fields[$parent_post_id] = array(
+                            'primary_address'          => $row['Address']   ?? '',
+                            'primary_address_2'        => $row['Address2']  ?? '',
+                            'primary_city'             => $row['City']      ?? '',
+                            'primary_state'            => $row['State']     ?? 'NM',
+                            'primary_zip'              => $row['Zip']       ?? '',
+                            'primary_county'           => $row['County']    ?? '',
+                            'primary_address_type'     => $this->map_primary_address_type($address_type, $category, $row),
+                            'reservation_instructions' => $row['Reservation'] ?? '',
+                            'other_instructions'       => $row['Other'] ?? '',
+                        );
+                    }
+                }
+
+                if ($this->dry_run) { $inserted++; continue; }
 
                 $data = array(
                     'business_id'    => (int)$parent_post_id,
@@ -825,9 +878,77 @@ if (defined('WP_CLI') && WP_CLI) {
             }
 
             $progress->finish();
+
+            // Mirror imported addresses into ACF fields
+            if (!$this->dry_run) {
+                foreach ($addresses_by_business as $business_post_id => $locations) {
+                    if (empty($business_post_id)) { continue; }
+
+                    // Primary address fields
+                    if (!empty($primary_fields[$business_post_id])) {
+                        foreach ($primary_fields[$business_post_id] as $meta_key => $meta_value) {
+                            update_post_meta($business_post_id, $meta_key, $meta_value);
+                        }
+                    }
+
+                    // Extra locations repeater
+                    if (function_exists('update_field')) {
+                        update_field('extra_locations', array_values($locations), $business_post_id);
+                    } else {
+                        update_post_meta($business_post_id, 'extra_locations', $locations);
+                    }
+                }
+            }
+
             WP_CLI::success(sprintf('%s: inserted=%d, backfilled_businesses=%d, missing_parent=%d, skipped=%d',
                 $this->dry_run ? 'Dry-run' : 'Done', $inserted, $backfilled, $missing_parent, $skipped
             ));
+        }
+
+        /**
+         * Map legacy address types into the newer location_type options.
+         */
+        private function map_location_type($address_type, $category) {
+            $source = strtolower(trim(($address_type ?: '') . ' ' . ($category ?: '')));
+
+            $map = array(
+                'mail'      => 'mailing',
+                'shipping'  => 'shipping',
+                'billing'   => 'billing',
+                'warehouse' => 'warehouse',
+                'retail'    => 'retail',
+                'store'     => 'retail',
+                'office'    => 'office',
+            );
+
+            foreach ($map as $needle => $value) {
+                if (strpos($source, $needle) !== false) {
+                    return $value;
+                }
+            }
+
+            return 'physical';
+        }
+
+        /**
+         * Map primary address visibility/type to ACF select values.
+         */
+        private function map_primary_address_type($address_type, $category, array $row) {
+            $source = strtolower(trim(($address_type ?: '') . ' ' . ($category ?: '')));
+
+            if (!empty($row['Reservation']) || strpos($source, 'reservation') !== false) {
+                return 'public_reservation';
+            }
+
+            if (strpos($source, 'not open') !== false || strpos($source, 'private') !== false || strpos($source, 'office') !== false) {
+                return 'not_public';
+            }
+
+            if (!empty($row['Other']) && strpos($source, 'other') !== false) {
+                return 'other';
+            }
+
+            return 'public_hours';
         }
 
         /* =========================================
