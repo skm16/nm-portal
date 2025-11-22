@@ -134,7 +134,27 @@
 
       // Focus first invalid field
       if (firstInvalidField) {
-        firstInvalidField.focus();
+        // Find which tab contains this field
+        var $tabPane = firstInvalidField.closest('.tab-pane');
+        if ($tabPane.length) {
+          var tabId = $tabPane.attr('id');
+          var $tabLink = $('#profileTabs a[href="#' + tabId + '"]');
+
+          // Switch to the tab containing the invalid field
+          if ($tabLink.length && !$tabPane.hasClass('show')) {
+            $tabLink.tab('show');
+
+            // Wait for tab animation to complete before focusing
+            setTimeout(function() {
+              firstInvalidField.focus();
+            }, 150);
+          } else {
+            firstInvalidField.focus();
+          }
+        } else {
+          firstInvalidField.focus();
+        }
+
         showMessage('Please fill in all required fields.', 'error');
       }
 

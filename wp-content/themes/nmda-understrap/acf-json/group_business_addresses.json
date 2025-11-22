@@ -1,0 +1,379 @@
+{
+    "key": "group_business_addresses",
+    "title": "Business Addresses",
+    "fields": [
+        {
+            "key": "field_business_addresses",
+            "label": "Business Locations",
+            "name": "business_addresses",
+            "aria-label": "",
+            "type": "repeater",
+            "instructions": "Add all business locations and addresses",
+            "required": 0,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "layout": "block",
+            "button_label": "Add Location",
+            "min": 0,
+            "max": 0,
+            "rows_per_page": 20,
+            "collapsed": "",
+            "acfe_repeater_stylised_button": 0,
+            "sub_fields": [
+                {
+                    "key": "field_address_name",
+                    "label": "Location Name",
+                    "name": "address_name",
+                    "aria-label": "",
+                    "type": "text",
+                    "instructions": "Name or identifier for this location (e.g., \"Main Store\" or \"Downtown Location\")",
+                    "required": 1,
+                    "conditional_logic": false,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "placeholder": "Main Location",
+                    "default_value": "",
+                    "maxlength": "",
+                    "prepend": "",
+                    "append": "",
+                    "parent_repeater": "field_business_addresses"
+                },
+                {
+                    "key": "field_address_type",
+                    "label": "Address Type",
+                    "name": "address_type",
+                    "aria-label": "",
+                    "type": "select",
+                    "instructions": "",
+                    "required": 1,
+                    "conditional_logic": false,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "choices": {
+                        "public_hours": "Open to the public during regular business hours",
+                        "public_reservation": "Open to the public with a reservation",
+                        "not_public": "Not open to the public (doesn't appear on the website)",
+                        "other": "Other"
+                    },
+                    "default_value": "public_hours",
+                    "multiple": 0,
+                    "allow_null": 0,
+                    "ui": 0,
+                    "ajax": 0,
+                    "placeholder": "",
+                    "return_format": "value",
+                    "create_options": 0,
+                    "save_options": 0,
+                    "allow_custom": 0,
+                    "search_placeholder": "",
+                    "parent_repeater": "field_business_addresses"
+                },
+                {
+                    "key": "field_addr_line_1",
+                    "label": "Address Line 1",
+                    "name": "address_line_1",
+                    "aria-label": "",
+                    "type": "text",
+                    "instructions": "",
+                    "required": 1,
+                    "conditional_logic": false,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "placeholder": "123 Main Street",
+                    "default_value": "",
+                    "maxlength": "",
+                    "prepend": "",
+                    "append": "",
+                    "parent_repeater": "field_business_addresses"
+                },
+                {
+                    "key": "field_addr_line_2",
+                    "label": "Address Line 2",
+                    "name": "address_line_2",
+                    "aria-label": "",
+                    "type": "text",
+                    "instructions": "",
+                    "required": false,
+                    "conditional_logic": false,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "placeholder": "Suite 100",
+                    "default_value": "",
+                    "maxlength": "",
+                    "prepend": "",
+                    "append": "",
+                    "parent_repeater": "field_business_addresses"
+                },
+                {
+                    "key": "field_addr_city",
+                    "label": "City",
+                    "name": "city",
+                    "aria-label": "",
+                    "type": "text",
+                    "instructions": "",
+                    "required": 1,
+                    "conditional_logic": false,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "maxlength": "",
+                    "placeholder": "",
+                    "prepend": "",
+                    "append": "",
+                    "parent_repeater": "field_business_addresses"
+                },
+                {
+                    "key": "field_addr_state",
+                    "label": "State",
+                    "name": "state",
+                    "aria-label": "",
+                    "type": "text",
+                    "instructions": "",
+                    "required": 1,
+                    "conditional_logic": false,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "NM",
+                    "placeholder": "NM",
+                    "maxlength": "",
+                    "prepend": "",
+                    "append": "",
+                    "parent_repeater": "field_business_addresses"
+                },
+                {
+                    "key": "field_addr_zip",
+                    "label": "Zip Code",
+                    "name": "zip_code",
+                    "aria-label": "",
+                    "type": "text",
+                    "instructions": "",
+                    "required": 1,
+                    "conditional_logic": false,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "placeholder": 87101,
+                    "default_value": "",
+                    "maxlength": "",
+                    "prepend": "",
+                    "append": "",
+                    "parent_repeater": "field_business_addresses"
+                },
+                {
+                    "key": "field_addr_county",
+                    "label": "County",
+                    "name": "county",
+                    "aria-label": "",
+                    "type": "text",
+                    "instructions": "",
+                    "required": false,
+                    "conditional_logic": false,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "placeholder": "Bernalillo",
+                    "default_value": "",
+                    "maxlength": "",
+                    "prepend": "",
+                    "append": "",
+                    "parent_repeater": "field_business_addresses"
+                },
+                {
+                    "key": "field_addr_country",
+                    "label": "Country",
+                    "name": "country",
+                    "aria-label": "",
+                    "type": "text",
+                    "instructions": "",
+                    "required": false,
+                    "conditional_logic": false,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "USA",
+                    "placeholder": "USA",
+                    "maxlength": "",
+                    "prepend": "",
+                    "append": "",
+                    "parent_repeater": "field_business_addresses"
+                },
+                {
+                    "key": "field_addr_phone",
+                    "label": "Location Phone",
+                    "name": "phone",
+                    "aria-label": "",
+                    "type": "text",
+                    "instructions": "Phone number specific to this location (optional)",
+                    "required": false,
+                    "conditional_logic": false,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "placeholder": "505-555-5555",
+                    "default_value": "",
+                    "maxlength": "",
+                    "prepend": "",
+                    "append": "",
+                    "parent_repeater": "field_business_addresses"
+                },
+                {
+                    "key": "field_addr_email",
+                    "label": "Location Email",
+                    "name": "email",
+                    "aria-label": "",
+                    "type": "email",
+                    "instructions": "Email address specific to this location (optional)",
+                    "required": false,
+                    "conditional_logic": false,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "placeholder": "",
+                    "prepend": "",
+                    "append": "",
+                    "parent_repeater": "field_business_addresses"
+                },
+                {
+                    "key": "field_addr_is_primary",
+                    "label": "Primary Location",
+                    "name": "is_primary",
+                    "aria-label": "",
+                    "type": "true_false",
+                    "instructions": "",
+                    "required": false,
+                    "conditional_logic": false,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "message": "This is the primary business location",
+                    "default_value": 0,
+                    "ui": 0,
+                    "ui_on_text": "",
+                    "ui_off_text": "",
+                    "parent_repeater": "field_business_addresses"
+                },
+                {
+                    "key": "field_addr_reservation_instructions",
+                    "label": "Reservation Instructions",
+                    "name": "reservation_instructions",
+                    "aria-label": "",
+                    "type": "textarea",
+                    "instructions": "",
+                    "required": false,
+                    "conditional_logic": [
+                        [
+                            {
+                                "field": "field_address_type",
+                                "operator": "==",
+                                "value": "public_reservation"
+                            }
+                        ]
+                    ],
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "rows": 3,
+                    "placeholder": "Call 505-555-5555 or email info@business.com to schedule a visit",
+                    "default_value": "",
+                    "new_lines": "",
+                    "maxlength": "",
+                    "acfe_textarea_code": 0,
+                    "parent_repeater": "field_business_addresses"
+                },
+                {
+                    "key": "field_addr_other_instructions",
+                    "label": "Other Instructions",
+                    "name": "other_instructions",
+                    "aria-label": "",
+                    "type": "textarea",
+                    "instructions": "",
+                    "required": false,
+                    "conditional_logic": [
+                        [
+                            {
+                                "field": "field_address_type",
+                                "operator": "==",
+                                "value": "other"
+                            }
+                        ]
+                    ],
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "rows": 3,
+                    "placeholder": "Provide additional details about this location",
+                    "default_value": "",
+                    "new_lines": "",
+                    "maxlength": "",
+                    "acfe_textarea_code": 0,
+                    "parent_repeater": "field_business_addresses"
+                }
+            ]
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "post_type",
+                "operator": "==",
+                "value": "nmda_business"
+            }
+        ]
+    ],
+    "menu_order": 0,
+    "position": "acf_after_title",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": "",
+    "active": false,
+    "description": "",
+    "show_in_rest": 0,
+    "display_title": "",
+    "acfe_autosync": [
+        "json"
+    ],
+    "acfe_form": 0,
+    "acfe_meta": "",
+    "acfe_note": "",
+    "modified": 1763816136
+}

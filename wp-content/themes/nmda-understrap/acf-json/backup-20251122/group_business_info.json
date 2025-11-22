@@ -1,0 +1,171 @@
+{
+    "key": "group_business_info",
+    "title": "Business Information",
+    "fields": [
+        {
+            "key": "field_dba",
+            "label": "DBA (Doing Business As)",
+            "name": "dba",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": false,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_business_phone",
+            "label": "Business Phone",
+            "name": "business_phone",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 1,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "placeholder": "505-555-5555",
+            "default_value": "",
+            "maxlength": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_business_email",
+            "label": "Business Email",
+            "name": "business_email",
+            "aria-label": "",
+            "type": "email",
+            "instructions": "",
+            "required": 1,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_website",
+            "label": "Website",
+            "name": "website",
+            "aria-label": "",
+            "type": "url",
+            "instructions": "",
+            "required": false,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "placeholder": "https:\/\/example.com",
+            "default_value": ""
+        },
+        {
+            "key": "field_business_profile",
+            "label": "Business Profile",
+            "name": "business_profile",
+            "aria-label": "",
+            "type": "wysiwyg",
+            "instructions": "Provide a brief description of your business (will be displayed publicly)",
+            "required": 1,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "tabs": "visual",
+            "toolbar": "basic",
+            "media_upload": 0,
+            "default_value": "",
+            "delay": 0
+        },
+        {
+            "key": "field_business_hours",
+            "label": "Business Hours",
+            "name": "business_hours",
+            "aria-label": "",
+            "type": "textarea",
+            "instructions": "If by appointment only, include contact info",
+            "required": false,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "rows": 5,
+            "placeholder": "Monday-Friday: 8:00 AM - 5:00 PM\nSaturday: 9:00 AM - 4:00 PM\nSunday: Closed",
+            "default_value": "",
+            "new_lines": "",
+            "maxlength": "",
+            "acfe_textarea_code": 0
+        },
+        {
+            "key": "field_num_employees",
+            "label": "Number of Employees",
+            "name": "num_employees",
+            "aria-label": "",
+            "type": "number",
+            "instructions": "Approximate number (for NMDA records)",
+            "required": false,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "min": "",
+            "max": "",
+            "step": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "post_type",
+                "operator": "==",
+                "value": "nmda_business"
+            }
+        ]
+    ],
+    "menu_order": 0,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": "",
+    "active": true,
+    "description": "",
+    "show_in_rest": 0,
+    "display_title": "",
+    "acfe_autosync": [
+        "json"
+    ],
+    "acfe_form": 0,
+    "acfe_meta": "",
+    "acfe_note": "",
+    "modified": 1763814428
+}

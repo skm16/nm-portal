@@ -12,41 +12,72 @@ defined( 'ABSPATH' ) || exit;
 get_header();
 ?>
 
-<div class="wrapper" id="page-wrapper">
+<div class="wrapper dashboard-wrapper" id="page-wrapper">
     <div class="container" id="content">
-        <div class="row">
-            <div class="col-md-12 content-area" id="primary">
-                <main class="site-main" id="main">
+
+        <!-- Dashboard Header -->
+        <div class="dashboard-header">
+        
+                <div class="row align-items-center">
+                    <div class="col-md-8">
+                        <h1 class="dashboard-title"><i class="fa fa-file-alt"></i> Business Application</h1>
+                        <p class="dashboard-subtitle">Join the New Mexico Logo Program</p>
+                    </div>
+                    <div class="col-md-4 text-right">
+                        <a href="<?php echo home_url('/dashboard'); ?>" class="btn btn-secondary">
+                            <i class="fa fa-arrow-left"></i> Back to Dashboard
+                        </a>
+                    </div>
+                </div>
+            
+        </div>
+
+        <!-- Main Content -->
+        <div class="mt-4">
+            <div class="row">
+                <div class="col-12">
 
                     <?php while ( have_posts() ) : the_post(); ?>
 
-                        <article <?php post_class(); ?> id="post-<?php the_ID(); ?>">
+                        <?php if ( is_user_logged_in() ) : ?>
 
-                            <header class="entry-header">
-                                <h1 class="entry-title"><?php the_title(); ?></h1>
-                                <p class="lead">Join the New Mexico Logo Program</p>
-                            </header>
-
-                            <div class="entry-content">
-                                <?php the_content(); ?>
-
-                                <?php if ( is_user_logged_in() ) : ?>
-                                    <?php nmda_business_application_form(); ?>
-                                <?php else : ?>
-                                    <div class="alert alert-info">
-                                        <h4>Account Required</h4>
-                                        <p>You must be logged in to submit a business application.</p>
-                                        <a href="<?php echo wp_login_url( get_permalink() ); ?>" class="btn btn-primary">Log In</a>
-                                        <a href="<?php echo wp_registration_url(); ?>" class="btn btn-secondary">Create Account</a>
+                            <!-- Page Content (if any) -->
+                            <?php if ( get_the_content() ) : ?>
+                                <div class="card mb-4">
+                                    <div class="card-body">
+                                        <?php the_content(); ?>
                                     </div>
-                                <?php endif; ?>
+                                </div>
+                            <?php endif; ?>
+
+                            <!-- Application Form -->
+                            <div class="card">
+                                <div class="card-body">
+                                    <?php nmda_business_application_form(); ?>
+                                </div>
                             </div>
 
-                        </article>
+                        <?php else : ?>
+
+                            <div class="card">
+                                <div class="card-body text-center py-5">
+                                    <i class="fa fa-lock fa-3x text-muted mb-3"></i>
+                                    <h4>Account Required</h4>
+                                    <p>You must be logged in to submit a business application.</p>
+                                    <a href="<?php echo wp_login_url( get_permalink() ); ?>" class="btn btn-primary">
+                                        <i class="fa fa-sign-in-alt"></i> Log In
+                                    </a>
+                                    <a href="<?php echo home_url('/register/'); ?>" class="btn btn-secondary">
+                                        <i class="fa fa-user-plus"></i> Create Account
+                                    </a>
+                                </div>
+                            </div>
+
+                        <?php endif; ?>
 
                     <?php endwhile; ?>
 
-                </main>
+                </div>
             </div>
         </div>
     </div>

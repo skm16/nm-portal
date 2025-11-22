@@ -204,7 +204,7 @@ function nmda_get_business_users( $business_id, $status = 'active' ) {
     $table = nmda_get_user_business_table();
 
     $query = $wpdb->prepare(
-        "SELECT user_id, role, status, invited_date, accepted_date
+        "SELECT id, user_id, role, status, invited_date, accepted_date
         FROM $table
         WHERE business_id = %d",
         $business_id
@@ -515,3 +515,174 @@ function nmda_user_admin_filter_query( $query ) {
 		}
 	}
 }
+
+/**
+ * ========================================
+ * AJAX Handlers for User Management
+ * ========================================
+ */
+
+/**
+ * AJAX: Send user invitation
+ */
+function nmda_ajax_invite_user() {
+	check_ajax_referer( 'nmda-ajax-nonce', 'nonce' );
+
+	if ( ! is_user_logged_in() ) {
+		wp_send_json_error( array( 'message' => 'You must be logged in.' ) );
+	}
+
+	$user_id = get_current_user_id();
+	$business_id = intval( $_POST['business_id'] );
+	$email = sanitize_email( $_POST['email'] );
+	$role = sanitize_text_field( $_POST['role'] );
+	$message = isset( $_POST['message'] ) ? sanitize_textarea_field( $_POST['message'] ) : '';
+
+	// Verify user is owner
+	$user_role = nmda_get_user_business_role( $user_id, $business_id );
+	if ( $user_role !== 'owner' && ! current_user_can( 'administrator' ) ) {
+		wp_send_json_error( array( 'message' => 'Only business owners can invite users.' ) );
+	}
+
+	// Validate role
+	if ( ! in_array( $role, array( 'owner', 'manager', 'viewer' ) ) ) {
+		wp_send_json_error( array( 'message' => 'Invalid role selected.' ) );
+	}
+
+	// Send invitation
+	$result = nmda_invite_user_to_business( $business_id, $email, $role, $user_id );
+
+	if ( is_wp_error( $result ) ) {
+		wp_send_json_error( array( 'message' => $result->get_error_message() ) );
+	}
+
+	wp_send_json_success( array(
+		'message' => 'Invitation sent successfully!',
+		'users'   => nmda_get_business_users( $business_id )
+	) );
+}
+add_action( 'wp_ajax_nmda_invite_user', 'nmda_ajax_invite_user' );
+
+/**
+ * AJAX: Remove user from business
+ */
+function nmda_ajax_remove_user() {
+	check_ajax_referer( 'nmda-ajax-nonce', 'nonce' );
+
+	if ( ! is_user_logged_in() ) {
+		wp_send_json_error( array( 'message' => 'You must be logged in.' ) );
+	}
+
+	$current_user_id = get_current_user_id();
+	$business_id = intval( $_POST['business_id'] );
+	$remove_user_id = intval( $_POST['user_id'] );
+
+	// Verify user is owner
+	$user_role = nmda_get_user_business_role( $current_user_id, $business_id );
+	if ( $user_role !== 'owner' && ! current_user_can( 'administrator' ) ) {
+		wp_send_json_error( array( 'message' => 'Only business owners can remove users.' ) );
+	}
+
+	// Cannot remove self
+	if ( $current_user_id === $remove_user_id ) {
+		wp_send_json_error( array( 'message' => 'You cannot remove yourself from the business.' ) );
+	}
+
+	// Remove user
+	$success = nmda_remove_user_from_business( $remove_user_id, $business_id );
+
+	if ( $success ) {
+		wp_send_json_success( array(
+			'message' => 'User removed successfully!',
+			'users'   => nmda_get_business_users( $business_id )
+		) );
+	} else {
+		wp_send_json_error( array( 'message' => 'Failed to remove user.' ) );
+	}
+}
+add_action( 'wp_ajax_nmda_remove_user', 'nmda_ajax_remove_user' );
+
+/**
+ * AJAX: Update user role
+ */
+function nmda_ajax_update_user_role() {
+	check_ajax_referer( 'nmda-ajax-nonce', 'nonce' );
+
+	if ( ! is_user_logged_in() ) {
+		wp_send_json_error( array( 'message' => 'You must be logged in.' ) );
+	}
+
+	$current_user_id = get_current_user_id();
+	$business_id = intval( $_POST['business_id'] );
+	$target_user_id = intval( $_POST['user_id'] );
+	$new_role = sanitize_text_field( $_POST['role'] );
+
+	// Verify user is owner
+	$user_role = nmda_get_user_business_role( $current_user_id, $business_id );
+	if ( $user_role !== 'owner' && ! current_user_can( 'administrator' ) ) {
+		wp_send_json_error( array( 'message' => 'Only business owners can change user roles.' ) );
+	}
+
+	// Validate role
+	if ( ! in_array( $new_role, array( 'owner', 'manager', 'viewer' ) ) ) {
+		wp_send_json_error( array( 'message' => 'Invalid role selected.' ) );
+	}
+
+	// Update role
+	$success = nmda_update_user_business_role( $target_user_id, $business_id, $new_role );
+
+	if ( $success ) {
+		wp_send_json_success( array(
+			'message' => 'User role updated successfully!',
+			'users'   => nmda_get_business_users( $business_id )
+		) );
+	} else {
+		wp_send_json_error( array( 'message' => 'Failed to update user role.' ) );
+	}
+}
+add_action( 'wp_ajax_nmda_update_user_role', 'nmda_ajax_update_user_role' );
+
+/**
+ * AJAX: Resend invitation
+ */
+function nmda_ajax_resend_invitation() {
+	check_ajax_referer( 'nmda-ajax-nonce', 'nonce' );
+
+	if ( ! is_user_logged_in() ) {
+		wp_send_json_error( array( 'message' => 'You must be logged in.' ) );
+	}
+
+	$user_id = get_current_user_id();
+	$business_id = intval( $_POST['business_id'] );
+	$email = sanitize_email( $_POST['email'] );
+
+	// Verify user is owner
+	$user_role = nmda_get_user_business_role( $user_id, $business_id );
+	if ( $user_role !== 'owner' && ! current_user_can( 'administrator' ) ) {
+		wp_send_json_error( array( 'message' => 'Only business owners can resend invitations.' ) );
+	}
+
+	// Get existing invitation
+	global $wpdb;
+	$table = nmda_get_user_business_table();
+
+	$invitation = $wpdb->get_row( $wpdb->prepare(
+		"SELECT * FROM $table WHERE business_id = %d AND user_id IN (SELECT ID FROM {$wpdb->users} WHERE user_email = %s) AND status = 'pending'",
+		$business_id,
+		$email
+	) );
+
+	if ( ! $invitation ) {
+		wp_send_json_error( array( 'message' => 'No pending invitation found for this email.' ) );
+	}
+
+	// Resend invitation email (reuse invite function logic)
+	$result = nmda_invite_user_to_business( $business_id, $email, $invitation->role, $user_id );
+
+	if ( is_wp_error( $result ) ) {
+		wp_send_json_error( array( 'message' => $result->get_error_message() ) );
+	}
+
+	wp_send_json_success( array( 'message' => 'Invitation resent successfully!' ) );
+}
+add_action( 'wp_ajax_nmda_resend_invitation', 'nmda_ajax_resend_invitation' );

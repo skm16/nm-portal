@@ -1,0 +1,128 @@
+{
+    "key": "group_classification",
+    "title": "Logo Program Classification",
+    "fields": [
+        {
+            "key": "field_classification",
+            "label": "Select Classification(s)",
+            "name": "classification",
+            "aria-label": "",
+            "type": "checkbox",
+            "instructions": "Select all that apply to your business",
+            "required": 1,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "choices": {
+                "grown": "NEW MEXICO – Grown with Tradition® (Farmers\/Ranchers)",
+                "taste": "NEW MEXICO – Taste the Tradition® (Food\/Beverage Manufacturers)",
+                "associate": "NEW MEXICO – Associate Member (Retailers, Restaurants, Agritourism)"
+            },
+            "layout": "vertical",
+            "default_value": [],
+            "allow_custom": 0,
+            "save_custom": 0,
+            "toggle": 0,
+            "return_format": "value",
+            "custom_choice_button_text": "Add new choice"
+        },
+        {
+            "key": "field_associate_type",
+            "label": "Associate Member Type",
+            "name": "associate_type",
+            "aria-label": "",
+            "type": "checkbox",
+            "instructions": "",
+            "required": false,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_classification",
+                        "operator": "==",
+                        "value": "associate"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "choices": {
+                "in_person": "In-Person Retail (sells 3+ Taste\/Grown products)",
+                "online": "Online Retail",
+                "restaurant": "Restaurant (serves NM ingredients)",
+                "tourism": "Agritourism Operation",
+                "artisan": "Artisan\/Crafted Products",
+                "pet": "Pet Food Manufacturer",
+                "educational": "Educational Organization",
+                "non_profit": "Non-Profit Organization",
+                "other": "Other"
+            },
+            "layout": "vertical",
+            "default_value": [],
+            "allow_custom": 0,
+            "save_custom": 0,
+            "toggle": 0,
+            "return_format": "value",
+            "custom_choice_button_text": "Add new choice"
+        },
+        {
+            "key": "field_associate_other_text",
+            "label": "Other Associate Type (please describe)",
+            "name": "associate_other_text",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": false,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_associate_type",
+                        "operator": "==",
+                        "value": "other"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "post_type",
+                "operator": "==",
+                "value": "nmda_business"
+            }
+        ]
+    ],
+    "menu_order": 0,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": "",
+    "active": true,
+    "description": "",
+    "show_in_rest": 0,
+    "display_title": "",
+    "acfe_autosync": [
+        "json"
+    ],
+    "acfe_form": 0,
+    "acfe_meta": "",
+    "acfe_note": "",
+    "modified": 1763814408
+}

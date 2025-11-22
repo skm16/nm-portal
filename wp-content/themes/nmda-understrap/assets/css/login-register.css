@@ -1,0 +1,595 @@
+/**
+ * NMDA Portal - Login & Registration Pages Styles
+ *
+ * Styles for authentication pages:
+ * - page-login.php
+ * - page-register.php
+ * - page-forgot-password.php
+ * - page-reset-password.php
+ *
+ * @package NMDA_Understrap_Child
+ */
+
+/* Brand Colors */
+:root {
+    --nmda-brown-dark: #512c1d;
+    --nmda-red: #8b0c12;
+    --nmda-brown-darker: #330d0f;
+    --nmda-gold: #f5be29;
+}
+
+/* ========================================
+   Page Layout
+   ======================================== */
+
+.nmda-login-page,
+.nmda-register-page,
+.nmda-forgot-password-page,
+.nmda-reset-password-page {
+    min-height: calc(100vh - 200px);
+    padding: 60px 0;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+}
+
+/* ========================================
+   Card Containers
+   ======================================== */
+
+.login-card,
+.register-card,
+.forgot-password-card,
+.reset-password-card {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    padding: 2.5rem;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+}
+
+/* ========================================
+   Headers
+   ======================================== */
+
+.login-header,
+.register-header,
+.forgot-password-header,
+.reset-password-header {
+    padding-bottom: 1.5rem;
+    border-bottom: 2px solid var(--nmda-gold);
+}
+
+.login-title,
+.register-title,
+.forgot-password-title,
+.reset-password-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--nmda-brown-dark);
+    margin-bottom: 0.5rem;
+}
+
+.login-subtitle,
+.register-subtitle,
+.forgot-password-subtitle,
+.reset-password-subtitle {
+    font-size: 1rem;
+    color: #6c757d;
+    margin-bottom: 0;
+}
+
+/* ========================================
+   Forms
+   ======================================== */
+
+.login-form,
+.register-form,
+.forgot-password-form,
+.reset-password-form {
+    margin-top: 2rem;
+}
+
+/* Form Groups */
+.form-group {
+    position: relative;
+}
+
+/* Labels */
+.form-label {
+    font-weight: 600;
+    color: var(--nmda-brown-dark);
+    margin-bottom: 0.5rem;
+    font-size: 0.9375rem;
+}
+
+.form-label .text-danger {
+    color: var(--nmda-red);
+}
+
+/* Input Fields */
+.form-control {
+    border: 2px solid #dee2e6;
+    border-radius: 6px;
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.form-control:focus {
+    border-color: var(--nmda-red);
+    box-shadow: 0 0 0 0.2rem rgba(139, 12, 18, 0.15);
+    outline: none;
+}
+
+.form-control-lg {
+    padding: 0.875rem 1.125rem;
+    font-size: 1.0625rem;
+}
+
+/* Password Field with Toggle */
+.password-field-wrapper {
+    position: relative;
+}
+
+.password-toggle {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: transparent;
+    border: none;
+    padding: 0.25rem 0.5rem;
+    cursor: pointer;
+    color: #6c757d;
+    transition: color 0.2s ease;
+    z-index: 10;
+}
+
+.password-toggle:hover {
+    color: var(--nmda-brown-dark);
+    text-decoration: none;
+}
+
+.password-toggle:focus {
+    outline: 2px solid var(--nmda-gold);
+    outline-offset: 2px;
+}
+
+/* Form Text / Helper Text */
+.form-text {
+    font-size: 0.875rem;
+    color: #6c757d;
+    margin-top: 0.25rem;
+}
+
+/* Fieldsets */
+fieldset {
+    border: 1px solid #dee2e6;
+    border-radius: 6px;
+    padding: 1.5rem;
+}
+
+fieldset legend {
+    font-weight: 600;
+    color: var(--nmda-brown-dark);
+    padding: 0 0.5rem;
+    width: auto;
+    margin-bottom: 0;
+    font-size: 1.125rem;
+}
+
+/* Checkboxes */
+.form-check-input {
+    width: 1.25rem;
+    height: 1.25rem;
+    margin-top: 0.125rem;
+    border: 2px solid #dee2e6;
+    cursor: pointer;
+}
+
+.form-check-input:checked {
+    background-color: var(--nmda-red);
+    border-color: var(--nmda-red);
+}
+
+.form-check-input:focus {
+    border-color: var(--nmda-red);
+    box-shadow: 0 0 0 0.2rem rgba(139, 12, 18, 0.15);
+}
+
+.form-check-label {
+    cursor: pointer;
+    color: #495057;
+    margin-left: 0.5rem;
+}
+
+/* ========================================
+   Buttons
+   ======================================== */
+
+.btn {
+    font-weight: 600;
+    border-radius: 6px;
+    padding: 0.75rem 1.5rem;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+}
+
+.btn-primary {
+    background-color: var(--nmda-red);
+    border-color: var(--nmda-red);
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: var(--nmda-brown-darker);
+    border-color: var(--nmda-brown-darker);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(139, 12, 18, 0.3);
+}
+
+.btn-primary:focus {
+    background-color: var(--nmda-brown-darker);
+    border-color: var(--nmda-brown-darker);
+    box-shadow: 0 0 0 0.2rem rgba(139, 12, 18, 0.25);
+}
+
+.btn-outline-primary {
+    background-color: transparent;
+    border-color: var(--nmda-red);
+    color: var(--nmda-red);
+}
+
+.btn-outline-primary:hover {
+    background-color: var(--nmda-red);
+    border-color: var(--nmda-red);
+    color: white;
+    transform: translateY(-2px);
+}
+
+.btn-lg {
+    padding: 0.875rem 2rem;
+    font-size: 1.0625rem;
+}
+
+.btn-link {
+    color: var(--nmda-red);
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+}
+
+.btn-link:hover {
+    color: var(--nmda-brown-dark);
+    text-decoration: underline;
+}
+
+.btn i {
+    margin-right: 0.5rem;
+}
+
+/* Full width buttons */
+.w-100 {
+    width: 100%;
+}
+
+/* ========================================
+   Alerts / Messages
+   ======================================== */
+
+.alert {
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin-bottom: 1.5rem;
+    border: 1px solid transparent;
+}
+
+.alert-danger {
+    background-color: #f8d7da;
+    border-color: #f5c2c7;
+    color: #842029;
+}
+
+.alert-danger strong {
+    color: #58151c;
+}
+
+.alert-danger ul {
+    margin-bottom: 0;
+    padding-left: 1.25rem;
+}
+
+.alert-danger li {
+    margin-top: 0.5rem;
+}
+
+.alert-success {
+    background-color: #d1e7dd;
+    border-color: #badbcc;
+    color: #0f5132;
+}
+
+.alert-info {
+    background-color: #cff4fc;
+    border-color: #b6effb;
+    color: #055160;
+}
+
+.alert i {
+    margin-right: 0.5rem;
+}
+
+/* ========================================
+   Links
+   ======================================== */
+
+.forgot-password-link,
+.register-link,
+.login-link {
+    color: var(--nmda-red);
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.2s ease;
+}
+
+.forgot-password-link:hover,
+.register-link:hover,
+.login-link:hover {
+    color: var(--nmda-brown-dark);
+    text-decoration: underline;
+}
+
+a {
+    color: var(--nmda-red);
+    transition: color 0.2s ease;
+}
+
+a:hover {
+    color: var(--nmda-brown-dark);
+}
+
+/* ========================================
+   Dividers
+   ======================================== */
+
+.border-top {
+    border-top: 1px solid #dee2e6 !important;
+}
+
+/* ========================================
+   Responsive Design
+   ======================================== */
+
+/* Tablet */
+@media (max-width: 992px) {
+    .nmda-login-page,
+    .nmda-register-page,
+    .nmda-forgot-password-page,
+    .nmda-reset-password-page {
+        padding: 40px 0;
+    }
+
+    .login-card,
+    .register-card,
+    .forgot-password-card,
+    .reset-password-card {
+        padding: 2rem;
+    }
+
+    .login-title,
+    .register-title,
+    .forgot-password-title,
+    .reset-password-title {
+        font-size: 1.75rem;
+    }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+    .nmda-login-page,
+    .nmda-register-page,
+    .nmda-forgot-password-page,
+    .nmda-reset-password-page {
+        padding: 30px 0;
+    }
+
+    .login-card,
+    .register-card,
+    .forgot-password-card,
+    .reset-password-card {
+        padding: 1.5rem;
+        margin-top: 1rem;
+        margin-bottom: 1rem;
+    }
+
+    .login-title,
+    .register-title,
+    .forgot-password-title,
+    .reset-password-title {
+        font-size: 1.5rem;
+    }
+
+    .login-subtitle,
+    .register-subtitle,
+    .forgot-password-subtitle,
+    .reset-password-subtitle {
+        font-size: 0.9375rem;
+    }
+
+    fieldset {
+        padding: 1rem;
+    }
+
+    .btn-lg {
+        padding: 0.75rem 1.5rem;
+        font-size: 1rem;
+    }
+}
+
+/* Small Mobile */
+@media (max-width: 576px) {
+    .login-card,
+    .register-card,
+    .forgot-password-card,
+    .reset-password-card {
+        padding: 1.25rem;
+        border-radius: 6px;
+    }
+
+    .login-title,
+    .register-title,
+    .forgot-password-title,
+    .reset-password-title {
+        font-size: 1.375rem;
+    }
+
+    fieldset legend {
+        font-size: 1rem;
+    }
+}
+
+/* ========================================
+   Animations
+   ======================================== */
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.login-card,
+.register-card,
+.forgot-password-card,
+.reset-password-card {
+    animation: fadeIn 0.5s ease-out;
+}
+
+/* ========================================
+   Accessibility
+   ======================================== */
+
+/* Focus states for keyboard navigation */
+.btn:focus,
+.form-control:focus,
+.form-check-input:focus,
+a:focus {
+    outline: 3px solid var(--nmda-gold);
+    outline-offset: 2px;
+}
+
+/* Skip to content link for screen readers */
+.skip-to-content {
+    position: absolute;
+    top: -40px;
+    left: 0;
+    background: var(--nmda-red);
+    color: white;
+    padding: 8px;
+    text-decoration: none;
+    z-index: 100;
+}
+
+.skip-to-content:focus {
+    top: 0;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+    .login-card,
+    .register-card,
+    .forgot-password-card,
+    .reset-password-card {
+        border: 2px solid var(--nmda-brown-dark);
+    }
+
+    .form-control {
+        border-width: 2px;
+    }
+}
+
+/* Reduced motion for accessibility */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* ========================================
+   Print Styles
+   ======================================== */
+
+@media print {
+    .nmda-login-page,
+    .nmda-register-page,
+    .nmda-forgot-password-page,
+    .nmda-reset-password-page {
+        background: white;
+    }
+
+    .btn,
+    .password-toggle {
+        display: none;
+    }
+
+    .form-control {
+        border: 1px solid #000;
+    }
+}
+
+/* ========================================
+   Additional Helper Classes
+   ======================================== */
+
+.text-center {
+    text-align: center;
+}
+
+.text-muted {
+    color: #6c757d !important;
+}
+
+.mb-0 {
+    margin-bottom: 0 !important;
+}
+
+.mb-2 {
+    margin-bottom: 0.5rem !important;
+}
+
+.mb-3 {
+    margin-bottom: 1rem !important;
+}
+
+.mb-4 {
+    margin-bottom: 1.5rem !important;
+}
+
+.mt-2 {
+    margin-top: 0.5rem !important;
+}
+
+.mt-4 {
+    margin-top: 1.5rem !important;
+}
+
+.pt-3 {
+    padding-top: 1rem !important;
+}
+
+.small {
+    font-size: 0.875rem;
+}
+
+.list-unstyled {
+    padding-left: 0;
+    list-style: none;
+}

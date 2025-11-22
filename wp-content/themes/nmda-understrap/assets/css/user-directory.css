@@ -1,0 +1,416 @@
+/**
+ * User Directory Styles
+ *
+ * Styles for the admin user directory page
+ */
+
+/* Filter Form */
+.user-filter-form .form-control {
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.user-filter-form .form-control:focus {
+    border-color: var(--nmda-gold);
+    box-shadow: 0 0 0 0.2rem rgba(245, 190, 41, 0.25);
+}
+
+.user-filter-form .input-group-text {
+    background-color: #f8f9fa;
+    border: 1px solid #ddd;
+    color: var(--nmda-brown-dark);
+}
+
+/* Results Summary */
+.results-summary p {
+    margin: 0;
+    font-size: 0.95rem;
+}
+
+/* User Directory Table */
+.user-directory-table {
+    font-size: 0.9rem;
+}
+
+.user-directory-table thead {
+    background-color: var(--nmda-brown-dark);
+    color: #fff;
+}
+
+.user-directory-table thead th {
+    border: none;
+    padding: 1rem 0.75rem;
+    font-weight: 600;
+    vertical-align: middle;
+}
+
+.user-directory-table thead th a {
+    color: #fff;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+}
+
+.user-directory-table thead th a:hover {
+    color: var(--nmda-gold);
+}
+
+.user-directory-table thead th i {
+    margin-left: 0.25rem;
+    font-size: 0.85rem;
+}
+
+.user-directory-table tbody tr {
+    transition: background-color 0.2s ease;
+}
+
+.user-directory-table tbody tr:hover {
+    background-color: #f8f9fa;
+}
+
+.user-directory-table tbody td {
+    padding: 1rem 0.75rem;
+    vertical-align: middle;
+    border-top: 1px solid #e0e0e0;
+}
+
+.user-directory-table tbody td:first-child {
+    width: 30px;
+}
+
+/* User Name Link */
+.user-name-link {
+    color: var(--nmda-brown-dark);
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.user-name-link:hover {
+    color: var(--nmda-red);
+    text-decoration: underline;
+}
+
+/* Business List Tooltip */
+.business-list-tooltip {
+    margin-top: 0.5rem;
+}
+
+.business-list-tooltip small {
+    line-height: 1.5;
+}
+
+/* Status Indicator */
+.status-indicator {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    margin-right: 0.5rem;
+}
+
+.status-indicator.status-active {
+    background-color: #28a745;
+}
+
+.status-indicator.status-pending {
+    background-color: #ffc107;
+}
+
+.status-indicator.status-disabled {
+    background-color: #dc3545;
+}
+
+.status-indicator.status-none {
+    background-color: #6c757d;
+}
+
+/* Badge Styles */
+.badge {
+    font-weight: 600;
+    padding: 0.35rem 0.65rem;
+}
+
+.badge-info {
+    background-color: #17a2b8;
+}
+
+.badge-success {
+    background-color: #28a745;
+}
+
+.badge-primary {
+    background-color: var(--nmda-brown-dark);
+}
+
+.badge-secondary {
+    background-color: #6c757d;
+}
+
+/* Action Buttons */
+.btn-group-sm .btn {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.85rem;
+}
+
+.btn-outline-primary {
+    color: var(--nmda-brown-dark);
+    border-color: var(--nmda-brown-dark);
+}
+
+.btn-outline-primary:hover {
+    background-color: var(--nmda-brown-dark);
+    color: #fff;
+}
+
+.btn-outline-secondary {
+    color: #6c757d;
+    border-color: #6c757d;
+}
+
+.btn-outline-secondary:hover {
+    background-color: #6c757d;
+    color: #fff;
+}
+
+/* Checkboxes */
+input[type="checkbox"] {
+    cursor: pointer;
+    width: 18px;
+    height: 18px;
+}
+
+#select-all-users {
+    margin: 0;
+}
+
+.user-checkbox {
+    margin: 0;
+}
+
+/* Bulk Actions Bar */
+.bulk-actions-bar {
+    position: sticky;
+    bottom: 0;
+    z-index: 100;
+    animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.bulk-actions-bar .card {
+    border: 2px solid var(--nmda-brown-dark);
+    box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.bulk-actions-bar .selected-count {
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: var(--nmda-brown-dark);
+}
+
+#bulk-action-select {
+    min-width: 200px;
+}
+
+/* Pagination */
+.pagination {
+    margin-top: 1.5rem;
+}
+
+.pagination .page-link {
+    color: var(--nmda-brown-dark);
+    border: 1px solid #ddd;
+    padding: 0.5rem 0.75rem;
+    margin: 0 0.25rem;
+}
+
+.pagination .page-link:hover {
+    background-color: var(--nmda-gold);
+    color: var(--nmda-brown-dark);
+    border-color: var(--nmda-gold);
+}
+
+.pagination .page-item.active .page-link {
+    background-color: var(--nmda-brown-dark);
+    border-color: var(--nmda-brown-dark);
+    color: #fff;
+}
+
+/* Empty State */
+.user-directory-table tbody td[colspan] {
+    text-align: center;
+}
+
+.user-directory-table .fa-3x {
+    opacity: 0.3;
+}
+
+/* Table Responsive */
+.table-responsive {
+    border-radius: 0;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 991px) {
+    .dashboard-header .col-md-4 {
+        margin-top: 1rem;
+        text-align: left !important;
+    }
+
+    .dashboard-header .btn {
+        margin-bottom: 0.5rem;
+        display: block;
+        width: 100%;
+    }
+}
+
+@media (max-width: 767px) {
+    .user-filter-form .col-md-2,
+    .user-filter-form .col-md-5 {
+        margin-bottom: 0.75rem;
+    }
+
+    .user-directory-table {
+        font-size: 0.85rem;
+    }
+
+    .user-directory-table thead th,
+    .user-directory-table tbody td {
+        padding: 0.75rem 0.5rem;
+    }
+
+    /* Hide less important columns on mobile */
+    .user-directory-table th:nth-child(6),
+    .user-directory-table td:nth-child(6),
+    .user-directory-table th:nth-child(7),
+    .user-directory-table td:nth-child(7) {
+        display: none;
+    }
+
+    .business-list-tooltip {
+        display: none;
+    }
+
+    .bulk-actions-bar .col-md-6 {
+        margin-bottom: 0.75rem;
+    }
+
+    .bulk-actions-bar .text-right {
+        text-align: left !important;
+    }
+}
+
+@media (max-width: 575px) {
+    /* Stack table on very small screens */
+    .table-responsive {
+        border: 0;
+    }
+
+    .user-directory-table thead {
+        display: none;
+    }
+
+    .user-directory-table tbody tr {
+        display: block;
+        margin-bottom: 1.5rem;
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+        overflow: hidden;
+    }
+
+    .user-directory-table tbody td {
+        display: block;
+        text-align: right;
+        padding: 0.75rem 1rem;
+        border-top: 1px solid #f0f0f0;
+    }
+
+    .user-directory-table tbody td:first-child {
+        text-align: left;
+        background-color: var(--nmda-brown-dark);
+        color: #fff;
+        padding: 0.75rem 1rem;
+    }
+
+    .user-directory-table tbody td:before {
+        content: attr(data-label);
+        float: left;
+        font-weight: 600;
+        color: var(--nmda-brown-dark);
+    }
+
+    .user-directory-table tbody td:nth-child(1):before {
+        content: "";
+    }
+
+    .user-directory-table tbody td:last-child {
+        text-align: center;
+        background-color: #f8f9fa;
+    }
+
+    .user-directory-table tbody td:last-child:before {
+        content: "";
+    }
+}
+
+/* Loading State */
+.user-directory-table.loading {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+.user-directory-table.loading tbody:after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 40px;
+    height: 40px;
+    margin: -20px 0 0 -20px;
+    border: 3px solid #f3f3f3;
+    border-top: 3px solid var(--nmda-brown-dark);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Print Styles */
+@media print {
+    .dashboard-header .col-md-4,
+    .user-filter-form,
+    .bulk-actions-bar,
+    .pagination,
+    .btn,
+    input[type="checkbox"] {
+        display: none !important;
+    }
+
+    .user-directory-table {
+        font-size: 10pt;
+    }
+
+    .user-directory-table thead {
+        background-color: #333 !important;
+        color: #fff !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+
+    .card {
+        box-shadow: none;
+        border: 1px solid #ccc;
+    }
+}

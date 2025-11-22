@@ -52,34 +52,42 @@ function nmda_invite_user_to_business( $business_id, $email, $role = 'viewer', $
     // Generate unique invitation token
     $token = wp_generate_password( 32, false );
 
+    // Calculate expiration date (30 days from now)
+    $expires_at = date( 'Y-m-d H:i:s', strtotime( '+30 days' ) );
+
     // Store invitation
+    $invitation_id = null;
     if ( $user_id ) {
         // Existing user - create pending invitation
         $result = $wpdb->insert(
             $table,
             array(
-                'user_id'       => $user_id,
-                'business_id'   => $business_id,
-                'role'          => $role,
-                'status'        => 'pending',
-                'invited_by'    => $invited_by,
-                'invited_date'  => current_time( 'mysql' ),
+                'user_id'          => $user_id,
+                'business_id'      => $business_id,
+                'role'             => $role,
+                'status'           => 'pending',
+                'invitation_token' => $token,
+                'expires_at'       => $expires_at,
+                'invited_by'       => $invited_by,
+                'invited_date'     => current_time( 'mysql' ),
             ),
-            array( '%d', '%d', '%s', '%s', '%d', '%s' )
+            array( '%d', '%d', '%s', '%s', '%s', '%s', '%d', '%s' )
         );
 
-        if ( $result ) {
-            $invitation_id = $wpdb->insert_id;
-            update_user_meta( $user_id, '_nmda_invitation_token_' . $invitation_id, $token );
+        if ( ! $result ) {
+            return new WP_Error( 'db_insert_error', __( 'Failed to create invitation.', 'nmda-understrap' ) );
         }
+
+        $invitation_id = $wpdb->insert_id;
     } else {
-        // New user - store invitation data temporarily
+        // New user - store invitation data temporarily (30 days)
         set_transient( 'nmda_invitation_' . $token, array(
             'email'       => $email,
             'business_id' => $business_id,
             'role'        => $role,
             'invited_by'  => $invited_by,
-        ), WEEK_IN_SECONDS );
+            'expires_at'  => $expires_at,
+        ), 30 * DAY_IN_SECONDS );
     }
 
     // Send invitation email
@@ -98,16 +106,26 @@ function nmda_invite_user_to_business( $business_id, $email, $role = 'viewer', $
 
     $message .= sprintf( __( "Role: %s\n\n", 'nmda-understrap' ), ucfirst( $role ) );
     $message .= sprintf( __( "Click here to accept the invitation: %s\n\n", 'nmda-understrap' ), $invitation_url );
-    $message .= __( "This invitation will expire in 7 days.\n", 'nmda-understrap' );
+    $message .= __( "This invitation will expire in 30 days.\n", 'nmda-understrap' );
 
     $sent = wp_mail( $email, $subject, $message );
 
-    // Log invitation in communications
-    if ( $sent ) {
-        nmda_log_communication( $business_id, $user_id, $invited_by, 'invitation', $message );
+    // Rollback if email failed to send
+    if ( ! $sent ) {
+        if ( $user_id && $invitation_id ) {
+            // Delete the invitation from database
+            $wpdb->delete( $table, array( 'id' => $invitation_id ), array( '%d' ) );
+        } else {
+            // Delete the transient
+            delete_transient( 'nmda_invitation_' . $token );
+        }
+        return new WP_Error( 'email_failed', __( 'Failed to send invitation email. Please try again.', 'nmda-understrap' ) );
     }
 
-    return $sent;
+    // Log invitation in communications
+    nmda_log_communication( $business_id, $user_id, $invited_by, 'invitation', $message );
+
+    return true;
 }
 
 /**
@@ -125,40 +143,53 @@ function nmda_accept_invitation( $token, $user_id = null ) {
     global $wpdb;
     $table = nmda_get_user_business_table();
 
-    // For existing users, check user meta for token
-    if ( $user_id ) {
-        $invitations = $wpdb->get_results( $wpdb->prepare(
-            "SELECT id, business_id, role FROM $table
-            WHERE user_id = %d AND status = 'pending'",
-            $user_id
-        ) );
+    // First, try to find invitation in database (for existing users)
+    $invitation = $wpdb->get_row( $wpdb->prepare(
+        "SELECT * FROM $table
+        WHERE invitation_token = %s AND status = 'pending'",
+        $token
+    ) );
 
-        foreach ( $invitations as $invitation ) {
-            $stored_token = get_user_meta( $user_id, '_nmda_invitation_token_' . $invitation->id, true );
-            if ( $stored_token === $token ) {
-                // Update status to active
-                $wpdb->update(
-                    $table,
-                    array(
-                        'status'        => 'active',
-                        'accepted_date' => current_time( 'mysql' ),
-                    ),
-                    array( 'id' => $invitation->id ),
-                    array( '%s', '%s' ),
-                    array( '%d' )
-                );
-
-                // Clean up token
-                delete_user_meta( $user_id, '_nmda_invitation_token_' . $invitation->id );
-
-                return true;
-            }
+    if ( $invitation ) {
+        // Check if invitation has expired
+        if ( $invitation->expires_at && current_time( 'mysql' ) > $invitation->expires_at ) {
+            return new WP_Error( 'expired_token', __( 'This invitation has expired.', 'nmda-understrap' ) );
         }
+
+        // Verify the logged-in user matches the invited user
+        if ( $user_id && $invitation->user_id && $user_id !== (int) $invitation->user_id ) {
+            return new WP_Error( 'user_mismatch', __( 'This invitation was sent to a different email address.', 'nmda-understrap' ) );
+        }
+
+        // Update status to active and clear token
+        $result = $wpdb->update(
+            $table,
+            array(
+                'status'           => 'active',
+                'accepted_date'    => current_time( 'mysql' ),
+                'invitation_token' => null,  // Clear token after acceptance
+            ),
+            array( 'id' => $invitation->id ),
+            array( '%s', '%s', '%s' ),
+            array( '%d' )
+        );
+
+        if ( $result !== false ) {
+            return true;
+        }
+
+        return new WP_Error( 'update_failed', __( 'Failed to accept invitation.', 'nmda-understrap' ) );
     }
 
-    // Check transient for new user invitations
+    // If not found in database, check transient for new user invitations
     $invitation_data = get_transient( 'nmda_invitation_' . $token );
     if ( $invitation_data && $user_id ) {
+        // Check if transient invitation has expired
+        if ( isset( $invitation_data['expires_at'] ) && current_time( 'mysql' ) > $invitation_data['expires_at'] ) {
+            delete_transient( 'nmda_invitation_' . $token );
+            return new WP_Error( 'expired_token', __( 'This invitation has expired.', 'nmda-understrap' ) );
+        }
+
         // Create user-business association
         $result = nmda_add_user_to_business(
             $user_id,
@@ -171,6 +202,8 @@ function nmda_accept_invitation( $token, $user_id = null ) {
             delete_transient( 'nmda_invitation_' . $token );
             return true;
         }
+
+        return new WP_Error( 'association_failed', __( 'Failed to create business association.', 'nmda-understrap' ) );
     }
 
     return new WP_Error( 'invalid_token', __( 'Invalid or expired invitation token.', 'nmda-understrap' ) );
@@ -180,25 +213,25 @@ function nmda_accept_invitation( $token, $user_id = null ) {
  * Get business addresses
  *
  * @param int $business_id Business post ID.
- * @param string|null $address_type Filter by address type.
- * @return array Array of address objects.
+ * @param string|null $location_type Filter by location type.
+ * @return array Array of address arrays.
  */
-function nmda_get_business_addresses( $business_id, $address_type = null ) {
-    global $wpdb;
-    $table = nmda_get_business_address_table();
+function nmda_get_business_addresses( $business_id, $location_type = null ) {
+    // Get addresses from ACF repeater field
+    $addresses = get_field( 'extra_locations', $business_id );
 
-    $query = $wpdb->prepare(
-        "SELECT * FROM $table WHERE business_id = %d",
-        $business_id
-    );
-
-    if ( $address_type ) {
-        $query .= $wpdb->prepare( " AND address_type = %s", $address_type );
+    if ( ! $addresses ) {
+        return array();
     }
 
-    $query .= " ORDER BY is_primary DESC, id ASC";
+    // Filter by location type if specified
+    if ( $location_type ) {
+        $addresses = array_filter( $addresses, function( $addr ) use ( $location_type ) {
+            return isset( $addr['location_type'] ) && $addr['location_type'] === $location_type;
+        } );
+    }
 
-    return $wpdb->get_results( $query );
+    return array_values( $addresses );
 }
 
 /**
@@ -206,91 +239,71 @@ function nmda_get_business_addresses( $business_id, $address_type = null ) {
  *
  * @param int $business_id Business post ID.
  * @param array $address_data Address data array.
- * @return int|false Insert ID on success, false on failure.
+ * @return int|false New address index on success, false on failure.
  */
 function nmda_add_business_address( $business_id, $address_data ) {
-    global $wpdb;
-    $table = nmda_get_business_address_table();
+    // Get current addresses
+    $addresses = get_field( 'extra_locations', $business_id );
 
-    // If this is set as primary, unset other primary addresses
-    if ( ! empty( $address_data['is_primary'] ) ) {
-        $wpdb->update(
-            $table,
-            array( 'is_primary' => 0 ),
-            array( 'business_id' => $business_id ),
-            array( '%d' ),
-            array( '%d' )
-        );
+    if ( ! $addresses ) {
+        $addresses = array();
     }
 
-    $result = $wpdb->insert(
-        $table,
-        array_merge(
-            array( 'business_id' => $business_id ),
-            $address_data
-        )
-    );
+    // Add new address
+    $addresses[] = $address_data;
 
-    return $result ? $wpdb->insert_id : false;
+    // Update ACF field
+    $result = update_field( 'extra_locations', $addresses, $business_id );
+
+    return $result ? ( count( $addresses ) - 1 ) : false;
 }
 
 /**
  * Update business address
  *
- * @param int $address_id Address ID.
+ * @param int $business_id Business post ID.
+ * @param int $index Address index in repeater.
  * @param array $address_data Address data array.
  * @return bool True on success, false on failure.
  */
-function nmda_update_business_address( $address_id, $address_data ) {
-    global $wpdb;
-    $table = nmda_get_business_address_table();
+function nmda_update_business_address( $business_id, $index, $address_data ) {
+    // Get current addresses
+    $addresses = get_field( 'extra_locations', $business_id );
 
-    // If this is set as primary, unset other primary addresses for this business
-    if ( ! empty( $address_data['is_primary'] ) ) {
-        $business_id = $wpdb->get_var( $wpdb->prepare(
-            "SELECT business_id FROM $table WHERE id = %d",
-            $address_id
-        ) );
-
-        if ( $business_id ) {
-            $wpdb->update(
-                $table,
-                array( 'is_primary' => 0 ),
-                array( 'business_id' => $business_id ),
-                array( '%d' ),
-                array( '%d' )
-            );
-        }
+    if ( ! $addresses || ! isset( $addresses[ $index ] ) ) {
+        return false;
     }
 
-    $result = $wpdb->update(
-        $table,
-        $address_data,
-        array( 'id' => $address_id ),
-        null,
-        array( '%d' )
-    );
+    // Update the address at the specified index
+    $addresses[ $index ] = array_merge( $addresses[ $index ], $address_data );
 
-    return $result !== false;
+    // Update ACF field
+    return update_field( 'extra_locations', $addresses, $business_id );
 }
 
 /**
  * Delete business address
  *
- * @param int $address_id Address ID.
+ * @param int $business_id Business post ID.
+ * @param int $index Address index in repeater.
  * @return bool True on success, false on failure.
  */
-function nmda_delete_business_address( $address_id ) {
-    global $wpdb;
-    $table = nmda_get_business_address_table();
+function nmda_delete_business_address( $business_id, $index ) {
+    // Get current addresses
+    $addresses = get_field( 'extra_locations', $business_id );
 
-    $result = $wpdb->delete(
-        $table,
-        array( 'id' => $address_id ),
-        array( '%d' )
-    );
+    if ( ! $addresses || ! isset( $addresses[ $index ] ) ) {
+        return false;
+    }
 
-    return $result !== false;
+    // Remove the address at the specified index
+    unset( $addresses[ $index ] );
+
+    // Re-index array to maintain sequential keys
+    $addresses = array_values( $addresses );
+
+    // Update ACF field
+    return update_field( 'extra_locations', $addresses, $business_id );
 }
 
 /**
@@ -380,13 +393,17 @@ function nmda_update_business_field( $business_id, $field_name, $value, $user_id
  * @param string $field_name Field name.
  * @param mixed $value New value.
  * @param int $user_id User ID.
+ * @param string $status Change status (updated, approved, rejected). Default 'updated'.
+ * @param string $reason Reason for rejection (if applicable). Default empty string.
  */
-function nmda_log_field_change( $business_id, $field_name, $value, $user_id ) {
+function nmda_log_field_change( $business_id, $field_name, $value, $user_id, $status = 'updated', $reason = '' ) {
     $log = get_post_meta( $business_id, '_field_change_log', true ) ?: array();
     $log[] = array(
         'field'     => $field_name,
         'value'     => $value,
         'user_id'   => $user_id,
+        'status'    => $status,
+        'reason'    => $reason,
         'timestamp' => current_time( 'mysql' ),
     );
     update_post_meta( $business_id, '_field_change_log', $log );
@@ -551,8 +568,14 @@ function nmda_ajax_update_business_profile() {
 
 	foreach ( $acf_fields as $field ) {
 		if ( isset( $_POST[ $field ] ) ) {
-			$value         = sanitize_text_field( $_POST[ $field ] );
-			$current_value = get_field( $field, $business_id );
+			$value = sanitize_text_field( $_POST[ $field ] );
+
+			// Map form field name to ACF field name for getting/setting values
+			$acf_field_name = function_exists( 'nmda_map_form_field_to_acf' )
+				? nmda_map_form_field_to_acf( $field )
+				: $field;
+
+			$current_value = get_field( $acf_field_name, $business_id );
 
 			// Normalize empty values for comparison
 			$value         = ( $value === '' ) ? null : $value;
@@ -564,7 +587,7 @@ function nmda_ajax_update_business_profile() {
 					nmda_update_business_field( $business_id, $field, $value, $user_id );
 					$pending_fields[] = ucwords( str_replace( '_', ' ', $field ) );
 				} else {
-					update_field( $field, $value, $business_id );
+					update_field( $acf_field_name, $value, $business_id );
 					$updated_fields[] = ucwords( str_replace( '_', ' ', $field ) );
 				}
 			}
@@ -821,3 +844,212 @@ function nmda_business_admin_filter_query( $query ) {
 		}
 	}
 }
+
+/**
+ * ========================================
+ * AJAX Handlers for Address Management
+ * ========================================
+ */
+
+/**
+ * AJAX: Get address details for editing
+ */
+function nmda_ajax_get_address() {
+	check_ajax_referer( 'nmda-ajax-nonce', 'nonce' );
+
+	if ( ! is_user_logged_in() ) {
+		wp_send_json_error( array( 'message' => 'You must be logged in.' ) );
+	}
+
+	$business_id = intval( $_POST['business_id'] );
+	$index = intval( $_POST['index'] );
+
+	// Verify user has access to this business
+	if ( ! nmda_user_can_access_business( get_current_user_id(), $business_id ) ) {
+		wp_send_json_error( array( 'message' => 'Access denied.' ) );
+	}
+
+	// Get addresses from ACF
+	$addresses = get_field( 'extra_locations', $business_id );
+
+	if ( ! $addresses || ! isset( $addresses[ $index ] ) ) {
+		wp_send_json_error( array( 'message' => 'Address not found.' ) );
+	}
+
+	$address = $addresses[ $index ];
+	$address['index'] = $index; // Add index for reference
+
+	wp_send_json_success( array( 'address' => $address ) );
+}
+add_action( 'wp_ajax_nmda_get_address', 'nmda_ajax_get_address' );
+
+/**
+ * AJAX: Save address (add or update)
+ */
+function nmda_ajax_save_address() {
+	check_ajax_referer( 'nmda-ajax-nonce', 'nonce' );
+
+	if ( ! is_user_logged_in() ) {
+		wp_send_json_error( array( 'message' => 'You must be logged in.' ) );
+	}
+
+	$user_id = get_current_user_id();
+	$business_id = intval( $_POST['business_id'] );
+	$index = isset( $_POST['index'] ) && $_POST['index'] !== '' ? intval( $_POST['index'] ) : null;
+
+	// Verify user has access to this business
+	if ( ! nmda_user_can_access_business( $user_id, $business_id ) ) {
+		wp_send_json_error( array( 'message' => 'Access denied.' ) );
+	}
+
+	// Get user role
+	$user_role = nmda_get_user_business_role( $user_id, $business_id );
+	if ( ! in_array( $user_role, array( 'owner', 'manager' ) ) && ! current_user_can( 'administrator' ) ) {
+		wp_send_json_error( array( 'message' => 'You do not have permission to edit addresses.' ) );
+	}
+
+	// Prepare address data (matching ACF field names)
+	$address_data = array(
+		'location_name' => sanitize_text_field( $_POST['location_name'] ?? '' ),
+		'location_type' => sanitize_text_field( $_POST['location_type'] ?? '' ),
+		'address'       => sanitize_text_field( $_POST['address'] ?? '' ),
+		'address_2'     => sanitize_text_field( $_POST['address_2'] ?? '' ),
+		'city'          => sanitize_text_field( $_POST['city'] ?? '' ),
+		'state'         => sanitize_text_field( $_POST['state'] ?? '' ),
+		'zip'           => sanitize_text_field( $_POST['zip'] ?? '' ),
+		'county'        => sanitize_text_field( $_POST['county'] ?? '' ),
+		'phone'         => sanitize_text_field( $_POST['phone'] ?? '' ),
+		'email'         => sanitize_email( $_POST['email'] ?? '' ),
+		'country'       => sanitize_text_field( $_POST['country'] ?? 'USA' ),
+	);
+
+	if ( $index !== null ) {
+		// Update existing address
+		$success = nmda_update_business_address( $business_id, $index, $address_data );
+		$message = $success ? 'Address updated successfully!' : 'Failed to update address.';
+		$new_index = $index;
+	} else {
+		// Add new address
+		$result = nmda_add_business_address( $business_id, $address_data );
+		$success = $result !== false;
+		$new_index = $result;
+		$message = $success ? 'Address added successfully!' : 'Failed to add address.';
+	}
+
+	if ( $success ) {
+		// Get updated address list
+		$addresses = nmda_get_business_addresses( $business_id );
+
+		wp_send_json_success( array(
+			'message'   => $message,
+			'index'     => $new_index,
+			'addresses' => $addresses
+		) );
+	} else {
+		wp_send_json_error( array( 'message' => $message ) );
+	}
+}
+add_action( 'wp_ajax_nmda_save_address', 'nmda_ajax_save_address' );
+
+/**
+ * AJAX: Delete address
+ */
+function nmda_ajax_delete_address() {
+	check_ajax_referer( 'nmda-ajax-nonce', 'nonce' );
+
+	if ( ! is_user_logged_in() ) {
+		wp_send_json_error( array( 'message' => 'You must be logged in.' ) );
+	}
+
+	$user_id = get_current_user_id();
+	$business_id = intval( $_POST['business_id'] );
+	$index = intval( $_POST['index'] );
+
+	// Verify user has access
+	if ( ! nmda_user_can_access_business( $user_id, $business_id ) ) {
+		wp_send_json_error( array( 'message' => 'Access denied.' ) );
+	}
+
+	// Check permissions
+	$user_role = nmda_get_user_business_role( $user_id, $business_id );
+	if ( ! in_array( $user_role, array( 'owner', 'manager' ) ) && ! current_user_can( 'administrator' ) ) {
+		wp_send_json_error( array( 'message' => 'You do not have permission to delete addresses.' ) );
+	}
+
+	// Delete address
+	$success = nmda_delete_business_address( $business_id, $index );
+
+	if ( $success ) {
+		wp_send_json_success( array( 'message' => 'Address deleted successfully!' ) );
+	} else {
+		wp_send_json_error( array( 'message' => 'Failed to delete address.' ) );
+	}
+}
+add_action( 'wp_ajax_nmda_delete_address', 'nmda_ajax_delete_address' );
+
+/**
+ * AJAX: Set address as primary
+ */
+function nmda_ajax_set_primary_address() {
+	check_ajax_referer( 'nmda-ajax-nonce', 'nonce' );
+
+	if ( ! is_user_logged_in() ) {
+		wp_send_json_error( array( 'message' => 'You must be logged in.' ) );
+	}
+
+	$user_id = get_current_user_id();
+	$business_id = intval( $_POST['business_id'] );
+	$index = intval( $_POST['index'] );
+
+	// Verify user has access
+	if ( ! nmda_user_can_access_business( $user_id, $business_id ) ) {
+		wp_send_json_error( array( 'message' => 'Access denied.' ) );
+	}
+
+	// Check permissions
+	$user_role = nmda_get_user_business_role( $user_id, $business_id );
+	if ( ! in_array( $user_role, array( 'owner', 'manager' ) ) && ! current_user_can( 'administrator' ) ) {
+		wp_send_json_error( array( 'message' => 'You do not have permission to set primary address.' ) );
+	}
+
+	// Get addresses
+	$addresses = get_field( 'extra_locations', $business_id );
+
+	if ( ! $addresses || ! isset( $addresses[ $index ] ) ) {
+		wp_send_json_error( array( 'message' => 'Address not found.' ) );
+	}
+
+	$address = $addresses[ $index ];
+
+	// Copy address data to primary ACF fields
+	$primary_fields = array(
+		'primary_address'   => $address['address'] ?? '',
+		'primary_address_2' => $address['address_2'] ?? '',
+		'primary_city'      => $address['city'] ?? '',
+		'primary_state'     => $address['state'] ?? '',
+		'primary_zip'       => $address['zip'] ?? '',
+		'primary_county'    => $address['county'] ?? '',
+	);
+
+	// Update all primary fields
+	$success = true;
+	foreach ( $primary_fields as $field_name => $value ) {
+		$result = update_field( $field_name, $value, $business_id );
+		if ( ! $result ) {
+			$success = false;
+		}
+	}
+
+	if ( $success ) {
+		// Get updated address list
+		$addresses = nmda_get_business_addresses( $business_id );
+
+		wp_send_json_success( array(
+			'message'   => 'Primary address updated successfully!',
+			'addresses' => $addresses
+		) );
+	} else {
+		wp_send_json_error( array( 'message' => 'Failed to set primary address.' ) );
+	}
+}
+add_action( 'wp_ajax_nmda_set_primary_address', 'nmda_ajax_set_primary_address' );

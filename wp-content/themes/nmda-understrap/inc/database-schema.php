@@ -32,6 +32,8 @@ function nmda_create_custom_tables() {
         business_id bigint(20) NOT NULL,
         role varchar(50) NOT NULL DEFAULT 'viewer',
         status varchar(50) NOT NULL DEFAULT 'pending',
+        invitation_token varchar(64) DEFAULT NULL,
+        expires_at datetime DEFAULT NULL,
         invited_by bigint(20) DEFAULT NULL,
         invited_date datetime DEFAULT NULL,
         accepted_date datetime DEFAULT NULL,
@@ -41,10 +43,15 @@ function nmda_create_custom_tables() {
         KEY user_id (user_id),
         KEY business_id (business_id),
         KEY status (status),
+        KEY invitation_token (invitation_token),
+        KEY expires_at (expires_at),
         UNIQUE KEY unique_user_business (user_id, business_id)
     ) $charset_collate;";
 
     // Business Addresses Table (multiple addresses per business)
+    // @deprecated This table is no longer used. Address data is now stored in ACF repeater field 'extra_locations'
+    // @see group_business_consolidated.json field 'extra_locations'
+    // Table kept for reference only - address management now uses ACF instead of custom DB table
     $sql_business_address = "CREATE TABLE IF NOT EXISTS $table_business_address (
         id bigint(20) NOT NULL AUTO_INCREMENT,
         business_id bigint(20) NOT NULL,
@@ -100,6 +107,7 @@ function nmda_create_custom_tables() {
         business_id bigint(20) DEFAULT NULL,
         user_id bigint(20) DEFAULT NULL,
         admin_id bigint(20) DEFAULT NULL,
+        sender_id bigint(20) DEFAULT NULL,
         type varchar(50) NOT NULL DEFAULT 'general',
         subject varchar(255) DEFAULT NULL,
         message text,
@@ -111,6 +119,7 @@ function nmda_create_custom_tables() {
         KEY business_id (business_id),
         KEY user_id (user_id),
         KEY admin_id (admin_id),
+        KEY sender_id (sender_id),
         KEY type (type),
         KEY read_status (read_status),
         KEY parent_id (parent_id),
@@ -141,8 +150,85 @@ function nmda_create_custom_tables() {
     // Insert default field permissions
     nmda_insert_default_field_permissions();
 
+    // Run database upgrades
+    nmda_upgrade_database();
+
     // Store database version
-    update_option( 'nmda_db_version', '1.0' );
+    update_option( 'nmda_db_version', '1.2' );
+}
+
+/**
+ * Upgrade database schema for existing installations
+ */
+function nmda_upgrade_database() {
+    global $wpdb;
+    $table_user_business = $wpdb->prefix . 'nmda_user_business';
+    $table_communications = $wpdb->prefix . 'nmda_communications';
+    $current_version = get_option( 'nmda_db_version', '1.0' );
+
+    // Upgrade to 1.1: Add invitation_token and expires_at columns
+    if ( version_compare( $current_version, '1.1', '<' ) ) {
+        // Check if invitation_token column exists
+        $column_exists = $wpdb->get_results(
+            "SHOW COLUMNS FROM $table_user_business LIKE 'invitation_token'"
+        );
+
+        if ( empty( $column_exists ) ) {
+            $wpdb->query(
+                "ALTER TABLE $table_user_business
+                ADD COLUMN invitation_token varchar(64) DEFAULT NULL AFTER status,
+                ADD INDEX idx_invitation_token (invitation_token)"
+            );
+        }
+
+        // Check if expires_at column exists
+        $column_exists = $wpdb->get_results(
+            "SHOW COLUMNS FROM $table_user_business LIKE 'expires_at'"
+        );
+
+        if ( empty( $column_exists ) ) {
+            $wpdb->query(
+                "ALTER TABLE $table_user_business
+                ADD COLUMN expires_at datetime DEFAULT NULL AFTER invitation_token,
+                ADD INDEX idx_expires_at (expires_at)"
+            );
+        }
+    }
+
+    // Upgrade to 1.2: Add sender_id column to communications table
+    if ( version_compare( $current_version, '1.2', '<' ) ) {
+        // Check if sender_id column exists
+        $column_exists = $wpdb->get_results(
+            "SHOW COLUMNS FROM $table_communications LIKE 'sender_id'"
+        );
+
+        if ( empty( $column_exists ) ) {
+            $wpdb->query(
+                "ALTER TABLE $table_communications
+                ADD COLUMN sender_id bigint(20) DEFAULT NULL AFTER admin_id,
+                ADD INDEX idx_sender_id (sender_id)"
+            );
+
+            // Populate sender_id for existing messages based on logic:
+            // If both user_id and admin_id exist, check if admin_id is actually an admin
+            // This is a best-effort migration
+            $wpdb->query(
+                "UPDATE $table_communications c
+                INNER JOIN {$wpdb->prefix}users u ON u.ID = c.admin_id
+                INNER JOIN {$wpdb->prefix}usermeta um ON um.user_id = u.ID AND um.meta_key = 'wp_capabilities'
+                SET c.sender_id = c.admin_id
+                WHERE c.admin_id IS NOT NULL
+                AND um.meta_value LIKE '%administrator%'"
+            );
+
+            // For remaining messages (member sent), set sender_id to user_id
+            $wpdb->query(
+                "UPDATE $table_communications
+                SET sender_id = user_id
+                WHERE sender_id IS NULL AND user_id IS NOT NULL"
+            );
+        }
+    }
 }
 
 /**

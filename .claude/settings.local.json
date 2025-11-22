@@ -27,7 +27,27 @@
       "Bash(tr:*)",
       "Bash(wp post list:*)",
       "Bash(\"C:\\wp-cli\\wp.bat\" post meta list 2 --keys=related_company,owner_wp_user,external_business_id)",
-      "Bash(\"C:\\wp-cli\\wp.bat\" eval-file diagnose-relationships.php)"
+      "Bash(\"C:\\wp-cli\\wp.bat\" eval-file diagnose-relationships.php)",
+      "Bash(dir:*)",
+      "Bash(nul)",
+      "Bash(echo:*)",
+      "Bash(wp help:*)",
+      "Bash(mkdir:*)",
+      "Bash(move wp-migrate-to-posts.php _deprecated-migration-scripts/)",
+      "Bash(move import-command.php _deprecated-migration-scripts/)",
+      "Bash(move wp-import-orchestrator.php _deprecated-migration-scripts/)",
+      "Bash(move:*)",
+      "Bash(move nmda-data-mapper.php _deprecated-migration-scripts/)",
+      "Bash(mv:*)",
+      "Bash(rm:*)",
+      "Bash(\"C:\\wp-cli\\wp.bat\" nmda import --help)",
+      "Bash(\"C:\\wp-cli\\wp.bat\" post list --post_type=page --field=post_title --format=csv)",
+      "Bash(\"C:\\wp-cli\\wp.bat\" post create --post_type=page --post_title=\"Reset Password\" --post_name=\"reset-password\" --post_status=publish --page_template=\"page-reset-password.php\")",
+      "Bash(curl:*)",
+      "Bash(\"C:\\wp-cli\\wp.bat\" eval \"require_once( get_stylesheet_directory() . ''/inc/database-schema.php'' ); nmda_create_custom_tables(); echo ''Database upgraded successfully!'';\")",
+
+      "Bash(cd:*)",
+      "Bash(\"C:\\wp-cli\\wp.bat\" db query:*)"
     ],
     "deny": [],
     "ask": []

@@ -1,0 +1,450 @@
+/**
+ * NMDA User Switcher Styles
+ * Matches NMDA brand colors and theme
+ */
+
+:root {
+    --nmda-brown-dark: #512c1d;
+    --nmda-red: #8b0c12;
+    --nmda-brown-darker: #330d0f;
+    --nmda-gold: #f5be29;
+    --nmda-white: #ffffff;
+    --nmda-light-gray: #f5f5f5;
+}
+
+/* ===================================
+   Switch Banner
+   =================================== */
+
+.nmda-switch-banner {
+    position: fixed;
+    top: 32px; /* Below admin bar */
+    left: 0;
+    right: 0;
+    background: linear-gradient(135deg, var(--nmda-red) 0%, var(--nmda-brown-dark) 100%);
+    color: var(--nmda-white);
+    padding: 12px 20px;
+    z-index: 99999;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+    from {
+        transform: translateY(-100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* Adjust for mobile admin bar */
+@media screen and (max-width: 782px) {
+    .nmda-switch-banner {
+        top: 46px;
+    }
+}
+
+/* Adjust content when banner is visible */
+body.nmda-user-switched {
+    margin-top: 60px !important;
+}
+
+body.nmda-user-switched.admin-bar {
+    margin-top: 92px !important;
+}
+
+@media screen and (max-width: 782px) {
+    body.nmda-user-switched.admin-bar {
+        margin-top: 106px !important;
+    }
+}
+
+.nmda-switch-banner-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 15px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.nmda-switch-banner-info {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.nmda-switch-icon {
+    font-size: 20px;
+    filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.3));
+}
+
+.nmda-switched-user-name {
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.nmda-switched-user-email {
+    font-size: 13px;
+    opacity: 0.9;
+}
+
+.nmda-switched-user-businesses {
+    background: rgba(255, 255, 255, 0.2);
+    padding: 2px 8px;
+    border-radius: 3px;
+    font-size: 12px;
+    margin-left: 8px;
+}
+
+.nmda-switch-banner-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.nmda-switch-back-button {
+    background: var(--nmda-gold);
+    color: var(--nmda-brown-darker);
+    padding: 8px 20px;
+    border-radius: 4px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 14px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.nmda-switch-back-button:hover,
+.nmda-switch-back-button:focus {
+    background: #ffd54f;
+    color: var(--nmda-brown-darker);
+    transform: translateY(-1px);
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.3);
+    text-decoration: none;
+}
+
+.nmda-switch-banner-businesses {
+    width: 100%;
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+}
+
+.nmda-business-badge {
+    background: rgba(255, 255, 255, 0.15);
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 12px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.nmda-role-badge {
+    background: rgba(0, 0, 0, 0.2);
+    padding: 2px 6px;
+    border-radius: 8px;
+    font-size: 10px;
+    text-transform: uppercase;
+    font-weight: 600;
+}
+
+.nmda-role-owner {
+    background: var(--nmda-gold);
+    color: var(--nmda-brown-darker);
+}
+
+.nmda-role-manager {
+    background: rgba(255, 255, 255, 0.3);
+    color: var(--nmda-white);
+}
+
+.nmda-role-viewer {
+    background: rgba(255, 255, 255, 0.15);
+    color: var(--nmda-white);
+}
+
+/* ===================================
+   Admin Bar Integration
+   =================================== */
+
+#wp-admin-bar-nmda-user-switcher .nmda-switcher-indicator {
+    background: var(--nmda-gold);
+    color: var(--nmda-brown-darker);
+    padding: 4px 12px;
+    border-radius: 3px;
+    font-weight: 600;
+}
+
+#wp-admin-bar-nmda-user-switcher.nmda-user-switcher-active > .ab-item {
+    background: var(--nmda-red) !important;
+}
+
+#wp-admin-bar-nmda-user-switcher.nmda-user-switcher-active > .ab-item:hover {
+    background: var(--nmda-brown-dark) !important;
+}
+
+/* ===================================
+   User Search
+   =================================== */
+
+.nmda-user-search-wrapper {
+    padding: 10px;
+    min-width: 300px;
+}
+
+.nmda-user-search-input {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+    box-sizing: border-box;
+}
+
+.nmda-user-search-input:focus {
+    border-color: var(--nmda-gold);
+    outline: none;
+    box-shadow: 0 0 0 1px var(--nmda-gold);
+}
+
+.nmda-user-search-results {
+    margin-top: 8px;
+    max-height: 300px;
+    overflow-y: auto;
+    background: var(--nmda-white);
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    display: none;
+}
+
+.nmda-user-search-results.has-results {
+    display: block;
+}
+
+.nmda-user-result-item {
+    padding: 10px 12px;
+    border-bottom: 1px solid #eee;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.nmda-user-result-item:last-child {
+    border-bottom: none;
+}
+
+.nmda-user-result-item:hover {
+    background: var(--nmda-light-gray);
+}
+
+.nmda-user-result-name {
+    font-weight: 600;
+    color: var(--nmda-brown-dark);
+    display: block;
+    margin-bottom: 2px;
+}
+
+.nmda-user-result-email {
+    font-size: 12px;
+    color: #666;
+    display: block;
+    margin-bottom: 4px;
+}
+
+.nmda-user-result-meta {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.nmda-user-result-role,
+.nmda-user-result-businesses {
+    font-size: 11px;
+    background: #f0f0f0;
+    padding: 2px 6px;
+    border-radius: 3px;
+    color: #666;
+}
+
+.nmda-user-search-loading,
+.nmda-user-search-empty {
+    padding: 15px;
+    text-align: center;
+    color: #666;
+    font-size: 13px;
+}
+
+/* ===================================
+   Dashboard Widget
+   =================================== */
+
+.nmda-switcher-stats {
+    padding: 10px 0;
+}
+
+.nmda-stats-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.nmda-stat-box {
+    text-align: center;
+    padding: 15px 10px;
+    background: var(--nmda-light-gray);
+    border-radius: 4px;
+    border-left: 3px solid var(--nmda-gold);
+}
+
+.nmda-stat-number {
+    display: block;
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--nmda-brown-dark);
+    line-height: 1;
+    margin-bottom: 5px;
+}
+
+.nmda-stat-label {
+    display: block;
+    font-size: 11px;
+    color: #666;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.nmda-switcher-stats h4 {
+    margin: 20px 0 10px 0;
+    color: var(--nmda-brown-dark);
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.nmda-recent-activity {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.nmda-recent-activity li {
+    padding: 8px 0;
+    border-bottom: 1px solid #eee;
+    font-size: 13px;
+}
+
+.nmda-recent-activity li:last-child {
+    border-bottom: none;
+}
+
+.nmda-log-time {
+    color: #999;
+    font-size: 11px;
+    margin-left: 5px;
+}
+
+/* ===================================
+   User List Table
+   =================================== */
+
+.user-php .row-actions .nmda_switch_to a {
+    color: var(--nmda-red);
+    font-weight: 600;
+}
+
+.user-php .row-actions .nmda_switch_to a:hover {
+    color: var(--nmda-brown-dark);
+}
+
+/* ===================================
+   Responsive Adjustments
+   =================================== */
+
+@media screen and (max-width: 782px) {
+    .nmda-switch-banner-content {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .nmda-switch-banner-info {
+        font-size: 14px;
+    }
+
+    .nmda-switched-user-name {
+        font-size: 14px;
+    }
+
+    .nmda-user-search-wrapper {
+        min-width: 250px;
+    }
+
+    .nmda-stats-row {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .nmda-stats-row {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ===================================
+   Print Styles
+   =================================== */
+
+@media print {
+    .nmda-switch-banner {
+        display: none !important;
+    }
+
+    body.nmda-user-switched {
+        margin-top: 0 !important;
+    }
+}
+
+/* ===================================
+   Accessibility
+   =================================== */
+
+.nmda-switch-back-button:focus-visible,
+.nmda-user-search-input:focus-visible,
+.nmda-user-result-item:focus-visible {
+    outline: 2px solid var(--nmda-gold);
+    outline-offset: 2px;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+    .nmda-switch-banner {
+        border: 2px solid var(--nmda-white);
+    }
+
+    .nmda-business-badge,
+    .nmda-role-badge {
+        border: 1px solid var(--nmda-white);
+    }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+    .nmda-switch-banner {
+        animation: none;
+    }
+
+    .nmda-switch-back-button,
+    .nmda-user-result-item {
+        transition: none;
+    }
+}

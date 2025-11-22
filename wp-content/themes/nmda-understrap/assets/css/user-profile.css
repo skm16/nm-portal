@@ -1,0 +1,473 @@
+/**
+ * User Profile Styles
+ *
+ * Styles for the admin user profile page
+ */
+
+/* Breadcrumb */
+.breadcrumb {
+    background-color: #f8f9fa;
+    border-radius: 4px;
+    padding: 0.75rem 1rem;
+}
+
+.breadcrumb-item + .breadcrumb-item::before {
+    color: #6c757d;
+}
+
+.breadcrumb-item a {
+    color: var(--nmda-brown-dark);
+    text-decoration: none;
+}
+
+.breadcrumb-item a:hover {
+    color: var(--nmda-red);
+    text-decoration: underline;
+}
+
+.breadcrumb-item.active {
+    color: #6c757d;
+}
+
+/* Card Sections */
+.card {
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    margin-bottom: 1.5rem;
+}
+
+.card-header h3 {
+    margin: 0;
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--nmda-brown-dark);
+}
+
+.card-header h3 i {
+    margin-right: 0.5rem;
+    color: var(--nmda-red);
+}
+
+/* User Information Items */
+.user-info-item {
+    display: flex;
+    align-items: flex-start;
+    padding: 1rem 0;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.user-info-item:first-child {
+    padding-top: 0;
+}
+
+.user-info-item:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.user-info-item > i {
+    font-size: 1.25rem;
+    color: var(--nmda-red);
+    margin-right: 1rem;
+    margin-top: 0.25rem;
+    min-width: 20px;
+    text-align: center;
+}
+
+.user-info-item div {
+    flex: 1;
+}
+
+.user-info-item strong {
+    color: var(--nmda-brown-dark);
+    display: block;
+    margin-bottom: 0.25rem;
+    font-size: 0.9rem;
+}
+
+.user-info-item a {
+    color: var(--nmda-red);
+    text-decoration: none;
+    word-break: break-all;
+}
+
+.user-info-item a:hover {
+    text-decoration: underline;
+}
+
+/* Quick Stats */
+.stat-item {
+    text-align: center;
+    padding: 1.5rem 0;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.stat-item:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.stat-item:first-child {
+    padding-top: 0;
+}
+
+.stat-number {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--nmda-brown-dark);
+    line-height: 1;
+    margin-bottom: 0.5rem;
+}
+
+.stat-label {
+    color: #6c757d;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Business Table */
+.table {
+    font-size: 0.9rem;
+}
+
+.table thead {
+    background-color: #f8f9fa;
+}
+
+.table thead th {
+    border-bottom: 2px solid #dee2e6;
+    color: var(--nmda-brown-dark);
+    font-weight: 600;
+    padding: 0.75rem;
+}
+
+.table tbody tr {
+    transition: background-color 0.2s ease;
+}
+
+.table tbody tr:hover {
+    background-color: #f8f9fa;
+}
+
+.table tbody td {
+    padding: 0.75rem;
+    vertical-align: middle;
+}
+
+.table a {
+    color: var(--nmda-brown-dark);
+    text-decoration: none;
+}
+
+.table a:hover {
+    color: var(--nmda-red);
+    text-decoration: underline;
+}
+
+/* Status Indicator */
+.status-indicator {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    margin-right: 0.5rem;
+}
+
+.status-indicator.status-active {
+    background-color: #28a745;
+}
+
+.status-indicator.status-pending {
+    background-color: #ffc107;
+}
+
+.status-indicator.status-disabled {
+    background-color: #dc3545;
+}
+
+/* Communication Timeline */
+.communication-timeline {
+    padding: 0;
+}
+
+.communication-item {
+    display: flex;
+    padding: 1rem 0;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.communication-item:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.communication-item:first-child {
+    padding-top: 0;
+}
+
+.communication-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #e3f2fd;
+    color: #1976d2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 1rem;
+    flex-shrink: 0;
+}
+
+.communication-icon i {
+    font-size: 1.1rem;
+}
+
+.communication-content {
+    flex: 1;
+}
+
+.communication-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+.communication-header strong {
+    color: var(--nmda-brown-dark);
+    font-size: 0.95rem;
+}
+
+.communication-date {
+    font-size: 0.85rem;
+    color: #6c757d;
+}
+
+.communication-message {
+    color: #495057;
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+/* Badges */
+.badge {
+    font-weight: 600;
+    padding: 0.35rem 0.65rem;
+    font-size: 0.8rem;
+}
+
+.badge-success {
+    background-color: #28a745;
+}
+
+.badge-primary {
+    background-color: var(--nmda-brown-dark);
+}
+
+.badge-secondary {
+    background-color: #6c757d;
+}
+
+.badge-info {
+    background-color: #17a2b8;
+}
+
+/* Status Badges */
+.nmda-status-badge {
+    display: inline-block;
+    padding: 0.25rem 0.65rem;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.nmda-status-badge.submitted,
+.nmda-status-badge.pending {
+    background-color: #ffc107;
+    color: #333;
+}
+
+.nmda-status-badge.approved {
+    background-color: #28a745;
+    color: #fff;
+}
+
+.nmda-status-badge.rejected {
+    background-color: #dc3545;
+    color: #fff;
+}
+
+/* Quick Actions */
+.card-body .btn-block {
+    text-align: left;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.card-body .btn-block i {
+    margin-right: 0.5rem;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 991px) {
+    .dashboard-header .col-md-4 {
+        margin-top: 1rem;
+        text-align: left !important;
+    }
+
+    .col-lg-4 {
+        margin-top: 1rem;
+    }
+
+    .stat-number {
+        font-size: 2rem;
+    }
+}
+
+@media (max-width: 767px) {
+    .dashboard-subtitle {
+        font-size: 0.9rem;
+        word-break: break-all;
+    }
+
+    .table {
+        font-size: 0.85rem;
+    }
+
+    .table thead {
+        display: none;
+    }
+
+    .table tbody tr {
+        display: block;
+        margin-bottom: 1rem;
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+        overflow: hidden;
+    }
+
+    .table tbody td {
+        display: block;
+        text-align: right;
+        padding: 0.75rem 1rem;
+        border-top: 1px solid #f0f0f0;
+    }
+
+    .table tbody td:first-child {
+        background-color: #f8f9fa;
+        font-weight: 600;
+    }
+
+    .table tbody td:before {
+        content: attr(data-label);
+        float: left;
+        font-weight: 600;
+        color: var(--nmda-brown-dark);
+    }
+
+    .communication-item {
+        flex-direction: column;
+    }
+
+    .communication-icon {
+        margin-bottom: 0.75rem;
+    }
+
+    .communication-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .communication-date {
+        margin-top: 0.25rem;
+    }
+}
+
+@media (max-width: 575px) {
+    .dashboard-title {
+        font-size: 1.5rem;
+    }
+
+    .stat-number {
+        font-size: 1.75rem;
+    }
+
+    .stat-label {
+        font-size: 0.8rem;
+    }
+
+    .user-info-item {
+        flex-direction: column;
+    }
+
+    .user-info-item > i {
+        margin-bottom: 0.5rem;
+    }
+}
+
+/* Print Styles */
+@media print {
+    .breadcrumb,
+    .dashboard-header .col-md-4,
+    .btn,
+    .card-header .fa {
+        display: none !important;
+    }
+
+    .dashboard-header {
+        background: #fff;
+        color: #000;
+        border-bottom: 2px solid var(--nmda-brown-dark);
+    }
+
+    .dashboard-title,
+    .dashboard-subtitle {
+        color: #000;
+    }
+
+    .card {
+        break-inside: avoid;
+        box-shadow: none;
+        border: 1px solid #ccc;
+        margin-bottom: 1rem;
+    }
+
+    .card-header {
+        background-color: #f8f9fa !important;
+        border-bottom: 1px solid #ccc;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+
+    .card-header h3 {
+        color: #000;
+    }
+
+    .table {
+        page-break-inside: avoid;
+    }
+
+    .communication-timeline {
+        page-break-inside: avoid;
+    }
+
+    a {
+        text-decoration: none;
+        color: #000;
+    }
+
+    a[href]:after {
+        content: " (" attr(href) ")";
+        font-size: 0.8em;
+        color: #666;
+    }
+
+    .fa-external-link-alt {
+        display: none;
+    }
+}

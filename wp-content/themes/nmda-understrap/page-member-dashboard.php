@@ -416,6 +416,57 @@ if ( ! $last_login ) {
 									</div>
 								</div>
 
+								<!-- Messages Widget -->
+								<div class="card mt-3">
+									<div class="card-header">
+										<div class="d-flex justify-content-between align-items-center">
+											<h3 class="mb-0"><i class="fa fa-envelope"></i> Messages</h3>
+											<?php
+											$unread_count = nmda_get_unread_count( $user_id );
+											if ( $unread_count > 0 ) :
+												?>
+												<span class="badge badge-danger"><?php echo $unread_count; ?> New</span>
+											<?php endif; ?>
+										</div>
+									</div>
+									<div class="card-body">
+										<?php
+										// Get recent messages (last 5)
+										$recent_messages = nmda_get_messages( $user_id, 'all', 5, 0 );
+										?>
+										<?php if ( ! empty( $recent_messages ) ) : ?>
+											<div class="recent-messages-list">
+												<?php foreach ( $recent_messages as $msg ) : ?>
+													<div class="recent-message-item <?php echo $msg->is_unread ? 'unread' : ''; ?>">
+														<a href="<?php echo home_url( '/messages/?id=' . $msg->id ); ?>" class="message-link">
+															<div class="message-header">
+																<?php if ( $msg->is_unread && ! $msg->sender['is_me'] ) : ?>
+																	<span class="badge badge-danger badge-sm mr-1">New</span>
+																<?php endif; ?>
+																<strong><?php echo $msg->sender['is_me'] ? 'You' : esc_html( $msg->sender['name'] ); ?></strong>
+																<?php if ( $msg->sender['is_me'] ) : ?>
+																	<span class="text-muted">→ <?php echo esc_html( $msg->recipient['name'] ); ?></span>
+																<?php endif; ?>
+															</div>
+															<div class="message-subject"><?php echo esc_html( $msg->subject ?: '(No subject)' ); ?></div>
+															<small class="text-muted">
+																<?php echo human_time_diff( strtotime( $msg->created_at ), current_time( 'timestamp' ) ); ?> ago
+															</small>
+														</a>
+													</div>
+												<?php endforeach; ?>
+											</div>
+										<?php else : ?>
+											<p class="text-muted mb-0">No messages yet.</p>
+										<?php endif; ?>
+										<div class="mt-3">
+											<a href="<?php echo home_url( '/messages' ); ?>" class="btn btn-primary btn-block">
+												<i class="fa fa-envelope"></i> View All Messages
+											</a>
+										</div>
+									</div>
+								</div>
+
 								<!-- Submit Reimbursement -->
 								<div class="card mt-3">
 									<div class="card-header">

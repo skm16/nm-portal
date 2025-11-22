@@ -1,0 +1,127 @@
+{
+    "key": "group_admin",
+    "title": "Administrative (NMDA Only)",
+    "fields": [
+        {
+            "key": "field_approval_status",
+            "label": "Approval Status",
+            "name": "approval_status",
+            "aria-label": "",
+            "type": "select",
+            "instructions": "",
+            "required": false,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "choices": {
+                "pending": "Pending Review",
+                "approved": "Approved",
+                "rejected": "Rejected",
+                "changes_requested": "Changes Requested"
+            },
+            "default_value": "pending",
+            "multiple": 0,
+            "allow_null": 0,
+            "ui": 0,
+            "ajax": 0,
+            "placeholder": "",
+            "return_format": "value",
+            "create_options": 0,
+            "save_options": 0,
+            "allow_custom": 0,
+            "search_placeholder": ""
+        },
+        {
+            "key": "field_admin_notes",
+            "label": "Admin Notes",
+            "name": "admin_notes",
+            "aria-label": "",
+            "type": "textarea",
+            "instructions": "",
+            "required": false,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "rows": 5,
+            "default_value": "",
+            "new_lines": "",
+            "maxlength": "",
+            "placeholder": "",
+            "acfe_textarea_code": 0
+        },
+        {
+            "key": "field_approval_date",
+            "label": "Approval Date",
+            "name": "approval_date",
+            "aria-label": "",
+            "type": "date_picker",
+            "instructions": "",
+            "required": false,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "display_format": "m\/d\/Y",
+            "return_format": "Y-m-d",
+            "first_day": 1,
+            "default_to_current_date": 0
+        },
+        {
+            "key": "field_approved_by",
+            "label": "Approved By",
+            "name": "approved_by",
+            "aria-label": "",
+            "type": "user",
+            "instructions": "",
+            "required": false,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "role": [
+                "administrator",
+                "editor"
+            ],
+            "multiple": 0,
+            "allow_null": 0,
+            "return_format": "array",
+            "bidirectional_target": []
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "post_type",
+                "operator": "==",
+                "value": "nmda_business"
+            }
+        ]
+    ],
+    "menu_order": 0,
+    "position": "side",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": "",
+    "active": false,
+    "description": "",
+    "show_in_rest": 0,
+    "display_title": "",
+    "acfe_autosync": [
+        "json"
+    ],
+    "acfe_form": 0,
+    "acfe_meta": "",
+    "acfe_note": "",
+    "modified": 1763814421
+}

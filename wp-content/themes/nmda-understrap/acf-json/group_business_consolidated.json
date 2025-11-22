@@ -1,0 +1,1554 @@
+{
+    "key": "group_business_consolidated",
+    "title": "Business Information",
+    "fields": [
+        {
+            "key": "field_tab_business_profile",
+            "label": "Business Profile",
+            "name": "",
+            "aria-label": "",
+            "type": "tab",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "placement": "top",
+            "endpoint": 0,
+            "selected": 0
+        },
+        {
+            "key": "field_classification",
+            "label": "Logo Program Classification",
+            "name": "classification",
+            "aria-label": "",
+            "type": "checkbox",
+            "instructions": "Select all that apply to your business",
+            "required": 1,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "choices": {
+                "grown": "NEW MEXICO – Grown with Tradition® (Farmers\/Ranchers)",
+                "taste": "NEW MEXICO – Taste the Tradition® (Food\/Beverage Manufacturers)",
+                "associate": "NEW MEXICO – Associate Member (Retailers, Restaurants, Agritourism)"
+            },
+            "layout": "vertical",
+            "default_value": [],
+            "allow_custom": 0,
+            "save_custom": 0,
+            "toggle": 0,
+            "return_format": "value",
+            "custom_choice_button_text": "Add new choice"
+        },
+        {
+            "key": "field_associate_type",
+            "label": "Associate Member Type",
+            "name": "associate_type",
+            "aria-label": "",
+            "type": "checkbox",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_classification",
+                        "operator": "==",
+                        "value": "associate"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "choices": {
+                "in_person": "In-Person Retail (sells 3+ Taste\/Grown products)",
+                "online": "Online Retail",
+                "restaurant": "Restaurant (serves NM ingredients)",
+                "tourism": "Agritourism Operation",
+                "artisan": "Artisan\/Crafted Products",
+                "pet": "Pet Food Manufacturer",
+                "educational": "Educational Organization",
+                "non_profit": "Non-Profit Organization",
+                "other": "Other"
+            },
+            "layout": "vertical",
+            "default_value": [],
+            "allow_custom": 0,
+            "save_custom": 0,
+            "toggle": 0,
+            "return_format": "value",
+            "custom_choice_button_text": "Add new choice"
+        },
+        {
+            "key": "field_associate_other_text",
+            "label": "Other Associate Type (please describe)",
+            "name": "associate_other_text",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_associate_type",
+                        "operator": "==",
+                        "value": "other"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_dba",
+            "label": "DBA (Doing Business As)",
+            "name": "dba",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "If your business operates under a different name",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_business_profile",
+            "label": "Business Description",
+            "name": "business_profile",
+            "aria-label": "",
+            "type": "wysiwyg",
+            "instructions": "Provide a brief description of your business (will be displayed publicly on your business profile)",
+            "required": 1,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "tabs": "visual",
+            "toolbar": "basic",
+            "media_upload": 0,
+            "default_value": "",
+            "delay": 0
+        },
+        {
+            "key": "field_website",
+            "label": "Website",
+            "name": "website",
+            "aria-label": "",
+            "type": "url",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "placeholder": "https:\/\/example.com",
+            "default_value": ""
+        },
+        {
+            "key": "field_num_employees",
+            "label": "Number of Employees",
+            "name": "num_employees",
+            "aria-label": "",
+            "type": "number",
+            "instructions": "Approximate number (for NMDA records only, not displayed publicly)",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "min": "",
+            "max": "",
+            "step": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_tab_locations_contact",
+            "label": "Locations & Contact",
+            "name": "",
+            "aria-label": "",
+            "type": "tab",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "placement": "top",
+            "endpoint": 0,
+            "selected": 0
+        },
+        {
+            "key": "field_message_primary_address",
+            "label": "Primary Business Location",
+            "name": "",
+            "aria-label": "",
+            "type": "message",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "message": "This is your main business address that will be displayed publicly.",
+            "new_lines": "wpautop",
+            "esc_html": 0
+        },
+        {
+            "key": "field_primary_address",
+            "label": "Street Address",
+            "name": "primary_address",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 1,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_primary_address_2",
+            "label": "Address Line 2",
+            "name": "primary_address_2",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "Suite, unit, building, floor, etc.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_primary_city",
+            "label": "City",
+            "name": "primary_city",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 1,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "40",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_primary_state",
+            "label": "State",
+            "name": "primary_state",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 1,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "30",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "NM",
+            "maxlength": 2,
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_primary_zip",
+            "label": "ZIP Code",
+            "name": "primary_zip",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 1,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "30",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": 10,
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_primary_county",
+            "label": "County",
+            "name": "primary_county",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_primary_address_type",
+            "label": "Location Type",
+            "name": "primary_address_type",
+            "aria-label": "",
+            "type": "select",
+            "instructions": "How can customers visit this location?",
+            "required": 1,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "choices": {
+                "public_hours": "Open to Public During Business Hours",
+                "public_reservation": "Open to Public by Appointment\/Reservation",
+                "not_public": "Not Open to Public (Office\/Production Only)",
+                "other": "Other (please explain)"
+            },
+            "default_value": false,
+            "multiple": 0,
+            "allow_null": 0,
+            "ui": 1,
+            "ajax": 0,
+            "placeholder": "",
+            "return_format": "value",
+            "create_options": 0,
+            "save_options": 0,
+            "allow_custom": 0,
+            "search_placeholder": ""
+        },
+        {
+            "key": "field_reservation_instructions",
+            "label": "Reservation\/Appointment Instructions",
+            "name": "reservation_instructions",
+            "aria-label": "",
+            "type": "textarea",
+            "instructions": "How should customers make reservations or appointments?",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_primary_address_type",
+                        "operator": "==",
+                        "value": "public_reservation"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "rows": 3,
+            "default_value": "",
+            "new_lines": "",
+            "maxlength": "",
+            "placeholder": "",
+            "acfe_textarea_code": 0
+        },
+        {
+            "key": "field_other_instructions",
+            "label": "Additional Location Information",
+            "name": "other_instructions",
+            "aria-label": "",
+            "type": "textarea",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_primary_address_type",
+                        "operator": "==",
+                        "value": "other"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "rows": 3,
+            "default_value": "",
+            "new_lines": "",
+            "maxlength": "",
+            "placeholder": "",
+            "acfe_textarea_code": 0
+        },
+        {
+            "key": "field_business_hours",
+            "label": "Business Hours",
+            "name": "business_hours",
+            "aria-label": "",
+            "type": "textarea",
+            "instructions": "If by appointment only, include contact info",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "rows": 5,
+            "placeholder": "Monday-Friday: 8:00 AM - 5:00 PM\nSaturday: 9:00 AM - 4:00 PM\nSunday: Closed",
+            "default_value": "",
+            "new_lines": "",
+            "maxlength": "",
+            "acfe_textarea_code": 0
+        },
+        {
+            "key": "field_divider_contact",
+            "label": "Business Contact Information",
+            "name": "",
+            "aria-label": "",
+            "type": "message",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "message": "This contact information will be displayed publicly on your business profile.",
+            "new_lines": "wpautop",
+            "esc_html": 0
+        },
+        {
+            "key": "field_business_phone",
+            "label": "Business Phone",
+            "name": "business_phone",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 1,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "placeholder": "505-555-5555",
+            "default_value": "",
+            "maxlength": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_business_email",
+            "label": "Business Email",
+            "name": "business_email",
+            "aria-label": "",
+            "type": "email",
+            "instructions": "",
+            "required": 1,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_extra_locations",
+            "label": "Additional Locations",
+            "name": "extra_locations",
+            "aria-label": "",
+            "type": "repeater",
+            "instructions": "Add any additional business locations (retail outlets, farmers markets, satellite offices, etc.)",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "layout": "table",
+            "pagination": 0,
+            "min": 0,
+            "max": 0,
+            "collapsed": "",
+            "button_label": "Add Location",
+            "rows_per_page": 20,
+            "acfe_repeater_stylised_button": 0,
+            "sub_fields": [
+                {
+                    "key": "field_extra_location_name",
+                    "label": "Location Name",
+                    "name": "location_name",
+                    "aria-label": "",
+                    "type": "text",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "maxlength": "",
+                    "placeholder": "e.g., Downtown Location, Farmers Market",
+                    "prepend": "",
+                    "append": "",
+                    "parent_repeater": "field_extra_locations"
+                },
+                {
+                    "key": "field_extra_address",
+                    "label": "Address",
+                    "name": "address",
+                    "aria-label": "",
+                    "type": "text",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "maxlength": "",
+                    "placeholder": "",
+                    "prepend": "",
+                    "append": "",
+                    "parent_repeater": "field_extra_locations"
+                },
+                {
+                    "key": "field_extra_address_2",
+                    "label": "Address Line 2",
+                    "name": "address_2",
+                    "aria-label": "",
+                    "type": "text",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "maxlength": "",
+                    "placeholder": "",
+                    "prepend": "",
+                    "append": "",
+                    "parent_repeater": "field_extra_locations"
+                },
+                {
+                    "key": "field_extra_city",
+                    "label": "City",
+                    "name": "city",
+                    "aria-label": "",
+                    "type": "text",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "maxlength": "",
+                    "placeholder": "",
+                    "prepend": "",
+                    "append": "",
+                    "parent_repeater": "field_extra_locations"
+                },
+                {
+                    "key": "field_extra_state",
+                    "label": "State",
+                    "name": "state",
+                    "aria-label": "",
+                    "type": "text",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "NM",
+                    "maxlength": 2,
+                    "placeholder": "",
+                    "prepend": "",
+                    "append": "",
+                    "parent_repeater": "field_extra_locations"
+                },
+                {
+                    "key": "field_extra_zip",
+                    "label": "ZIP",
+                    "name": "zip",
+                    "aria-label": "",
+                    "type": "text",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "maxlength": 10,
+                    "placeholder": "",
+                    "prepend": "",
+                    "append": "",
+                    "parent_repeater": "field_extra_locations"
+                },
+                {
+                    "key": "field_extra_location_type",
+                    "label": "Type",
+                    "name": "location_type",
+                    "aria-label": "",
+                    "type": "select",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "choices": {
+                        "physical": "Physical Location",
+                        "mailing": "Mailing Address",
+                        "shipping": "Shipping Address",
+                        "billing": "Billing Address",
+                        "warehouse": "Warehouse",
+                        "retail": "Retail Store",
+                        "office": "Office",
+                        "other": "Other"
+                    },
+                    "default_value": false,
+                    "multiple": 0,
+                    "allow_null": 1,
+                    "ui": 1,
+                    "ajax": 0,
+                    "placeholder": "",
+                    "return_format": "value",
+                    "parent_repeater": "field_extra_locations",
+                    "create_options": 0,
+                    "save_options": 0,
+                    "allow_custom": 0,
+                    "search_placeholder": ""
+                },
+                {
+                    "key": "field_extra_phone",
+                    "label": "Phone",
+                    "name": "phone",
+                    "aria-label": "",
+                    "type": "text",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "maxlength": "",
+                    "placeholder": "505-555-5555",
+                    "prepend": "",
+                    "append": "",
+                    "parent_repeater": "field_extra_locations"
+                },
+                {
+                    "key": "field_extra_email",
+                    "label": "Email",
+                    "name": "email",
+                    "aria-label": "",
+                    "type": "email",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "placeholder": "",
+                    "prepend": "",
+                    "append": "",
+                    "parent_repeater": "field_extra_locations"
+                },
+                {
+                    "key": "field_extra_county",
+                    "label": "County",
+                    "name": "county",
+                    "aria-label": "",
+                    "type": "text",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "maxlength": "",
+                    "placeholder": "",
+                    "prepend": "",
+                    "append": "",
+                    "parent_repeater": "field_extra_locations"
+                },
+                {
+                    "key": "field_extra_country",
+                    "label": "Country",
+                    "name": "country",
+                    "aria-label": "",
+                    "type": "text",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "USA",
+                    "maxlength": "",
+                    "placeholder": "",
+                    "prepend": "",
+                    "append": "",
+                    "parent_repeater": "field_extra_locations"
+                }
+            ]
+        },
+        {
+            "key": "field_tab_owner_contact",
+            "label": "Owner & Private Contact",
+            "name": "",
+            "aria-label": "",
+            "type": "tab",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "placement": "top",
+            "endpoint": 0,
+            "selected": 0
+        },
+        {
+            "key": "field_message_private_info",
+            "label": "Private Information",
+            "name": "",
+            "aria-label": "",
+            "type": "message",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "message": "<strong>This information is private and will NOT be displayed publicly.<\/strong> It is for NMDA administrative use only.",
+            "new_lines": "wpautop",
+            "esc_html": 0
+        },
+        {
+            "key": "field_owner_first_name",
+            "label": "Owner First Name",
+            "name": "owner_first_name",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_owner_last_name",
+            "label": "Owner Last Name",
+            "name": "owner_last_name",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_is_primary_contact",
+            "label": "Is Owner the Primary Contact?",
+            "name": "is_primary_contact",
+            "aria-label": "",
+            "type": "true_false",
+            "instructions": "If no, you can specify a different primary contact below",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "message": "Yes, the owner is the primary contact",
+            "default_value": 1,
+            "ui": 1,
+            "ui_on_text": "Yes",
+            "ui_off_text": "No"
+        },
+        {
+            "key": "field_contact_first_name",
+            "label": "Primary Contact First Name",
+            "name": "contact_first_name",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_is_primary_contact",
+                        "operator": "!=",
+                        "value": "1"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_contact_last_name",
+            "label": "Primary Contact Last Name",
+            "name": "contact_last_name",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_is_primary_contact",
+                        "operator": "!=",
+                        "value": "1"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_contact_phone",
+            "label": "Private Contact Phone",
+            "name": "contact_phone",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "For NMDA administrative contact only",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "505-555-5555",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_contact_email",
+            "label": "Private Contact Email",
+            "name": "contact_email",
+            "aria-label": "",
+            "type": "email",
+            "instructions": "For NMDA administrative contact only",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_divider_mailing",
+            "label": "Mailing Address",
+            "name": "",
+            "aria-label": "",
+            "type": "message",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "message": "If different from your primary business address",
+            "new_lines": "wpautop",
+            "esc_html": 0
+        },
+        {
+            "key": "field_contact_address",
+            "label": "Mailing Street Address",
+            "name": "contact_address",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_contact_address_2",
+            "label": "Mailing Address Line 2",
+            "name": "contact_address_2",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_contact_city",
+            "label": "Mailing City",
+            "name": "contact_city",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "40",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_contact_state",
+            "label": "Mailing State",
+            "name": "contact_state",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "30",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": 2,
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_contact_zip",
+            "label": "Mailing ZIP",
+            "name": "contact_zip",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "30",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": 10,
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_tab_sales_marketing",
+            "label": "Sales & Marketing",
+            "name": "",
+            "aria-label": "",
+            "type": "tab",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "placement": "top",
+            "endpoint": 0,
+            "selected": 0
+        },
+        {
+            "key": "field_sales_type",
+            "label": "Sales & Distribution Channels",
+            "name": "sales_type",
+            "aria-label": "",
+            "type": "checkbox",
+            "instructions": "Select all that apply",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "choices": {
+                "local": "Local (Within County)",
+                "regional": "Regional (Multi-County)",
+                "in_state": "Statewide (Throughout New Mexico)",
+                "national": "National",
+                "international": "International"
+            },
+            "layout": "vertical",
+            "default_value": [],
+            "allow_custom": 0,
+            "save_custom": 0,
+            "toggle": 0,
+            "return_format": "value",
+            "custom_choice_button_text": "Add new choice"
+        },
+        {
+            "key": "field_additional_info",
+            "label": "Additional Sales Information",
+            "name": "additional_info",
+            "aria-label": "",
+            "type": "textarea",
+            "instructions": "Any additional information about your sales channels or distribution (for NMDA records only)",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "rows": 4,
+            "default_value": "",
+            "new_lines": "",
+            "maxlength": "",
+            "placeholder": "",
+            "acfe_textarea_code": 0
+        },
+        {
+            "key": "field_divider_social",
+            "label": "Social Media",
+            "name": "",
+            "aria-label": "",
+            "type": "message",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "message": "Enter your social media profile URLs (full URL including https:\/\/)",
+            "new_lines": "wpautop",
+            "esc_html": 0
+        },
+        {
+            "key": "field_facebook",
+            "label": "Facebook",
+            "name": "facebook",
+            "aria-label": "",
+            "type": "url",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": "https:\/\/facebook.com\/yourpage"
+        },
+        {
+            "key": "field_instagram",
+            "label": "Instagram",
+            "name": "instagram",
+            "aria-label": "",
+            "type": "url",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": "https:\/\/instagram.com\/yourprofile"
+        },
+        {
+            "key": "field_twitter",
+            "label": "X (Twitter)",
+            "name": "twitter",
+            "aria-label": "",
+            "type": "url",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": "https:\/\/twitter.com\/yourhandle"
+        },
+        {
+            "key": "field_pinterest",
+            "label": "Pinterest",
+            "name": "pinterest",
+            "aria-label": "",
+            "type": "url",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": "https:\/\/pinterest.com\/yourprofile"
+        },
+        {
+            "key": "field_social_other",
+            "label": "Other Social Media",
+            "name": "social_other",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "YouTube, TikTok, LinkedIn, etc.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_tab_administrative",
+            "label": "Administrative",
+            "name": "",
+            "aria-label": "",
+            "type": "tab",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "placement": "top",
+            "endpoint": 0,
+            "selected": 0
+        },
+        {
+            "key": "field_message_admin_only",
+            "label": "NMDA Staff Only",
+            "name": "",
+            "aria-label": "",
+            "type": "message",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "message": "<strong>Administrative Fields - NMDA Staff Only<\/strong>",
+            "new_lines": "wpautop",
+            "esc_html": 0
+        },
+        {
+            "key": "field_approval_status",
+            "label": "Approval Status",
+            "name": "approval_status",
+            "aria-label": "",
+            "type": "select",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "choices": {
+                "pending": "Pending Review",
+                "approved": "Approved",
+                "rejected": "Rejected",
+                "changes_requested": "Changes Requested"
+            },
+            "default_value": "pending",
+            "multiple": 0,
+            "allow_null": 0,
+            "ui": 1,
+            "ajax": 0,
+            "placeholder": "",
+            "return_format": "value",
+            "create_options": 0,
+            "save_options": 0,
+            "allow_custom": 0,
+            "search_placeholder": ""
+        },
+        {
+            "key": "field_approval_date",
+            "label": "Approval Date",
+            "name": "approval_date",
+            "aria-label": "",
+            "type": "date_picker",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "display_format": "m\/d\/Y",
+            "return_format": "Y-m-d",
+            "first_day": 1,
+            "default_to_current_date": 0
+        },
+        {
+            "key": "field_approved_by",
+            "label": "Approved By",
+            "name": "approved_by",
+            "aria-label": "",
+            "type": "user",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "role": [
+                "administrator",
+                "editor"
+            ],
+            "multiple": 0,
+            "allow_null": 1,
+            "return_format": "array",
+            "bidirectional_target": []
+        },
+        {
+            "key": "field_admin_notes",
+            "label": "Admin Notes",
+            "name": "admin_notes",
+            "aria-label": "",
+            "type": "textarea",
+            "instructions": "Internal notes about this business application",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "rows": 5,
+            "default_value": "",
+            "new_lines": "",
+            "maxlength": "",
+            "placeholder": "",
+            "acfe_textarea_code": 0
+        },
+        {
+            "key": "field_divider_migration",
+            "label": "Migration Data",
+            "name": "",
+            "aria-label": "",
+            "type": "message",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "message": "<em>For data migration tracking only<\/em>",
+            "new_lines": "wpautop",
+            "esc_html": 0
+        },
+        {
+            "key": "field_external_business_id",
+            "label": "External Business ID",
+            "name": "external_business_id",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "Original database UUID",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "33",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_external_user_id",
+            "label": "External User ID",
+            "name": "external_user_id",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "Original owner UUID",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "33",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_owner_wp_user",
+            "label": "Linked WordPress User",
+            "name": "owner_wp_user",
+            "aria-label": "",
+            "type": "user",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "33",
+                "class": "",
+                "id": ""
+            },
+            "role": "",
+            "multiple": 0,
+            "allow_null": 1,
+            "return_format": "array",
+            "bidirectional_target": []
+        },
+        {
+            "key": "field_public_phone_override",
+            "label": "Public Phone Override",
+            "name": "public_phone_override",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "Legacy field - use Business Phone instead",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_public_email_override",
+            "label": "Public Email Override",
+            "name": "public_email_override",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "Legacy field - use Business Email instead",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "post_type",
+                "operator": "==",
+                "value": "nmda_business"
+            }
+        ]
+    ],
+    "menu_order": 0,
+    "position": "acf_after_title",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": [
+        "the_content"
+    ],
+    "active": true,
+    "description": "Consolidated business information fields organized in tabs",
+    "show_in_rest": 0,
+    "display_title": "",
+    "acfe_autosync": [
+        "json"
+    ],
+    "acfe_form": 0,
+    "acfe_meta": "",
+    "acfe_note": "",
+    "modified": 1763816169
+}

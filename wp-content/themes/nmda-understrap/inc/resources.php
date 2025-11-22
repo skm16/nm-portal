@@ -260,12 +260,19 @@ function nmda_get_resource_file_info( $resource_id ) {
 
 		// Parse URL to get extension
 		$path = parse_url( $url, PHP_URL_PATH );
-		$ext = pathinfo( $path, PATHINFO_EXTENSION );
+		$ext = '';
+		$filename = 'External Link';
+
+		// Only process if we have a valid path
+		if ( ! empty( $path ) ) {
+			$ext = pathinfo( $path, PATHINFO_EXTENSION );
+			$filename = basename( $path );
+		}
 
 		return array(
 			'id'             => 0,
 			'url'            => $url,
-			'filename'       => basename( $path ),
+			'filename'       => $filename,
 			'type'           => 'url',
 			'ext'            => $ext ? $ext : 'link',
 			'size'           => 0,

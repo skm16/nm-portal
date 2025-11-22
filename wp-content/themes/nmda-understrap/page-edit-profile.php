@@ -184,8 +184,8 @@ get_header();
 					<?php foreach ( $pending_changes as $field => $change ) : ?>
 						<li>
 							<strong><?php echo esc_html( ucwords( str_replace( '_', ' ', $field ) ) ); ?>:</strong>
-							<?php echo esc_html( $change['new_value'] ); ?>
-							<span class="text-muted">(Submitted: <?php echo date( 'M j, Y', $change['timestamp'] ); ?>)</span>
+							<?php echo esc_html( $change['value'] ?? '' ); ?>
+							<span class="text-muted">(Submitted: <?php echo ! empty( $change['requested'] ) ? date( 'M j, Y', strtotime( $change['requested'] ) ) : 'Unknown'; ?>)</span>
 						</li>
 					<?php endforeach; ?>
 				</ul>
@@ -193,7 +193,7 @@ get_header();
 		<?php endif; ?>
 
 		<!-- Edit Form -->
-		<form id="profile-edit-form" class="mt-4">
+		<form id="profile-edit-form" class="mt-4" novalidate>
 			<input type="hidden" name="business_id" value="<?php echo esc_attr( $selected_business_id ); ?>">
 			<input type="hidden" name="action" value="nmda_update_business_profile">
 			<?php wp_nonce_field( 'nmda_update_profile_' . $selected_business_id, 'profile_nonce' ); ?>
@@ -252,7 +252,7 @@ get_header();
 										<?php endif; ?>
 									</label>
 									<input type="text" class="form-control" id="dba_name" name="dba_name"
-										value="<?php echo esc_attr( get_field( 'dba_name', $selected_business_id ) ); ?>">
+										value="<?php echo esc_attr( get_field( 'dba', $selected_business_id ) ); ?>">
 									<small class="form-text text-muted">Doing Business As</small>
 								</div>
 							</div>
@@ -296,11 +296,11 @@ get_header();
 									<label for="number_of_employees">Number of Employees</label>
 									<select class="form-control" id="number_of_employees" name="number_of_employees">
 										<option value="">Select...</option>
-										<option value="1-5" <?php selected( get_field( 'number_of_employees', $selected_business_id ), '1-5' ); ?>>1-5</option>
-										<option value="6-10" <?php selected( get_field( 'number_of_employees', $selected_business_id ), '6-10' ); ?>>6-10</option>
-										<option value="11-25" <?php selected( get_field( 'number_of_employees', $selected_business_id ), '11-25' ); ?>>11-25</option>
-										<option value="26-50" <?php selected( get_field( 'number_of_employees', $selected_business_id ), '26-50' ); ?>>26-50</option>
-										<option value="51+" <?php selected( get_field( 'number_of_employees', $selected_business_id ), '51+' ); ?>>51+</option>
+										<option value="1-5" <?php selected( get_field( 'num_employees', $selected_business_id ), '1-5' ); ?>>1-5</option>
+										<option value="6-10" <?php selected( get_field( 'num_employees', $selected_business_id ), '6-10' ); ?>>6-10</option>
+										<option value="11-25" <?php selected( get_field( 'num_employees', $selected_business_id ), '11-25' ); ?>>11-25</option>
+										<option value="26-50" <?php selected( get_field( 'num_employees', $selected_business_id ), '26-50' ); ?>>26-50</option>
+										<option value="51+" <?php selected( get_field( 'num_employees', $selected_business_id ), '51+' ); ?>>51+</option>
 									</select>
 								</div>
 							</div>
@@ -358,6 +358,92 @@ get_header();
 									<input type="text" class="form-control" id="address_county" name="address_county"
 										value="<?php echo esc_attr( $primary_address['county'] ?? '' ); ?>">
 								</div>
+							</div>
+
+							<!-- Additional Addresses Section -->
+							<hr class="my-4">
+
+							<div class="d-flex justify-content-between align-items-center mb-3">
+								<h5 class="mb-0"><i class="fa fa-map"></i> All Business Addresses</h5>
+								<button type="button" class="btn btn-primary btn-sm" id="add-address-btn">
+									<i class="fa fa-plus"></i> Add New Address
+								</button>
+							</div>
+
+							<p class="text-muted">Manage multiple business locations, shipping addresses, or office locations</p>
+
+							<?php
+							// Get all addresses for this business
+							$all_addresses = nmda_get_business_addresses( $selected_business_id );
+							?>
+
+							<div id="addresses-list">
+								<?php if ( ! empty( $all_addresses ) ) : ?>
+									<?php foreach ( $all_addresses as $index => $address ) : ?>
+										<div class="address-item card mb-3" data-index="<?php echo esc_attr( $index ); ?>">
+											<div class="card-body">
+												<div class="row align-items-center">
+													<div class="col-md-8">
+														<div class="address-details">
+															<h6 class="mb-1">
+																<?php echo esc_html( $address['location_name'] ?: ucwords( str_replace( '_', ' ', $address['location_type'] ?? 'Address' ) ) ); ?>
+															</h6>
+															<?php if ( ! empty( $address['location_type'] ) ) : ?>
+																<p class="mb-1 text-muted">
+																	<i class="fa fa-tag"></i> <strong>Type:</strong> <?php echo esc_html( ucwords( str_replace( '_', ' ', $address['location_type'] ) ) ); ?>
+																</p>
+															<?php endif; ?>
+															<p class="mb-0">
+																<i class="fa fa-map-marker"></i>
+																<?php
+																echo esc_html( $address['address'] ?? '' );
+																if ( ! empty( $address['address_2'] ) ) {
+																	echo ', ' . esc_html( $address['address_2'] );
+																}
+																echo '<br>';
+																echo esc_html( $address['city'] ?? '' ) . ', ' . esc_html( $address['state'] ?? '' ) . ' ' . esc_html( $address['zip'] ?? '' );
+																if ( ! empty( $address['county'] ) ) {
+																	echo ' (' . esc_html( $address['county'] ) . ' County)';
+																}
+																?>
+															</p>
+															<?php if ( ! empty( $address['phone'] ) ) : ?>
+																<p class="mb-0 mt-1">
+																	<i class="fa fa-phone"></i> <?php echo esc_html( $address['phone'] ); ?>
+																</p>
+															<?php endif; ?>
+															<?php if ( ! empty( $address['email'] ) ) : ?>
+																<p class="mb-0 mt-1">
+																	<i class="fa fa-envelope"></i> <?php echo esc_html( $address['email'] ); ?>
+																</p>
+															<?php endif; ?>
+														</div>
+													</div>
+													<div class="col-md-4 text-right">
+														<div class="address-actions">
+															<button type="button" class="btn btn-sm btn-outline-success set-primary-btn"
+																	data-index="<?php echo esc_attr( $index ); ?>">
+																<i class="fa fa-star"></i> Set as Primary
+															</button>
+															<button type="button" class="btn btn-sm btn-outline-primary edit-address-btn"
+																	data-index="<?php echo esc_attr( $index ); ?>">
+																<i class="fa fa-edit"></i> Edit
+															</button>
+															<button type="button" class="btn btn-sm btn-outline-danger delete-address-btn"
+																	data-index="<?php echo esc_attr( $index ); ?>">
+																<i class="fa fa-trash"></i> Delete
+															</button>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									<?php endforeach; ?>
+								<?php else : ?>
+									<div class="alert alert-info">
+										<i class="fa fa-info-circle"></i> No additional addresses found. Add your first address above.
+									</div>
+								<?php endif; ?>
 							</div>
 						</div>
 					</div>
@@ -473,7 +559,7 @@ get_header();
 							<div class="form-group">
 								<label for="sales_additional_info">Additional Sales Information</label>
 								<textarea class="form-control" id="sales_additional_info" name="sales_additional_info" rows="3"
-									placeholder="Provide any additional details about your sales channels..."><?php echo esc_textarea( get_field( 'sales_additional_info', $selected_business_id ) ); ?></textarea>
+									placeholder="Provide any additional details about your sales channels..."><?php echo esc_textarea( get_field( 'additional_info', $selected_business_id ) ); ?></textarea>
 							</div>
 						</div>
 					</div>
@@ -504,6 +590,118 @@ get_header();
 
 		</form>
 
+	</div>
+</div>
+
+<!-- Address Management Modal -->
+<div class="modal fade" id="addressModal" tabindex="-1" role="dialog" aria-labelledby="addressModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="addressModalLabel">
+					<i class="fa fa-map-marker"></i> <span id="modal-title-text">Add New Address</span>
+				</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<form id="address-form">
+				<div class="modal-body">
+					<input type="hidden" id="address-index" name="index" value="">
+					<input type="hidden" id="business-id-address" name="business_id" value="<?php echo esc_attr( $selected_business_id ); ?>">
+
+					<div class="row">
+						<div class="col-md-6 form-group">
+							<label for="location-name">Location Name</label>
+							<input type="text" class="form-control" id="location-name" name="location_name"
+								   placeholder="e.g., Main Office, Warehouse, Retail Store">
+							<small class="form-text text-muted">Give this location a descriptive name</small>
+						</div>
+
+						<div class="col-md-6 form-group">
+							<label for="location-type">Location Type</label>
+							<select class="form-control" id="location-type" name="location_type">
+								<option value="">Select Type...</option>
+								<option value="physical">Physical Location</option>
+								<option value="mailing">Mailing Address</option>
+								<option value="shipping">Shipping Address</option>
+								<option value="billing">Billing Address</option>
+								<option value="warehouse">Warehouse</option>
+								<option value="retail">Retail Store</option>
+								<option value="office">Office</option>
+								<option value="other">Other</option>
+							</select>
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label for="address">Street Address</label>
+						<input type="text" class="form-control" id="address" name="address">
+					</div>
+
+					<div class="form-group">
+						<label for="address-2">Address Line 2</label>
+						<input type="text" class="form-control" id="address-2" name="address_2"
+							   placeholder="Suite, Unit, Building, Floor, etc.">
+					</div>
+
+					<div class="row">
+						<div class="col-md-6 form-group">
+							<label for="city">City</label>
+							<input type="text" class="form-control" id="city" name="city">
+						</div>
+
+						<div class="col-md-3 form-group">
+							<label for="state">State</label>
+							<input type="text" class="form-control" id="state" name="state"
+								   value="NM" maxlength="2">
+						</div>
+
+						<div class="col-md-3 form-group">
+							<label for="zip">ZIP Code</label>
+							<input type="text" class="form-control" id="zip" name="zip"
+								   pattern="[0-9]{5}">
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-md-6 form-group">
+							<label for="county">County</label>
+							<input type="text" class="form-control" id="county" name="county">
+						</div>
+
+						<div class="col-md-6 form-group">
+							<label for="country">Country</label>
+							<input type="text" class="form-control" id="country" name="country" value="USA">
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-md-6 form-group">
+							<label for="phone">Phone</label>
+							<input type="tel" class="form-control" id="phone" name="phone"
+								   placeholder="(505) 123-4567">
+						</div>
+
+						<div class="col-md-6 form-group">
+							<label for="email">Email</label>
+							<input type="email" class="form-control" id="email" name="email"
+								   placeholder="contact@example.com">
+						</div>
+					</div>
+
+					<p class="text-muted"><small><i class="fa fa-info-circle"></i> Use the "Set as Primary" button after saving to make this your primary business address.</small></p>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">
+						<i class="fa fa-times"></i> Cancel
+					</button>
+					<button type="submit" class="btn btn-primary" id="save-address-btn">
+						<i class="fa fa-save"></i> Save Address
+					</button>
+				</div>
+			</form>
+		</div>
 	</div>
 </div>
 

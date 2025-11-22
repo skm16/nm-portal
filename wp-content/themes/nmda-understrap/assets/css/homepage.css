@@ -1,0 +1,391 @@
+/**
+ * NMDA Portal - Homepage Landing Page Styles
+ *
+ * Styles for the front-page.php template
+ *
+ * @package NMDA_Understrap_Child
+ */
+
+/* Brand Colors */
+:root {
+    --nmda-brown-dark: #512c1d;
+    --nmda-red: #8b0c12;
+    --nmda-brown-darker: #330d0f;
+    --nmda-gold: #f5be29;
+}
+
+/* ========================================
+   Hero Section
+   ======================================== */
+
+.nmda-landing-page {
+    overflow-x: hidden;
+}
+
+.hero-section {
+    padding: 60px 0;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+}
+
+.hero-title {
+    font-size: 3rem;
+    font-weight: 700;
+    color: var(--nmda-brown-dark);
+    margin-bottom: 1.5rem;
+    line-height: 1.2;
+}
+
+.hero-subtitle {
+    font-size: 1.25rem;
+    color: #6c757d;
+    margin-bottom: 2rem;
+    line-height: 1.6;
+}
+
+.cta-buttons .btn {
+    font-size: 1.125rem;
+    padding: 0.75rem 2rem;
+    margin-bottom: 1rem;
+}
+
+.cta-buttons .btn i {
+    margin-right: 0.5rem;
+}
+
+.hero-image {
+    animation: fadeInUp 1s ease-out;
+}
+
+/* ========================================
+   Benefits Section
+   ======================================== */
+
+.benefits-section {
+    padding: 60px 0;
+}
+
+.benefits-section h2 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--nmda-brown-dark);
+    margin-bottom: 3rem;
+}
+
+.benefit-card {
+    padding: 2rem;
+    height: 100%;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.benefit-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.benefit-icon {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: rgba(81, 44, 29, 0.05);
+}
+
+.benefit-card h3 {
+    font-weight: 600;
+    color: var(--nmda-brown-dark);
+    margin-bottom: 1rem;
+}
+
+.benefit-card p {
+    color: #6c757d;
+    line-height: 1.6;
+}
+
+/* ========================================
+   How It Works Section
+   ======================================== */
+
+.how-it-works-section {
+    padding: 60px 0;
+}
+
+.how-it-works-section h2 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--nmda-brown-dark);
+    margin-bottom: 3rem;
+}
+
+.step-card {
+    padding: 1.5rem;
+}
+
+.step-number {
+    margin-bottom: 1rem;
+}
+
+.step-card .badge {
+    width: 80px;
+    height: 80px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--nmda-red) !important;
+}
+
+.step-card h4 {
+    font-weight: 600;
+    color: var(--nmda-brown-dark);
+    margin: 1rem 0;
+}
+
+.step-card p {
+    color: #6c757d;
+}
+
+/* ========================================
+   Call to Action Section
+   ======================================== */
+
+.cta-section {
+    padding: 60px 0;
+}
+
+.cta-section h2 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+}
+
+.cta-section .lead {
+    font-size: 1.25rem;
+    opacity: 0.9;
+}
+
+.cta-section .btn {
+    font-size: 1.125rem;
+    padding: 0.75rem 2.5rem;
+}
+
+/* ========================================
+   Contact Section
+   ======================================== */
+
+.contact-section {
+    padding: 60px 0;
+}
+
+.contact-section h3 {
+    font-weight: 600;
+    color: var(--nmda-brown-dark);
+    margin-bottom: 1.5rem;
+}
+
+.contact-section ul li {
+    padding: 0.5rem 0;
+    color: #6c757d;
+}
+
+.contact-section ul li i {
+    color: var(--nmda-red);
+    margin-right: 0.5rem;
+    width: 20px;
+    text-align: center;
+}
+
+.contact-section a {
+    color: var(--nmda-red);
+    text-decoration: none;
+}
+
+.contact-section a:hover {
+    color: var(--nmda-brown-dark);
+    text-decoration: underline;
+}
+
+/* ========================================
+   Responsive Design
+   ======================================== */
+
+/* Tablet */
+@media (max-width: 992px) {
+    .hero-title {
+        font-size: 2.5rem;
+    }
+
+    .hero-subtitle {
+        font-size: 1.125rem;
+    }
+
+    .hero-section {
+        padding: 40px 0;
+    }
+
+    .hero-image {
+        margin-top: 2rem;
+    }
+
+    .benefits-section h2,
+    .how-it-works-section h2,
+    .cta-section h2 {
+        font-size: 2rem;
+    }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+    .hero-title {
+        font-size: 2rem;
+        text-align: center;
+    }
+
+    .hero-subtitle {
+        font-size: 1rem;
+        text-align: center;
+    }
+
+    .hero-section {
+        padding: 30px 0;
+    }
+
+    .cta-buttons {
+        text-align: center;
+    }
+
+    .cta-buttons .btn {
+        display: block;
+        width: 100%;
+        margin: 0.5rem 0;
+    }
+
+    .benefits-section,
+    .how-it-works-section,
+    .cta-section,
+    .contact-section {
+        padding: 40px 0;
+    }
+
+    .benefits-section h2,
+    .how-it-works-section h2 {
+        font-size: 1.75rem;
+    }
+
+    .cta-section h2 {
+        font-size: 1.75rem;
+    }
+
+    .cta-section .lead {
+        font-size: 1rem;
+    }
+
+    .step-card .badge {
+        width: 60px;
+        height: 60px;
+        font-size: 1.5rem !important;
+    }
+}
+
+/* Small Mobile */
+@media (max-width: 576px) {
+    .hero-title {
+        font-size: 1.75rem;
+    }
+
+    .hero-subtitle {
+        font-size: 0.9375rem;
+    }
+
+    .benefit-card,
+    .step-card {
+        padding: 1rem;
+    }
+
+    .contact-section .col-md-6 {
+        margin-bottom: 2rem;
+    }
+}
+
+/* ========================================
+   Animations
+   ======================================== */
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+/* Apply fade-in animation to sections */
+.benefits-section,
+.how-it-works-section,
+.cta-section,
+.contact-section {
+    animation: fadeIn 0.8s ease-out;
+}
+
+/* ========================================
+   Accessibility
+   ======================================== */
+
+/* Focus states for keyboard navigation */
+.cta-buttons .btn:focus,
+.contact-section a:focus {
+    outline: 3px solid var(--nmda-gold);
+    outline-offset: 2px;
+}
+
+/* Skip to content link for screen readers */
+.skip-to-content {
+    position: absolute;
+    top: -40px;
+    left: 0;
+    background: var(--nmda-red);
+    color: white;
+    padding: 8px;
+    text-decoration: none;
+    z-index: 100;
+}
+
+.skip-to-content:focus {
+    top: 0;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+    .hero-section {
+        background: white;
+        border-bottom: 2px solid var(--nmda-brown-dark);
+    }
+
+    .benefit-card:hover {
+        border: 2px solid var(--nmda-brown-dark);
+    }
+}
+
+/* Reduced motion for accessibility */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}

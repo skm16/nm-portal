@@ -92,7 +92,14 @@
     updateProgressIndicator(step) {
       const $indicator = this.$form.find('.nmda-progress-indicator');
       $indicator.find('.nmda-progress-step').each(function (index) {
-        $(this).toggleClass('completed', index <= step);
+        // Mark steps before current as completed
+        $(this).toggleClass('completed', index < step);
+        // Mark current step as active
+        $(this).toggleClass('active', index === step);
+        // Remove both classes from future steps
+        if (index > step) {
+          $(this).removeClass('completed active');
+        }
       });
     }
 
@@ -457,9 +464,84 @@
     initNotifications();
     updateNotificationBadge();
 
+    // Initialize messages badge updates
+    initMessagesBadgeUpdates();
+
     // Handle other AJAX forms (not business application)
     if ($('.nmda-ajax-form').not('#nmda-business-application').length) {
       handleAjaxForm('.nmda-ajax-form:not(#nmda-business-application)');
     }
   });
+
+  /**
+   * Initialize real-time messages badge updates
+   */
+  function initMessagesBadgeUpdates() {
+    // Only run if user is logged in (badge exists in nav)
+    if (!$('#nav-messages-badge').length && !$('.nmda-messages-badge').length) {
+      return;
+    }
+
+    // Update badge immediately
+    updateMessagesBadge();
+
+    // Update every 60 seconds
+    setInterval(updateMessagesBadge, 60000);
+  }
+
+  /**
+   * Update messages badge count via AJAX
+   */
+  function updateMessagesBadge() {
+    $.ajax({
+      url: nmdaAjax.ajaxurl,
+      type: 'POST',
+      data: {
+        action: 'nmda_get_unread_count',
+        nonce: nmdaAjax.nonce
+      },
+      success: function (response) {
+        if (response.success) {
+          var count = response.data.unread_count;
+          var $navBadge = $('#nav-messages-badge');
+          var $headerBadge = $('.dashboard-header .badge-danger');
+
+          // Update navigation badge
+          if (count > 0) {
+            if ($navBadge.length) {
+              // Badge exists, update count
+              $navBadge.text(count);
+            } else {
+              // Badge doesn't exist, create it
+              $('.navbar-nav .nav-link:contains("Messages")').append(
+                '<span class="badge badge-danger nmda-messages-badge" id="nav-messages-badge">' + count + '</span>'
+              );
+            }
+            // Add pulse animation
+            $navBadge.addClass('pulse');
+            setTimeout(function () {
+              $navBadge.removeClass('pulse');
+            }, 500);
+          } else {
+            // No unread messages, remove badge
+            $navBadge.remove();
+          }
+
+          // Update dashboard header badge (if on messages page)
+          if ($headerBadge.length) {
+            if (count > 0) {
+              $headerBadge.text(count + ' Unread');
+            } else {
+              $headerBadge.remove();
+            }
+          }
+        }
+      },
+      error: function () {
+        // Silently fail - don't disrupt user experience
+        console.log('Failed to update messages badge');
+      }
+    });
+  }
+
 })(jQuery);

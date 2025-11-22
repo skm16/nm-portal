@@ -5,6 +5,17 @@
  */
 
 /* ==========================================================================
+   CSS Custom Properties (Brand Colors)
+   ========================================================================== */
+
+:root {
+    --nmda-brown-dark: #512c1d;
+    --nmda-red: #8b0c12;
+    --nmda-brown-darker: #330d0f;
+    --nmda-gold: #f5be29;
+}
+
+/* ==========================================================================
    Dashboard Styles
    ========================================================================== */
 
@@ -119,38 +130,129 @@
     display: block;
 }
 
+/* ==========================================================================
+   Progress Indicator - Professional Multi-Step Form Styling
+   ========================================================================== */
+
 .nmda-progress-indicator {
     display: flex;
     justify-content: space-between;
-    margin-bottom: 2rem;
+    align-items: flex-start;
+    margin-bottom: 3rem;
     padding: 0;
     list-style: none;
+    position: relative;
 }
 
 .nmda-progress-step {
     flex: 1;
     text-align: center;
     position: relative;
-    padding: 1rem 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
 }
 
+/* Connecting Lines Between Steps */
 .nmda-progress-step::before {
     content: '';
     position: absolute;
-    top: 50%;
-    left: 0;
-    right: 0;
-    height: 2px;
+    top: 24px; /* Half of circle height (48px / 2) */
+    left: 50%;
+    right: -50%;
+    height: 3px;
     background: #e0e0e0;
-    z-index: -1;
+    z-index: 0;
+    transition: background-color 0.3s ease;
 }
 
-.nmda-progress-step.completed {
-    color: var(--nmda-brown-dark);
+/* Hide line after last step */
+.nmda-progress-step:last-child::before {
+    display: none;
 }
 
+/* Completed connecting lines */
 .nmda-progress-step.completed::before {
     background: var(--nmda-gold);
+}
+
+/* Step Number Circle */
+.nmda-progress-step .step-number {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    font-weight: 700;
+    position: relative;
+    z-index: 1;
+    background: #fff;
+    border: 3px solid #e0e0e0;
+    color: #6c757d;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Pending Step (default) */
+.nmda-progress-step .step-number {
+    /* Default styles above */
+}
+
+/* Active Step */
+.nmda-progress-step.active .step-number {
+    border-color: var(--nmda-gold);
+    color: var(--nmda-brown-dark);
+    background: #fff;
+    box-shadow: 0 0 0 4px rgba(245, 190, 41, 0.2),
+                0 4px 8px rgba(0, 0, 0, 0.15);
+    transform: scale(1.05);
+}
+
+/* Completed Step */
+.nmda-progress-step.completed .step-number {
+    background: linear-gradient(135deg, var(--nmda-brown-dark) 0%, var(--nmda-red) 100%);
+    border-color: var(--nmda-brown-dark);
+    color: #fff;
+    box-shadow: 0 4px 8px rgba(81, 44, 29, 0.3);
+}
+
+/* Replace number with checkmark icon for completed steps */
+.nmda-progress-step.completed .step-number::before {
+    content: "\f26b"; /* Bootstrap Icons: bi-check-circle-fill */
+    font-family: 'bootstrap-icons';
+    font-size: 24px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.nmda-progress-step.completed .step-number {
+    font-size: 0; /* Hide the number text */
+}
+
+/* Step Label */
+.nmda-progress-step .step-label {
+    font-size: 14px;
+    font-weight: 600;
+    color: #6c757d;
+    transition: color 0.3s ease;
+    line-height: 1.2;
+    max-width: 100px;
+}
+
+/* Active Step Label */
+.nmda-progress-step.active .step-label {
+    color: var(--nmda-brown-dark);
+    font-weight: 700;
+}
+
+/* Completed Step Label */
+.nmda-progress-step.completed .step-label {
+    color: var(--nmda-brown-dark);
 }
 
 .nmda-form-navigation {
@@ -356,12 +458,58 @@ body {
         grid-template-columns: 1fr;
     }
 
+    /* Progress Indicator - Vertical Timeline for Mobile */
     .nmda-progress-indicator {
         flex-direction: column;
+        align-items: stretch;
+        gap: 1rem;
     }
 
+    .nmda-progress-step {
+        flex-direction: row;
+        text-align: left;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+
+    /* Vertical connecting line on left side */
     .nmda-progress-step::before {
+        content: '';
+        position: absolute;
+        top: 48px; /* Below the circle */
+        left: 21px; /* Center of 42px circle (42/2 = 21) */
+        right: auto;
+        width: 3px;
+        height: calc(100% + 1rem);
+        background: #e0e0e0;
+        z-index: 0;
+    }
+
+    .nmda-progress-step:last-child::before {
         display: none;
+    }
+
+    .nmda-progress-step.completed::before {
+        background: var(--nmda-gold);
+    }
+
+    /* Smaller circles for mobile */
+    .nmda-progress-step .step-number {
+        width: 42px;
+        height: 42px;
+        font-size: 18px;
+        flex-shrink: 0;
+    }
+
+    .nmda-progress-step.completed .step-number::before {
+        font-size: 22px;
+    }
+
+    /* Labels wrap better on mobile */
+    .nmda-progress-step .step-label {
+        max-width: none;
+        flex: 1;
+        padding-top: 0.5rem;
     }
 
     .nmda-form-navigation {

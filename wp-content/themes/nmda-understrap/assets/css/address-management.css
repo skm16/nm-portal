@@ -1,0 +1,266 @@
+/**
+ * Address Management Styles
+ *
+ * Styles for multiple address management interface on Edit Profile page
+ *
+ * @package NMDA_Understrap_Child
+ */
+
+/* Address List Section */
+#addresses-list {
+    margin-top: 20px;
+}
+
+/* Address Item Card */
+.address-item {
+    border-left: 4px solid #512c1d; /* NMDA Brown Dark */
+    transition: all 0.3s ease;
+}
+
+.address-item:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transform: translateX(2px);
+}
+
+/* Address Details */
+.address-details h6 {
+    color: #512c1d; /* NMDA Brown Dark */
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.address-details .badge-success {
+    background-color: #28a745;
+    font-size: 11px;
+    padding: 4px 8px;
+}
+
+.address-details p {
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.address-details .fa {
+    color: #8b0c12; /* NMDA Red */
+    margin-right: 6px;
+    width: 16px;
+}
+
+/* Address Actions */
+.address-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.address-actions .btn {
+    white-space: nowrap;
+}
+
+.address-actions .btn-outline-success {
+    border-color: #28a745;
+    color: #28a745;
+}
+
+.address-actions .btn-outline-success:hover {
+    background-color: #28a745;
+    color: #fff;
+}
+
+.address-actions .btn-outline-primary {
+    border-color: #8b0c12; /* NMDA Red */
+    color: #8b0c12;
+}
+
+.address-actions .btn-outline-primary:hover {
+    background-color: #8b0c12;
+    border-color: #8b0c12;
+    color: #fff;
+}
+
+.address-actions .btn-outline-danger {
+    border-color: #dc3545;
+    color: #dc3545;
+}
+
+.address-actions .btn-outline-danger:hover {
+    background-color: #dc3545;
+    color: #fff;
+}
+
+/* Add Address Button */
+#add-address-btn {
+    background: #8b0c12; /* NMDA Red */
+    border-color: #8b0c12;
+    color: #fff;
+}
+
+#add-address-btn:hover {
+    background: #6d0a0e;
+    border-color: #6d0a0e;
+}
+
+/* Address Modal */
+#addressModal .modal-header {
+    background: linear-gradient(135deg, #512c1d 0%, #8b0c12 100%);
+    color: #fff;
+    border-bottom: none;
+}
+
+#addressModal .modal-title {
+    color: #fff;
+}
+
+#addressModal .modal-title .fa {
+    color: #f5be29; /* NMDA Gold */
+}
+
+#addressModal .close {
+    color: #fff;
+    opacity: 0.8;
+}
+
+#addressModal .close:hover {
+    opacity: 1;
+}
+
+#addressModal .modal-footer {
+    border-top: 1px solid #e5e5e5;
+}
+
+#addressModal .btn-primary {
+    background-color: #8b0c12; /* NMDA Red */
+    border-color: #8b0c12;
+}
+
+#addressModal .btn-primary:hover {
+    background-color: #6d0a0e;
+    border-color: #6d0a0e;
+}
+
+/* Form Fields in Modal */
+#addressModal .form-group label {
+    font-weight: 600;
+    color: #512c1d;
+}
+
+#addressModal .form-control:focus {
+    border-color: #8b0c12;
+    box-shadow: 0 0 0 0.2rem rgba(139, 12, 18, 0.25);
+}
+
+#addressModal .custom-control-input:checked ~ .custom-control-label::before {
+    background-color: #8b0c12;
+    border-color: #8b0c12;
+}
+
+/* Alert Messages */
+.alert {
+    border-radius: 4px;
+    margin-bottom: 20px;
+}
+
+.alert .fa {
+    margin-right: 8px;
+}
+
+.alert-info {
+    background-color: #e7f3ff;
+    border-color: #b3d9ff;
+    color: #004085;
+}
+
+/* Section Header */
+#addresses-list + hr {
+    border-color: #e5e5e5;
+    margin: 30px 0;
+}
+
+/* Responsive Design */
+@media screen and (max-width: 768px) {
+    .address-item .row {
+        flex-direction: column;
+    }
+
+    .address-item .col-md-4 {
+        margin-top: 15px;
+        text-align: left !important;
+    }
+
+    .address-actions {
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+
+    .address-actions .btn {
+        flex: 1;
+        min-width: 120px;
+    }
+
+    #add-address-btn {
+        width: 100%;
+        margin-top: 10px;
+    }
+
+    .d-flex.justify-content-between {
+        flex-direction: column;
+        align-items: flex-start !important;
+    }
+}
+
+@media screen and (max-width: 576px) {
+    #addressModal .modal-dialog {
+        margin: 0.5rem;
+    }
+
+    #addressModal .row .col-md-6,
+    #addressModal .row .col-md-3 {
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+
+    .address-actions .btn {
+        font-size: 13px;
+        padding: 6px 10px;
+    }
+}
+
+/* Loading States */
+.address-item.loading {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+.btn[disabled] {
+    opacity: 0.65;
+    cursor: not-allowed;
+}
+
+/* Animation for New Address */
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.address-item {
+    animation: slideIn 0.3s ease-out;
+}
+
+/* Empty State */
+#addresses-list .alert-info {
+    text-align: center;
+    padding: 30px;
+    font-size: 15px;
+}
+
+#addresses-list .alert-info .fa {
+    font-size: 24px;
+    display: block;
+    margin-bottom: 10px;
+}

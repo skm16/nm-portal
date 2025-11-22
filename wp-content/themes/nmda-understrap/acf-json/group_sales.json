@@ -1,0 +1,82 @@
+{
+    "key": "group_sales",
+    "title": "Sales & Distribution",
+    "fields": [
+        {
+            "key": "field_sales_type",
+            "label": "Type of Sales",
+            "name": "sales_type",
+            "aria-label": "",
+            "type": "checkbox",
+            "instructions": "Select all that apply",
+            "required": false,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "choices": {
+                "local": "Local",
+                "regional": "Regional",
+                "in_state": "In-State",
+                "national": "National",
+                "international": "International"
+            },
+            "layout": "vertical",
+            "default_value": [],
+            "allow_custom": 0,
+            "save_custom": 0,
+            "toggle": 0,
+            "return_format": "value",
+            "custom_choice_button_text": "Add new choice"
+        },
+        {
+            "key": "field_additional_info",
+            "label": "Additional Information",
+            "name": "additional_info",
+            "aria-label": "",
+            "type": "textarea",
+            "instructions": "Additional details about your operation (for NMDA records only)",
+            "required": false,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "rows": 4,
+            "default_value": "",
+            "new_lines": "",
+            "maxlength": "",
+            "placeholder": "",
+            "acfe_textarea_code": 0
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "post_type",
+                "operator": "==",
+                "value": "nmda_business"
+            }
+        ]
+    ],
+    "menu_order": 0,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": "",
+    "active": false,
+    "description": "",
+    "show_in_rest": 0,
+    "display_title": "",
+    "acfe_autosync": [
+        "json"
+    ],
+    "acfe_form": 0,
+    "acfe_meta": "",
+    "acfe_note": "",
+    "modified": 1763814447
+}

@@ -1,0 +1,293 @@
+/**
+ * User Management Styles
+ *
+ * Styles for business user invitation and management interface
+ *
+ * @package NMDA_Understrap_Child
+ */
+
+/* Users Table */
+#users-list .table {
+    margin-bottom: 0;
+}
+
+#users-list .table th {
+    background-color: #f8f9fa;
+    font-weight: 600;
+    border-top: none;
+    color: #512c1d; /* NMDA Brown Dark */
+}
+
+#users-list .table td {
+    vertical-align: middle;
+}
+
+/* Role Select */
+.role-select {
+    max-width: 150px;
+}
+
+/* Status Badges */
+.badge-success {
+    background-color: #28a745;
+}
+
+.badge-warning {
+    background-color: #f5be29; /* NMDA Gold */
+    color: #512c1d;
+}
+
+.badge-danger {
+    background-color: #dc3545;
+}
+
+.badge-secondary {
+    background-color: #6c757d;
+}
+
+.badge-info {
+    background-color: #17a2b8;
+}
+
+/* Action Buttons */
+.btn-outline-primary {
+    border-color: #8b0c12; /* NMDA Red */
+    color: #8b0c12;
+}
+
+.btn-outline-primary:hover {
+    background-color: #8b0c12;
+    border-color: #8b0c12;
+    color: #fff;
+}
+
+.btn-outline-danger {
+    border-color: #dc3545;
+    color: #dc3545;
+}
+
+.btn-outline-danger:hover {
+    background-color: #dc3545;
+    border-color: #dc3545;
+    color: #fff;
+}
+
+/* Invite Button */
+#invite-user-btn {
+    background-color: #8b0c12; /* NMDA Red */
+    border-color: #8b0c12;
+    color: #fff;
+}
+
+#invite-user-btn:hover {
+    background-color: #6d0a0e;
+    border-color: #6d0a0e;
+}
+
+/* Invite Modal */
+#inviteUserModal .modal-header {
+    background: linear-gradient(135deg, #512c1d 0%, #8b0c12 100%);
+    color: #fff;
+    border-bottom: none;
+}
+
+#inviteUserModal .modal-title {
+    color: #fff;
+}
+
+#inviteUserModal .modal-title .fa {
+    color: #f5be29; /* NMDA Gold */
+}
+
+#inviteUserModal .close {
+    color: #fff;
+    opacity: 0.8;
+}
+
+#inviteUserModal .close:hover {
+    opacity: 1;
+}
+
+#inviteUserModal .form-group label {
+    font-weight: 600;
+    color: #512c1d;
+}
+
+#inviteUserModal .form-control:focus {
+    border-color: #8b0c12;
+    box-shadow: 0 0 0 0.2rem rgba(139, 12, 18, 0.25);
+}
+
+#inviteUserModal .btn-primary {
+    background-color: #8b0c12;
+    border-color: #8b0c12;
+}
+
+#inviteUserModal .btn-primary:hover {
+    background-color: #6d0a0e;
+    border-color: #6d0a0e;
+}
+
+/* Help Section */
+.card-body h6 {
+    color: #512c1d; /* NMDA Brown Dark */
+    margin-bottom: 15px;
+}
+
+.card-body ul li {
+    margin-bottom: 8px;
+}
+
+/* Invitation Acceptance Page */
+.invitation-details {
+    padding: 20px 0;
+}
+
+.invitation-details h4 {
+    color: #512c1d; /* NMDA Brown Dark */
+}
+
+.invitation-details .fa {
+    color: #8b0c12; /* NMDA Red */
+    margin-right: 8px;
+    width: 20px;
+}
+
+.invitation-details .badge-primary {
+    background-color: #8b0c12; /* NMDA Red */
+}
+
+.role-permissions {
+    background-color: #f8f9fa;
+    padding: 20px;
+    border-radius: 4px;
+    margin-top: 20px;
+}
+
+.role-permissions h6 {
+    color: #512c1d;
+    margin-bottom: 12px;
+}
+
+.role-permissions ul li {
+    margin-bottom: 8px;
+    line-height: 1.6;
+}
+
+/* Accept/Decline Buttons */
+.btn-lg {
+    padding: 12px 30px;
+    font-size: 16px;
+}
+
+/* Success/Error States */
+.text-success {
+    color: #28a745 !important;
+}
+
+.text-danger {
+    color: #dc3545 !important;
+}
+
+.text-muted {
+    color: #6c757d !important;
+}
+
+/* Card Header */
+.card-header.bg-primary {
+    background: linear-gradient(135deg, #512c1d 0%, #8b0c12 100%) !important;
+    color: #fff;
+    border-bottom: none;
+}
+
+.card-header h3 {
+    margin-bottom: 0;
+}
+
+.card-header .fa {
+    color: #f5be29; /* NMDA Gold */
+}
+
+/* Empty State */
+#users-list .alert-info {
+    text-align: center;
+    padding: 30px;
+    margin-top: 20px;
+}
+
+/* Loading State */
+.btn[disabled] {
+    opacity: 0.65;
+    cursor: not-allowed;
+}
+
+/* Responsive Design */
+@media screen and (max-width: 768px) {
+    #users-list .table {
+        font-size: 14px;
+    }
+
+    .role-select {
+        max-width: 120px;
+        font-size: 13px;
+    }
+
+    .btn-sm {
+        font-size: 12px;
+        padding: 4px 8px;
+    }
+
+    .d-flex.justify-content-between {
+        flex-direction: column;
+        align-items: flex-start !important;
+    }
+
+    #invite-user-btn {
+        width: 100%;
+        margin-top: 15px;
+    }
+
+    .invitation-details {
+        text-align: left !important;
+    }
+
+    .btn-lg {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+}
+
+@media screen and (max-width: 576px) {
+    /* Stack table on small screens */
+    #users-list .table thead {
+        display: none;
+    }
+
+    #users-list .table tr {
+        display: block;
+        margin-bottom: 20px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        padding: 10px;
+    }
+
+    #users-list .table td {
+        display: block;
+        text-align: right;
+        padding-left: 50%;
+        position: relative;
+        border: none;
+    }
+
+    #users-list .table td::before {
+        content: attr(data-label);
+        position: absolute;
+        left: 10px;
+        font-weight: 600;
+        color: #512c1d;
+    }
+
+    #users-list .table td:last-child {
+        text-align: center;
+    }
+}
