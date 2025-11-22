@@ -312,6 +312,13 @@ if (defined('WP_CLI') && WP_CLI) {
 
             require_once ABSPATH . 'wp-admin/includes/upgrade.php';
             dbDelta($sql);
+
+            // Harden against existing tables that may be missing the legacy_business_id column
+            $columns = $wpdb->get_col("SHOW COLUMNS FROM {$table}", 0);
+            if (!in_array('legacy_business_id', $columns, true)) {
+                $wpdb->query("ALTER TABLE {$table} ADD COLUMN legacy_business_id varchar(191) NOT NULL AFTER business_id");
+                $wpdb->query("ALTER TABLE {$table} ADD KEY legacy_business_id (legacy_business_id)");
+            }
         }
 
         /**
@@ -704,6 +711,13 @@ if (defined('WP_CLI') && WP_CLI) {
 
         public function import_addresses($args, $assoc_args) {
             global $wpdb;
+            if (!($wpdb instanceof wpdb)) {
+                $wpdb = $GLOBALS['wpdb'] ?? null;
+            }
+
+            if (!($wpdb instanceof wpdb)) {
+                WP_CLI::error('Global $wpdb is not initialized. Ensure WordPress is loaded before running this command.');
+            }
             $this->dry_run = ! isset($assoc_args['execute']);
             $this->ensure_idmap_table();
 
